@@ -5,13 +5,13 @@ A small percentage of people may experience seizures when exposed to certain lig
 
 💾Current Version: Pre-Alpha
 
-![Thumbnail1](https://user-images.githubusercontent.com/105137450/186670623-c609286a-381e-4000-9681-abdea9d1803e.png)
-![Thumbnail2](https://user-images.githubusercontent.com/105137450/186670638-06979663-0dd5-4587-b136-e6d2b7f6b40c.png)
-![Thumbnail3](https://user-images.githubusercontent.com/105137450/186670647-1b60d770-cbd7-48fe-8f85-de44effb456c.png)
-![Thumbnail4](https://user-images.githubusercontent.com/105137450/186670655-4de42d39-561d-491b-bfe9-2f819e4d0c68.png)
-![Thumbnail5](https://user-images.githubusercontent.com/105137450/186670665-9df6243c-388c-4919-82da-86571e097b9d.png)
-![Thumbnail6](https://user-images.githubusercontent.com/105137450/186670672-f9b9c3f6-1c77-4f4d-9bfe-32f6f9a69671.png)
-![Thumbnail7](https://user-images.githubusercontent.com/105137450/186670677-2bde5c61-832e-4b0e-8890-b0ff85cc627a.png)
-![Thumbnail8](https://user-images.githubusercontent.com/105137450/186670685-4ca6e07b-dca5-4697-8900-50bf1bf0af5e.png)
-![Thumbnail9](https://user-images.githubusercontent.com/105137450/186670691-074dfa37-a67f-41dd-90d9-3c3bbe662ca6.png)
-![Thumbnail10](https://user-images.githubusercontent.com/105137450/186670696-d1594605-f117-4266-baeb-fc0685fb167c.png)
+![Thumbnail1](https://user-images.githubusercontent.com/105137450/186688292-c38fc0e5-989d-43af-b823-1eeaa3ac82d2.png)
+![Thumbnail2](https://user-images.githubusercontent.com/105137450/186688301-20b6ef6e-f30c-4dd3-9ea4-db127075017d.png)
+![Thumbnail3](https://user-images.githubusercontent.com/105137450/186688306-615d7e95-adcc-4e7c-aaa3-1b347fdfc1ed.png)
+![Thumbnail4](https://user-images.githubusercontent.com/105137450/186688314-6d5741b2-8e84-4f88-a2bc-70510461116d.png)
+![Thumbnail5](https://user-images.githubusercontent.com/105137450/186688323-30132921-22d7-4e82-86bd-032b5125cac0.png)
+![Thumbnail6](https://user-images.githubusercontent.com/105137450/186688332-95ecfb31-4fb6-4417-99b0-02dd4b5cc7f5.png)
+![Thumbnail7](https://user-images.githubusercontent.com/105137450/186688337-fb440894-8cb1-47ab-b82a-cbe4d09b5586.png)
+![Thumbnail8](https://user-images.githubusercontent.com/105137450/186688342-2409b738-2836-414f-8d96-0992787c386f.png)
+![Thumbnail9](https://user-images.githubusercontent.com/105137450/186688349-7796831d-721c-46e7-9fa0-4b346e06f736.png)
+![Thumbnail10](https://user-images.githubusercontent.com/105137450/186688353-ed048f4a-56c6-47f2-a5f1-0d271ee8938b.png)
