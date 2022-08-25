@@ -1,2 +1,3 @@
-«APOLLO» Corporation - is a large corporation that conducts research in the field of innovations of various kinds. You can witness amazing developments and maybe something else...
-[Computer Core «APOLLO» - Research Facility] - is the largest research facility of the «APOLLO» Corporation.
+The door for emergency sector lockdown.
+
+![Blast Door](https://user-images.githubusercontent.com/105137450/186668723-38ddbe05-b9cd-42fa-bbf4-f23bad405060.png)
