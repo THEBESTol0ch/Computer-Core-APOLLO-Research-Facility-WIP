@@ -1,1 +1,2 @@
-# Computer-Core-APOLLO-Research-Facility-WIP
+«APOLLO» Corporation - is a large corporation that conducts research in the field of innovations of various kinds. You can witness amazing developments and maybe something else...
+This is the largest research facility of the «APOLLO» Corporation.
