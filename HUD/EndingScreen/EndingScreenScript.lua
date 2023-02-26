@@ -26,7 +26,7 @@ local FrameProperties = {
 	Transparency = 0
 }
 
-local FrameStart = TweenService:Create(Frame.ImageTransparency, FrameAnimationSettings, FrameProperties)
+local FrameStart = TweenService:Create(Frame, FrameAnimationSettings, FrameProperties)
 
 EndingScreenStatusValue.Changed:Connect(function()
 	if EndingScreenStatusValue.Value == 1 then
