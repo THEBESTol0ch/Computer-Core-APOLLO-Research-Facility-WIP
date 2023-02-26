@@ -1,9 +1,16 @@
-❗[WARNING]❗
-A small percentage of people may experience seizures when exposed to certain lights or images in the game even with no history of epilepsy or seizures. Stop playing if you experience any negative effects connected with this.
+## Computer Core «APOLLO» - Research Facility
 
-«APOLLO» Corporation - is a large corporation that conducts research in the field of innovations of various kinds. You can witness amazing developments and maybe something else... [Computer Core «APOLLO» - Research Facility] - is the largest research facility of the «APOLLO» Corporation.
+## Genre:
+```
+Sci-Fi
+```
 
-💾Current Version: Pre-Alpha
+## Description:
+```
+Indie-project on platform роblox, gameplay is constructed in such a way that the player decides what to do, explore or destroy the complex, this place is full of different events and unique structures, you will definitely find something to your liking.
+```
+
+## 💾Current Version: Pre-Alpha
 
 ![Thumbnail1](https://user-images.githubusercontent.com/105137450/186688292-c38fc0e5-989d-43af-b823-1eeaa3ac82d2.png)
 ![Thumbnail2](https://user-images.githubusercontent.com/105137450/186688301-20b6ef6e-f30c-4dd3-9ea4-db127075017d.png)
