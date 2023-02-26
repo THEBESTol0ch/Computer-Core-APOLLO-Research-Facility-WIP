@@ -49,7 +49,7 @@ EndingScreenStatusValue.Changed:Connect(function()
 		CircleBG:TweenPosition(UDim2.new(0.497, 0, 0.269, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 2, false)
 		RectangleBG.BackgroundTransparency = 0
 		wait(2)
-		Titles:TweenPosition(UDim2.new(0.5, 0, -1.6, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 30, false)
+		Titles:TweenPosition(UDim2.new(0.5, 0, -1.8, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 30, false)
 		wait(5)
 		Rectangle:TweenPosition(UDim2.new(0.495, 0, 0.479, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 1, false)
 		wait(1)
