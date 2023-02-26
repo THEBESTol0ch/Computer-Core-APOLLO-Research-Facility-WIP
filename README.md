@@ -7,7 +7,12 @@ Sci-Fi
 
 ## Description:
 ```
-Indie-project on platform роblox, gameplay is constructed in such a way that the player decides what to do, explore or destroy the complex, this place is full of different events and unique structures, you will definitely find something to your liking.
+Indie-project on platform роblox, gameplay is constructed in such a way that the player decides what to do, 
+explore or destroy the facility, this place is full of different events and unique structures, 
+you will definitely find something you like. «APOLLO» Corporation - is a large corporation that 
+conducts research in the field of innovations of various kinds. You can witness amazing developments 
+and maybe something else... [Computer Core «APOLLO» - Research Facility] - 
+is the largest research facility of the «APOLLO» Corporation.
 ```
 
 ## 💾Current Version: Pre-Alpha
