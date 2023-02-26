@@ -37,49 +37,48 @@ local function HideAllTabs()
 	DevLogTab.Visible = false
 	CreditsTab.Visible = false
 end
+
+local function OpenMenu()
+	if MenuOpened == false then
+		Menu.Visible = true
+		MenuOpened = true
+		Menu:TweenPosition(UDim2.new(0.5, 0, 0.5, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 0.5, false)
+	else
+		MenuOpened = false
+		Menu:TweenPosition(UDim2.new(0.5, 0, -0.5, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 0.5, false)
+		wait(0.5)
+		HideAllTabs()
+		Logo.Visible = true
+		Menu.Visible = false
+	end
+end
+
+local function CloseMenu()
+	if MenuOpened == false then
+		Menu.Visible = true
+		MenuOpened = true
+		Menu:TweenPosition(UDim2.new(0.5, 0, 0.5, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 0.5, false)
+	else
+		MenuOpened = false
+		Menu:TweenPosition(UDim2.new(0.5, 0, -0.5, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 0.5, false)
+		wait(0.5)
+		HideAllTabs()
+		Logo.Visible = true
+		Menu.Visible = false
+	end
+end
 --
 
 MenuButton.MouseButton1Down:Connect(function()
-	if MenuOpened == false then
-		Menu.Visible = true
-		MenuOpened = true
-		Menu:TweenPosition(UDim2.new(0.5, 0, 0.5, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 0.5, false)
-	else
-		MenuOpened = false
-		Menu:TweenPosition(UDim2.new(0.5, 0, -0.5, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 0.5, false)
-		wait(0.5)
-		HideAllTabs()
-		Logo.Visible = true
-		Menu.Visible = false
-	end
+	OpenMenu()
 end)
 
 CloseButton.MouseButton1Down:Connect(function()
-	if MenuOpened == false then
-		Menu.Visible = true
-		MenuOpened = true
-		Menu:TweenPosition(UDim2.new(0.5, 0, 0.5, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 0.5, false)
-	else
-		MenuOpened = false
-		Menu:TweenPosition(UDim2.new(0.5, 0, -0.5, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 0.5, false)
-		wait(0.5)
-		HideAllTabs()
-		Logo.Visible = true
-		Menu.Visible = false
-	end
+	CloseMenu()
 end)
 
 GuideButton.MouseButton1Down:Connect(function()
-	if MenuOpened == false then
-		MenuOpened = true
-		Menu:TweenPosition(UDim2.new(0.5, 0, 0.5, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 0.5, false)
-	else
-		MenuOpened = false
-		Menu:TweenPosition(UDim2.new(0.5, 0, -0.5, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 0.5, false)
-		wait(0.5)
-		HideAllTabs()
-		Logo.Visible = true
-	end
+	CloseMenu()
 end)
 
 TeamsButton.MouseButton1Down:Connect(function()
