@@ -31,6 +31,7 @@ local FrameStart = TweenService:Create(Frame, FrameAnimationSettings, FramePrope
 EndingScreenStatusValue.Changed:Connect(function()
 	if EndingScreenStatusValue.Value == 1 then
 		EndingScreenStatusValue.Value = 1
+		Frame.Visible = true
 		game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
 		FrameStart:Play()
 		wait(4)
