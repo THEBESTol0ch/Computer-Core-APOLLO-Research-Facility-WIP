@@ -1,14 +1,14 @@
 -- Values
-local GeneratorStatusValue = script.Parent.Parent.Parent.Parent.CPU.Values.GeneratorStatusValue
-local InfiniteModeValue = script.Parent.Parent.Parent.Parent.CPU.Values.InfiniteModeValue
+local GeneratorStatusValue = script.Parent.Parent.Parent.CPU.Values.GeneratorStatusValue
+local InfiniteModeValue = script.Parent.Parent.Parent.CPU.Values.InfiniteModeValue
 --
 
 -- Items
-local GreenLamp = script.Parent
+local GreenLamp = script.Parent.Parent.Parent.Control.LampSystem.GreenLamp
 --
 
 -- Sounds
-local GeneratorBeepSound = script.Parent.Parent.Parent.Parent.Generator.SoundEmitter.GeneratorBeepSound
+local GeneratorBeepSound = script.Parent.Parent.Parent.Generator.SoundEmitter.GeneratorBeepSound
 --
 
 -- Functions
@@ -24,11 +24,11 @@ function StartIdleMode()
 	repeat
 		TurnOnGreenLamp()
 		GeneratorBeepSound:Play()
-		wait(1)
+		wait(1.11)
 		if GeneratorStatusValue.Value == "OFFLINE" then
 			TurnOffGreenLamp()
 		end
-		wait(1)
+		wait(1.11)
 	until GeneratorStatusValue.Value == "ONLINE"
 end
 --
