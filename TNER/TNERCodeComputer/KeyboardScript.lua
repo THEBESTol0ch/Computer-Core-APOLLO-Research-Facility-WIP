@@ -56,8 +56,6 @@ function ActivateCode(Sequence)
 		wait(0.05)
 		TweenService:Create(Step.Key, KeysAnimationSettings, { CFrame = Step.Key.CFrame:ToWorldSpace(CFrame.new(0, 0.035, 0)) }):Play()
 	end
-	wait(10) -- Code Accepted Animation
-	KeyboardTrigger.ClickDetector.MaxActivationDistance = 10
 end
 --
 
@@ -69,5 +67,13 @@ GeneratorStatusValue.Changed:Connect(function()
 	if GeneratorStatusValue.Value == "ONLINE" then
 		wait(3) -- Loading Screen Animation
 		KeyboardTrigger.ClickDetector.MaxActivationDistance = 10
+	end
+end)
+
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "ONLINE" then
+		KeyboardTrigger.ClickDetector.MaxActivationDistance = 10
+	else
+		KeyboardTrigger.ClickDetector.MaxActivationDistance = 0
 	end
 end)
