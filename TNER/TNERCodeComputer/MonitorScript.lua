@@ -6,7 +6,7 @@ local KeyboardTrigger = workspace.TNERCodeComputer.TNERCodeKeyboard.KeyboardTrig
 --
 
 -- Values
-local TNERStatusValue = script.Parent.Parent.Parent.Parent.TNERCodeMonitor.CPU.Scripts.TNERStatusValue
+local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 --
 
 -- Items
