@@ -1,96 +1,54 @@
 -- Control
 local TweenService = game:GetService("TweenService")
-local LeftDoorClickDetector = script.Parent.Parent.Parent.LeftDoor.DoorClickDetector
-local RightDoorClickDetector = script.Parent.Parent.Parent.RightDoor.DoorClickDetector
+local Trigger = script.Parent.Parent.Parent.Switch.Handle
 --
 
 -- Values
-local DoorsStatusValue = script.Parent.Parent.Values.DoorsStatusValue
-local AccessGrantedValue = script.Parent.Parent.Parent.KeyCardPanel.CPU.Values.AccessGrantedValue
+local ServerStatusValue = script.Parent.Parent.Values.ServerStatusValue
 --
 
 -- Items
-local LeftDoorHinge = script.Parent.Parent.Parent.LeftDoor.Hinge
-local RightDoorHinge = script.Parent.Parent.Parent.RightDoor.Hinge
+local SuperchargerSystemServerStatus = script.Parent.Parent.Parent.Monitor.Lines.Status.SurfaceGui.TextLabel
+local SuperchargerSystemServerOutput = script.Parent.Parent.Parent.Monitor.Lines.Output.SurfaceGui.TextLabel
+local SuperchargerSystemStatus = workspace.SuperchargerSystemMonitor.Monitor.Lines.SystemStatus.SurfaceGui.TextLabel
+local SuperchargerSystemStatusRS = workspace.ReactorSystemsMonitor.Monitor.Lines.SuperchargerSystemStatus.SurfaceGui.TextLabel
+local TotalRPM = workspace.SuperchargerSystemMonitor.Monitor.Lines.TotalRPM.SurfaceGui.TextLabel
+local Flywheels = workspace.SuperchargerSystemMonitor.Monitor.Lines
+local SuperchargerSystemConsoleMonitor = workspace.SuperchargerSystemConsoleMonitor.Screen
 --
 
-local LeftDoorUnlockAnimationSettings = TweenInfo.new(
-	2,
-	Enum.EasingStyle.Quint,
-	Enum.EasingDirection.InOut,
-	0,
-	false,
-	0
-)
-local LeftDoorAnimationSettings = TweenInfo.new(
-	4,
-	Enum.EasingStyle.Quint,
-	Enum.EasingDirection.InOut,
-	0,
-	false,
-	0
-)
-local RightDoorAnimationSettings = TweenInfo.new(
-	7,
-	Enum.EasingStyle.Quint,
-	Enum.EasingDirection.InOut,
-	0,
-	false,
-	0
-)
-
-local LeftDoorUnlock = TweenService:Create(LeftDoorHinge, LeftDoorUnlockAnimationSettings, {
-	CFrame = LeftDoorHinge.CFrame * CFrame.Angles(math.rad(15), 0, 0)
-})
-local LeftDoorOpen = TweenService:Create(LeftDoorHinge, LeftDoorAnimationSettings, {
-	CFrame = LeftDoorHinge.CFrame * CFrame.Angles(math.rad(165), 0, 0)
-})
-local LeftDoorClose = TweenService:Create(LeftDoorHinge, LeftDoorAnimationSettings, {
-	CFrame = LeftDoorHinge.CFrame * CFrame.Angles(math.rad(0), 0, 0)
-})
-local RightDoorOpen = TweenService:Create(RightDoorHinge, RightDoorAnimationSettings, {
-	CFrame = RightDoorHinge.CFrame * CFrame.Angles(math.rad(-105), 0, 0)
-})
-local RightDoorClose = TweenService:Create(RightDoorHinge, RightDoorAnimationSettings, {
-	CFrame = RightDoorHinge.CFrame * CFrame.Angles(math.rad(0), 0, 0)
-})
-
--- Functions
-function DoDoors()
-	if DoorsStatusValue.Value == "UNLOCKED" then
-		LeftDoorClickDetector.ClickDetector.MaxActivationDistance = 0
-		RightDoorClickDetector.ClickDetector.MaxActivationDistance = 0
-		LeftDoorOpen:Play()
-		RightDoorOpen:Play()
-		wait(8)
-		DoorsStatusValue.Value = "OPENED"
-		LeftDoorClickDetector.ClickDetector.MaxActivationDistance = 10
-		RightDoorClickDetector.ClickDetector.MaxActivationDistance = 10
-	else
-		LeftDoorClickDetector.ClickDetector.MaxActivationDistance = 0
-		RightDoorClickDetector.ClickDetector.MaxActivationDistance = 0
-		RightDoorClose:Play()
-		wait(3)
-		LeftDoorClose:Play()
-		wait(4)
-		DoorsStatusValue.Value = "LOCKED"
+Trigger.ClickDetector.MouseClick:Connect(function()
+	wait(0.5)
+	SuperchargerSystemServerStatus.Text = ("ENGAGING...")
+	SuperchargerSystemServerStatus.TextColor3 = Color3.new(1, 0.666667, 0)
+	wait(1)
+	for Count = 1, 6, 1 do
+		SuperchargerSystemServerOutput.Text = ("FLYWHEEL "..Count.."...")
+		SuperchargerSystemServerOutput.TextColor3 = Color3.new(1, 0.666667, 0)
+		wait(2)
+		SuperchargerSystemServerOutput.Text = ("FLYWHEEL "..Count)
+		SuperchargerSystemServerOutput.TextColor3 = Color3.new(0, 1, 0)
+		Flywheels["Flywheel"..Count.."Status"].SurfaceGui.TextLabel.Text = ("OFFLINE")
+		wait(0.5)
 	end
-end
---
-
-LeftDoorClickDetector.ClickDetector.MouseClick:Connect(function()
-	DoDoors()
-end)
-
-RightDoorClickDetector.ClickDetector.MouseClick:Connect(function()
-	DoDoors()
-end)
-
-AccessGrantedValue.Changed:Connect(function()
-	if AccessGrantedValue.Value == true and DoorsStatusValue.Value == "LOCKED" then
-		DoorsStatusValue.Value = "UNLOCKED"
-		LeftDoorUnlock:Play()
-		LeftDoorClickDetector.ClickDetector.MaxActivationDistance = 10
-		RightDoorClickDetector.ClickDetector.MaxActivationDistance = 10
-	end
+	SuperchargerSystemServerOutput.Text = ("TOTAL RPM...")
+	SuperchargerSystemServerOutput.TextColor3 = Color3.new(1, 0.666667, 0)
+	wait(2)
+	SuperchargerSystemServerOutput.Text = ("TOTAL RPM")
+	SuperchargerSystemServerOutput.TextColor3 = Color3.new(0, 1, 0)
+	TotalRPM.Text = ("0")
+	TotalRPM.TextColor3 = Color3.new(1, 0.666667, 0)
+	wait(0.5)
+	SuperchargerSystemServerStatus.Text = ("ONLINE")
+	SuperchargerSystemServerStatus.TextColor3 = Color3.new(0, 1, 0)
+	SuperchargerSystemStatus.Text = ("ONLINE")
+	SuperchargerSystemStatus.TextColor3 = Color3.new(0, 1, 0)
+	SuperchargerSystemStatusRS.Text = ("ONLINE")
+	SuperchargerSystemStatusRS.TextColor3 = Color3.new(0, 1, 0)
+	SuperchargerSystemConsoleMonitor.SuperchargerOfflineDecal.Transparency = 0
+	SuperchargerSystemConsoleMonitor.SuperchargerStableDecal.Transparency = 1
+	ServerStatusValue.Value = "ONLINE"
+	wait(0.5)
+	SuperchargerSystemServerOutput.Text = ("")
+	SuperchargerSystemServerOutput.TextColor3 = Color3.new(0, 1, 0)
 end)
