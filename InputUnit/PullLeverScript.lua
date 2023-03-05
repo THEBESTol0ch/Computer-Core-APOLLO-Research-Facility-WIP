@@ -35,20 +35,29 @@ local LeverPullOut = {
 local LeverPullIn = TweenService:Create(Lever, PullLeverAnimationSettings, LeverPullIn)
 local LeverPullOut = TweenService:Create(Lever, PullLeverAnimationSettings, LeverPullOut)
 
+-- Functions
+function PullIn()
+	Trigger.ClickDetector.MaxActivationDistance = 0
+	LeverPullIn:Play()
+	LeverSound:Play()
+	wait(1)
+	LeverValue.Value = "FULL"
+	Trigger.ClickDetector.MaxActivationDistance = 10
+end
+function PullOut()
+	Trigger.ClickDetector.MaxActivationDistance = 0
+	LeverPullOut:Play()
+	LeverSound:Play()
+	wait(1)
+	LeverValue.Value = "LOW"
+	Trigger.ClickDetector.MaxActivationDistance = 10
+end
+--
+
 Trigger.ClickDetector.MouseClick:Connect(function()
 	if LeverValue.Value == "LOW" then
-		Trigger.ClickDetector.MaxActivationDistance = 0
-		LeverPullIn:Play()
-		LeverSound:Play()
-		wait(1)
-		LeverValue.Value = "FULL"
-		Trigger.ClickDetector.MaxActivationDistance = 10
+		PullIn()
 	elseif LeverValue.Value == "FULL" then
-		Trigger.ClickDetector.MaxActivationDistance = 0
-		LeverPullOut:Play()
-		LeverSound:Play()
-		wait(1)
-		LeverValue.Value = "LOW"
-		Trigger.ClickDetector.MaxActivationDistance = 10
+		PullOut()
 	end
 end)
