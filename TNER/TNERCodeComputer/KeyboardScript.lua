@@ -8,7 +8,7 @@ local KeyboardTrigger = script.Parent.Parent.Parent.KeyboardTrigger
 
 -- Values
 local GeneratorStatusValue = workspace.TNERGenerator.CPU.Values.GeneratorStatusValue
-local TNERStatusValue = workspace.TNERCodeComputer.TNERCodeMonitor.CPU.Scripts.TNERStatusValue
+local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 --
 
 -- Items
