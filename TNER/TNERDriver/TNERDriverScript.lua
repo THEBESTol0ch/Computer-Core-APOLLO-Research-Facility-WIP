@@ -6,7 +6,7 @@ local AdvancedLever = script.Parent.Parent.Parent.AdvancedLever.Lever.Handle
 
 -- Values
 local TNERDriverStatusValue = script.Parent.Parent.Values.TNERDriverStatusValue
-local TNERStatusValue = workspace.TNERCodeComputer.TNERCodeMonitor.CPU.Scripts.TNERStatusValue
+local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 --
 
 -- Items
