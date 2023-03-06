@@ -12,13 +12,16 @@ local GeneratorBeepSound = script.Parent.Parent.Parent.Generator.SoundEmitter.Ge
 --
 
 -- Functions
-function TurnOnGreenLamp()
-	GreenLamp.Material = ("Neon")
-	GreenLamp.BrickColor = BrickColor.new("Lime green")
-end
-function TurnOffGreenLamp()
-	GreenLamp.Material = ("Metal")
-	GreenLamp.BrickColor = BrickColor.new("Forest green")
+function DoLamp(Lamp, Color, Mode)
+	if Color == "Green" then
+		if Mode == "ON" then
+			Lamp.BrickColor = BrickColor.new("Lime green")
+			Lamp.Material = ("Neon")
+		elseif Mode == "OFF" then
+			Lamp.BrickColor = BrickColor.new("Forest green")
+			Lamp.Material = ("Plastic")
+		end
+	end
 end
 function StartIdleMode()
 	repeat
