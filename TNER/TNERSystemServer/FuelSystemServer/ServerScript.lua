@@ -27,7 +27,7 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 		wait(2)
 		FuelSystemServerOutput.Text = ("FUEL RECEIVER "..Count)
 		FuelSystemServerOutput.TextColor3 = Color3.new(0, 1, 0)
-		FuelCellStats["FuelCell"..Count.."Status"].SurfaceGui.TextLabel.Text = ("OFFLINE")
+		FuelCellStats["FR"..Count.."Status"].SurfaceGui.TextLabel.Text = ("OFFLINE")
 		wait(0.5)
 	end
 	FuelSystemServerOutput.Text = ("FUEL CAPACITY...")
