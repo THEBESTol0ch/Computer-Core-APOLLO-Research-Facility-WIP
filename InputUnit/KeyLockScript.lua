@@ -180,11 +180,11 @@ Key.ClickDetector.MouseClick:Connect(function()
 		Key.ClickDetector.MaxActivationDistance = 10
 	elseif KeyTurnedValue.Value == true then
 		Key.ClickDetector.MaxActivationDistance = 0
+		KeyTurnedValue.Value = false
 		KeyTurn2:Play()
 		HoleTurn2:Play()
 		KeySound:Play()
 		wait(1)
-		KeyTurnedValue.Value = false
 		Key.ClickDetector.MaxActivationDistance = 10
 	end
 end)
