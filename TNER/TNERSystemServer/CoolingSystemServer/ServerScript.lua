@@ -8,11 +8,25 @@ local ServerStatusValue = script.Parent.Parent.Values.ServerStatusValue
 --
 
 -- Items
+local RadiatorStats = workspace.CoolingSystemMonitor.Monitor.Lines
+--
+
+-- Monitoring
 local CoolingSystemServerStatus = script.Parent.Parent.Parent.Monitor.Lines.Status.SurfaceGui.TextLabel
 local CoolingSystemServerOutput = script.Parent.Parent.Parent.Monitor.Lines.Output.SurfaceGui.TextLabel
 local CoolingSystemStatus = workspace.CoolingSystemMonitor.Monitor.Lines.SystemStatus.SurfaceGui.TextLabel
 local CoolingSystemStatusRS = workspace.ReactorSystemsMonitor.Monitor.Lines.CoolingSystemStatus.SurfaceGui.TextLabel
-local RadiatorStats = workspace.CoolingSystemMonitor.Monitor.Lines
+--
+
+-- Functions
+function DoMonitoring(Text, Color)
+	CoolingSystemServerStatus.Text = Text
+	CoolingSystemServerStatus.TextColor3 = Color
+	CoolingSystemStatus.Text = Text
+	CoolingSystemStatus.TextColor3 = Color
+	CoolingSystemStatusRS.Text = Text
+	CoolingSystemStatusRS.TextColor3 = Color
+end
 --
 
 Trigger.ClickDetector.MouseClick:Connect(function()
@@ -29,13 +43,8 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 		RadiatorStats["Radiator"..Count.."Status"].SurfaceGui.TextLabel.Text = ("OFFLINE")
 		wait(0.5)
 	end
-	CoolingSystemServerStatus.Text = ("ONLINE")
-	CoolingSystemServerStatus.TextColor3 = Color3.new(0, 1, 0)
-	CoolingSystemStatus.Text = ("ONLINE")
-	CoolingSystemStatus.TextColor3 = Color3.new(0, 1, 0)
-	CoolingSystemStatusRS.Text = ("ONLINE")
-	CoolingSystemStatusRS.TextColor3 = Color3.new(0, 1, 0)
 	ServerStatusValue.Value = "ONLINE"
+	DoMonitoring(ServerStatusValue.Value, Color3.new(0, 1, 0))
 	wait(0.5)
 	CoolingSystemServerOutput.Text = ("")
 	CoolingSystemServerOutput.TextColor3 = Color3.new(0, 1, 0)
