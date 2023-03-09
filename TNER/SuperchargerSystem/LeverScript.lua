@@ -68,7 +68,7 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 end)
 
 TNERStatusValue.Changed:Connect(function()
-	if TNERStatusValue.Value == "SHUTTING DOWN" and LeverValue.Value == "FULL" then
+	if TNERStatusValue.Value == "SHUT DOWN" and LeverValue.Value == "FULL" then
 		PullOut()
 	end
 	if TNERStatusValue.Value == "ONLINE" then
