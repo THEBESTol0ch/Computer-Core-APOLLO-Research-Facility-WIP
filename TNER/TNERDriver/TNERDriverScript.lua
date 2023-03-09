@@ -76,9 +76,9 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 end)
 
 TNERStatusValue.Changed:Connect(function()
-	wait(2)
 	if SequenceComplete == true and TNERDriverStatusValue.Value == "ONLINE" then
 		if TNERStatusValue.Value == "POWER ON" or TNERStatusValue.Value == "SHUT DOWN" then
+			wait(2)
 			SequenceComplete = false
 			TNERDriverStatusValue.Value = "MOVING"
 			RodRotateIn:Play()
