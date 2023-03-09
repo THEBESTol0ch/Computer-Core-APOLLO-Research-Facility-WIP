@@ -7,13 +7,24 @@ local Trigger = script.Parent.Parent.Parent.Switch.Handle
 local ServerStatusValue = script.Parent.Parent.Values.ServerStatusValue
 --
 
--- Items
+-- Monitoring
 local FuelSystemServerStatus = script.Parent.Parent.Parent.Monitor.Lines.Status.SurfaceGui.TextLabel
 local FuelSystemServerOutput = script.Parent.Parent.Parent.Monitor.Lines.Output.SurfaceGui.TextLabel
 local FuelSystemStatus = workspace.FuelSystemMonitor.Monitor.Lines.FuelSystemStatus.SurfaceGui.TextLabel
 local FuelSystemStatusRS = workspace.ReactorSystemsMonitor.Monitor.Lines.FuelSystemStatus.SurfaceGui.TextLabel
 local FuelCapacity = workspace.FuelSystemMonitor.Monitor.Lines.FuelCapacity.SurfaceGui.TextLabel
 local FuelCellStats = workspace.FuelSystemMonitor.Monitor.Lines
+--
+
+-- Functions
+function DoMonitoring(Text, Color)
+	FuelSystemServerStatus.Text = Text
+	FuelSystemServerStatus.TextColor3 = Color
+	FuelSystemStatus.Text = Text
+	FuelSystemStatus.TextColor3 = Color
+	FuelSystemStatusRS.Text = Text
+	FuelSystemStatusRS.TextColor3 = Color
+end
 --
 
 Trigger.ClickDetector.MouseClick:Connect(function()
@@ -43,13 +54,8 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 	FuelSystemServerOutput.Text = ("FUEL SYSTEM")
 	FuelSystemServerOutput.TextColor3 = Color3.new(0, 1, 0)
 	wait(0.5)
-	FuelSystemServerStatus.Text = ("ONLINE")
-	FuelSystemServerStatus.TextColor3 = Color3.new(0, 1, 0)
-	FuelSystemStatus.Text = ("ONLINE")
-	FuelSystemStatus.TextColor3 = Color3.new(0, 1, 0)
-	FuelSystemStatusRS.Text = ("ONLINE")
-	FuelSystemStatusRS.TextColor3 = Color3.new(0, 1, 0)
 	ServerStatusValue.Value = "ONLINE"
+	DoMonitoring(ServerStatusValue.Value, Color3.new(0, 1, 0))
 	wait(0.5)
 	FuelSystemServerOutput.Text = ("")
 	FuelSystemServerOutput.TextColor3 = Color3.new(0, 1, 0)
