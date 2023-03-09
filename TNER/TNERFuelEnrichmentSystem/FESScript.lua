@@ -5,25 +5,25 @@ local FEM3StatusValue = script.Parent.Parent.Parent.FEM3.CPU.Values.FEMStatusVal
 local FESStatusValue = script.Parent.Parent.Values.FESStatusValue
 --
 
--- Items
+-- Monitoring
 local FEMMonitorStatus = workspace.FESMonitor.Monitor.Lines.SystemStatus.SurfaceGui.TextLabel
 local FEMMonitorStatusRS = workspace.ReactorSystemsMonitor.Monitor.Lines.FuelEnrichmentSystemStatus.SurfaceGui.TextLabel
 --
 
 -- Functions
+function DoMonitoring(Text, Color)
+	FEMMonitorStatus.Text = Text
+	FEMMonitorStatus.TextColor3 = Color
+	FEMMonitorStatusRS.Text = Text
+	FEMMonitorStatusRS.TextColor3 = Color
+end
 function SystemCheck()
 	if FEM1StatusValue.Value == "ONLINE" and FEM2StatusValue.Value == "ONLINE" and FEM3StatusValue.Value == "ONLINE" then
 		FESStatusValue.Value = "ONLINE"
-		FEMMonitorStatus.Text = ("ONLINE")
-		FEMMonitorStatus.TextColor3 = Color3.new(0, 255, 0)
-		FEMMonitorStatusRS.Text = ("ONLINE")
-		FEMMonitorStatusRS.TextColor3 = Color3.new(0, 255, 0)
+		DoMonitoring(FESStatusValue.Value, Color3.new(0, 1, 0))
 	else
 		FESStatusValue.Value = "OFFLINE"
-		FEMMonitorStatus.Text = ("OFFLINE")
-		FEMMonitorStatus.TextColor3 = Color3.new(255, 0, 0)
-		FEMMonitorStatusRS.Text = ("OFFLINE")
-		FEMMonitorStatusRS.TextColor3 = Color3.new(255, 0, 0)
+		DoMonitoring(FESStatusValue.Value, Color3.new(1, 0, 0))
 	end
 end
 --
