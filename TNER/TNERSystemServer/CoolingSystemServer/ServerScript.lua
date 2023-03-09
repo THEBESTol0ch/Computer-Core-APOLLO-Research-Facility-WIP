@@ -7,11 +7,8 @@ local Trigger = script.Parent.Parent.Parent.Switch.Handle
 local ServerStatusValue = script.Parent.Parent.Values.ServerStatusValue
 --
 
--- Items
-local RadiatorStats = workspace.CoolingSystemMonitor.Monitor.Lines
---
-
 -- Monitoring
+local RadiatorStats = workspace.CoolingSystemMonitor.Monitor.Lines
 local CoolingSystemServerStatus = script.Parent.Parent.Parent.Monitor.Lines.Status.SurfaceGui.TextLabel
 local CoolingSystemServerOutput = script.Parent.Parent.Parent.Monitor.Lines.Output.SurfaceGui.TextLabel
 local CoolingSystemStatus = workspace.CoolingSystemMonitor.Monitor.Lines.SystemStatus.SurfaceGui.TextLabel
