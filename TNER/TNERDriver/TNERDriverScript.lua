@@ -77,7 +77,7 @@ end)
 
 TNERStatusValue.Changed:Connect(function()
 	if SequenceComplete == true and TNERDriverStatusValue.Value == "ONLINE" then
-		if TNERStatusValue.Value == "POWERING ON" or TNERStatusValue.Value == "SHUTTING DOWN" then
+		if TNERStatusValue.Value == "POWER ON" or TNERStatusValue.Value == "SHUT DOWN" then
 			SequenceComplete = false
 			TNERDriverStatusValue.Value = "MOVING"
 			RodRotateIn:Play()
