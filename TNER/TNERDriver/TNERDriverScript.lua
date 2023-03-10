@@ -35,14 +35,6 @@ local RodRotateInOutAnimationSettings = TweenInfo.new(
 	false,
 	0
 )
-local AssetsStorageAnimationSettings = TweenInfo.new(
-	0,
-	Enum.EasingStyle.Linear,
-	Enum.EasingDirection.InOut,
-	0,
-	false,
-	0
-)
 
 local RodOut = {
 	CFrame = RodPos1.CFrame:ToWorldSpace(CFrame.new(0, 0, 0))
