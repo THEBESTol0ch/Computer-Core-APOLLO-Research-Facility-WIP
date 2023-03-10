@@ -160,6 +160,7 @@ LeverValue.Changed:Connect(function()
 end)
 
 FEMStatusValue.Changed:Connect(function()
+	wait(1)
 	if FEMStatusValue.Value == "ONLINE" and LeverValue.Value == "LOW" then
 		DoFEM("OFF")
 	end
