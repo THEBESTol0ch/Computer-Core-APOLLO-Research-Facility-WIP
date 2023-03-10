@@ -71,7 +71,7 @@ end)
 
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "SHUT DOWN" and LeverValue.Value == "FULL" then
-		wait(1)
+		wait(math.random(1, 10) / 10)
 		PullOut()
 	end
 	if TNERStatusValue.Value == "ONLINE" then
