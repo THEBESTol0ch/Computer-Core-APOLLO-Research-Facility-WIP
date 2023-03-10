@@ -20,7 +20,7 @@ local FEMConsoleMonitorStatus = workspace.FESConsoleMonitor.Lines[script.Parent.
 local FEMMonitorStatus = workspace.FESMonitor.Monitor.Lines[script.Parent.Parent.Parent.Name.."Status"].SurfaceGui.TextLabel
 --
 
--- Sound
+-- Sounds
 local TritiumEnrichmentSystemSound = script.Parent.Parent.Parent.MovingConnector.SoundEmitter.TritiumEnrichmentSystemSound	
 --
 
@@ -129,7 +129,7 @@ function DoFEM(Mode)
 			DoMonitors(FEMStatusValue.Value, Color3.new(1, 0.666667, 0))
 			FEM.FEMOfflineDecal.Transparency = 0
 			FEM.FEMOnlineDecal.Transparency = 1
-			for Count = 1, 4, 1 do
+			for Count = 4, 1, -1 do
 				BlueLamps["Lamp"..Count].Material = ("Glass")
 				wait(math.random(1, 2))
 			end
