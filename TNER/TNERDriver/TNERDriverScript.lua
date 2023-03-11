@@ -15,6 +15,10 @@ local RodPos1 = script.Parent.Parent.Parent.RodPos1
 local RodPos2 = script.Parent.Parent.Parent.RodPos2
 --
 
+-- Sounds
+local Alarm = workspace.TNERAlarmSystem.SoundEmitter.Alarm3
+--
+
 -- Logic
 local SequenceComplete = false
 --
@@ -70,6 +74,7 @@ end)
 TNERStatusValue.Changed:Connect(function()
 	if SequenceComplete == true and TNERDriverStatusValue.Value == "ONLINE" then
 		if TNERStatusValue.Value == "POWER ON" or TNERStatusValue.Value == "SHUT DOWN" then
+			Alarm:Play()
 			wait(2)
 			SequenceComplete = false
 			TNERDriverStatusValue.Value = "MOVING"
