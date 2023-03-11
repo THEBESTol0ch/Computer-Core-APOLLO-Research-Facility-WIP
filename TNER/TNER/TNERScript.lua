@@ -121,6 +121,32 @@ function DoValuesMonitoring()
 		OutputEnergyLable.TextColor3 = Color3.new(0, 1, 0)
 	end
 end
+function CalcTemperature()
+	repeat
+		TemperatureValue.Value = TemperatureValue.Value + 19
+		wait(1)
+	until TemperatureValue.Value == 19 * LeverPositionValue.Value * 42 or TNERStatusValue.Value == "SHUT DOWN"
+end
+function CalcRPM()
+	repeat
+		if LeverPositionValue.Value > PreviousLeverPositionValue.Value then
+			RPMValue.Value = RPMValue.Value + 3748
+		elseif LeverPositionValue.Value < PreviousLeverPositionValue.Value then
+			RPMValue.Value = RPMValue.Value - 3748
+		end
+		wait(0.02)
+	until RPMValue.Value == 1874 * LeverPositionValue.Value * 10
+end
+function CalcOutputEnergy()
+	repeat
+		if LeverPositionValue.Value > PreviousLeverPositionValue.Value then
+			OutputEnergyValue.Value = OutputEnergyValue.Value + 16800
+		elseif LeverPositionValue.Value < PreviousLeverPositionValue.Value then
+			OutputEnergyValue.Value = OutputEnergyValue.Value - 16800
+		end
+		wait(0.02)
+	until OutputEnergyValue.Value == 84 * LeverPositionValue.Value * 1000
+end
 function DoEmergencyLamps(Mode)
 	if Mode == "ON" then
 		for _, EmergencyLamp in pairs(EmergencyLamps:GetChildren()) do
@@ -215,32 +241,6 @@ function DoRoundLightning(Mode, Side)
 		Lightning.RoundLightning[Side.."Lightning"].Lightning2.Size = Lightning.RoundLightning.SizeValues.LightningSizeValue1.Value
 		Lightning.RoundLightning[Side.."Lightning"].Lightning2.Position = Lightning.RoundLightning[Side.."Lightning"].Positions.LightningPos1.Position
 	end
-end
-function CalcTemperature()
-	repeat
-		TemperatureValue.Value = TemperatureValue.Value + 19
-		wait(1)
-	until TemperatureValue.Value == 19 * LeverPositionValue.Value * 42 or TNERStatusValue.Value == "SHUT DOWN"
-end
-function CalcRPM()
-	repeat
-		if LeverPositionValue.Value > PreviousLeverPositionValue.Value then
-			RPMValue.Value = RPMValue.Value + 1874
-		elseif LeverPositionValue.Value < PreviousLeverPositionValue.Value then
-			RPMValue.Value = RPMValue.Value - 1874
-		end
-		wait(0.1)
-	until RPMValue.Value == 1874 * LeverPositionValue.Value * 10
-end
-function CalcOutputEnergy()
-	repeat
-		if LeverPositionValue.Value > PreviousLeverPositionValue.Value then
-			OutputEnergyValue.Value = OutputEnergyValue.Value + 84
-		elseif LeverPositionValue.Value < PreviousLeverPositionValue.Value then
-			OutputEnergyValue.Value = OutputEnergyValue.Value - 84
-		end
-		wait(0.1)
-	until OutputEnergyValue.Value == 84 * LeverPositionValue.Value * 1000
 end
 function DoReactor(Mode)
 	if Mode == "START" then
@@ -391,15 +391,15 @@ LeverPositionValue.Changed:Connect(function()
 	DoFlywheels("START")
 
 	if LeverPositionValue.Value == 5 then
-		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 0.8 }):Play()
+		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 1.2 }):Play()
 	elseif LeverPositionValue.Value == 4 then
-		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 0.9 }):Play()
+		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 1.1 }):Play()
 	elseif LeverPositionValue.Value == 3 then
 		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 1 }):Play()
 	elseif LeverPositionValue.Value == 2 then
-		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 1.1 }):Play()
+		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 0.9 }):Play()
 	elseif LeverPositionValue.Value == 1 then
-		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 1.2 }):Play()
+		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 0.8 }):Play()
 	end
 end)
 
@@ -467,8 +467,8 @@ TNERStatusValue.Changed:Connect(function()
 		CalcRPM()
 	elseif TNERStatusValue.Value == "SHUT DOWN" then
 		repeat
-			RPMValue.Value = RPMValue.Value - 937
-			wait(0.1)
+			RPMValue.Value = RPMValue.Value - 1874
+			wait(0.02)
 		until RPMValue.Value == 0
 	end
 end)
@@ -498,18 +498,9 @@ TNERStatusValue.Changed:Connect(function()
 		CalcOutputEnergy()
 	elseif TNERStatusValue.Value == "SHUT DOWN" then
 		repeat
-			OutputEnergyValue.Value = OutputEnergyValue.Value - 84
-			wait(0.1)
+			OutputEnergyValue.Value = OutputEnergyValue.Value - 16800
+			wait(0.02)
 		until OutputEnergyValue.Value == 0
-	end
-end)
-
-TemperatureValue.Changed:Connect(function()
-	if TemperatureValue.Value > 35 then
-		repeat
-			TemperatureValue.Value = TemperatureValue.Value - 10
-			wait(1)
-		until TemperatureValue.Value < 35
 	end
 end)
 
@@ -533,6 +524,12 @@ InputEnergyValue.Changed:Connect(function()
 end)
 OutputEnergyValue.Changed:Connect(function()
 	DoValuesMonitoring()
+end)
+
+TemperatureValue.Changed:Connect(function()
+	if TemperatureValue.Value > 35 then
+		TemperatureValue.Value = TemperatureValue.Value - 10
+	end
 end)
 
 -- Electrical Discharges
