@@ -17,7 +17,6 @@ local Trigger = workspace.TNERDriver.AdvancedLever.Lever.Handle
 -- Values
 local TNERStatusValue = script.Parent.Parent.Values.TNERStatusValue
 local TemperatureValue = script.Parent.Parent.Values.TemperatureValue
-local TemperatureIncreaseCoefValue = script.Parent.Parent.Values.TemperatureIncreaseCoefValue
 local RPMValue = script.Parent.Parent.Values.RPMValue
 local InputEnergyValue = script.Parent.Parent.Values.InputEnergyValue
 local OutputEnergyValue = script.Parent.Parent.Values.OutputEnergyValue
@@ -31,6 +30,7 @@ local FuelServerStatusValue = TNERServers.FuelSystemServer.CPU.Values.ServerStat
 local CoolingServerStatusValue = TNERServers.CoolingSystemServer.CPU.Values.ServerStatusValue
 
 local LeverPositionValue = workspace.TNERPullLever.CPU.Values.LeverPositionValue
+local PreviousLeverPositionValue = workspace.TNERPullLever.CPU.Values.PreviousLeverPositionValue
 --
 
 -- Items
@@ -54,12 +54,13 @@ local RoomAlarm1Sound = workspace.TNERConsoleSpeaker.SoundEmitter.RoomAlarm1Soun
 --
 
 -- Monitoring
-local ReactorStatusLable = workspace.ReactorOutputMonitor.Monitor.Lines.ReactorStatus.SurfaceGui.TextLabel
-local ReactorTemperatureLable = workspace.ReactorOutputMonitor.Monitor.Lines.ReactorTemperature.SurfaceGui.TextLabel
-local ReactorFuelCapacityLable = workspace.FuelSystemMonitor.Monitor.Lines.FuelCapacity.SurfaceGui.TextLabel
-local ReactorOutputEnergyLable = workspace.ReactorOutputMonitor.Monitor.Lines.OutputEnergy.SurfaceGui.TextLabel
-local ReactorInputEnergyLable = workspace.ReactorOutputMonitor.Monitor.Lines.InputEnergy.SurfaceGui.TextLabel
-local ReactorRPMLable = workspace.ReactorOutputMonitor.Monitor.Lines.ReactorRPM.SurfaceGui.TextLabel
+local StatusLable = workspace.ReactorOutputMonitor.Monitor.Lines.ReactorStatus.SurfaceGui.TextLabel
+local TemperatureLable = workspace.ReactorOutputMonitor.Monitor.Lines.ReactorTemperature.SurfaceGui.TextLabel
+local RPMLable = workspace.ReactorOutputMonitor.Monitor.Lines.ReactorRPM.SurfaceGui.TextLabel
+local InputEnergyLable = workspace.ReactorOutputMonitor.Monitor.Lines.InputEnergy.SurfaceGui.TextLabel
+local OutputEnergyLable = workspace.ReactorOutputMonitor.Monitor.Lines.OutputEnergy.SurfaceGui.TextLabel
+
+local FuelCapacityLable = workspace.FuelSystemMonitor.Monitor.Lines.FuelCapacity.SurfaceGui.TextLabel
 --
 
 local FlywheelAnimationSettings = TweenInfo.new(
@@ -89,8 +90,36 @@ local FlywheelsRotationSoundAnimationSettings = TweenInfo.new(
 
 -- Functions
 function DoMonitoring(Text, Color)
-	ReactorStatusLable.Text = Text
-	ReactorStatusLable.TextColor3 = Color
+	StatusLable.Text = Text
+	StatusLable.TextColor3 = Color
+end
+function DoValuesMonitoring()
+	TemperatureLable.Text = (TemperatureValue.Value.." °C")
+	RPMLable.Text = RPMValue.Value
+	InputEnergyLable.Text = (InputEnergyValue.Value.." V")
+	OutputEnergyLable.Text = (OutputEnergyValue.Value.." V")
+	
+	if TemperatureValue.Value > 3200 then
+		TemperatureLable.TextColor3 = Color3.new(1, 0, 0)
+	elseif TemperatureValue.Value < 3200 and TemperatureValue.Value > 1600 then
+		TemperatureLable.TextColor3 = Color3.new(1, 0.666667, 0)
+	elseif TemperatureValue.Value < 1600 then
+		TemperatureLable.TextColor3 = Color3.new(0, 1, 0)
+	end
+	if RPMValue.Value > 75000 then
+		RPMLable.TextColor3 = Color3.new(1, 0, 0)
+	elseif RPMValue.Value < 75000 and RPMValue.Value > 37500 then
+		RPMLable.TextColor3 = Color3.new(1, 0.666667, 0)
+	elseif RPMValue.Value < 37500 then
+		RPMLable.TextColor3 = Color3.new(0, 1, 0)
+	end
+	if OutputEnergyValue.Value > 340000 then
+		OutputEnergyLable.TextColor3 = Color3.new(1, 0, 0)
+	elseif OutputEnergyValue.Value < 340000 and OutputEnergyValue.Value > 168000 then
+		OutputEnergyLable.TextColor3 = Color3.new(1, 0.666667, 0)
+	elseif OutputEnergyValue.Value < 168000 then
+		OutputEnergyLable.TextColor3 = Color3.new(0, 1, 0)
+	end
 end
 function DoEmergencyLamps(Mode)
 	if Mode == "ON" then
@@ -187,6 +216,32 @@ function DoRoundLightning(Mode, Side)
 		Lightning.RoundLightning[Side.."Lightning"].Lightning2.Position = Lightning.RoundLightning[Side.."Lightning"].Positions.LightningPos1.Position
 	end
 end
+function CalcTemperature()
+	repeat
+		TemperatureValue.Value = TemperatureValue.Value + 19
+		wait(1)
+	until TemperatureValue.Value == 19 * LeverPositionValue.Value * 42 or TNERStatusValue.Value == "SHUT DOWN"
+end
+function CalcRPM()
+	repeat
+		if LeverPositionValue.Value > PreviousLeverPositionValue.Value then
+			RPMValue.Value = RPMValue.Value + 1874
+		elseif LeverPositionValue.Value < PreviousLeverPositionValue.Value then
+			RPMValue.Value = RPMValue.Value - 1874
+		end
+		wait(0.1)
+	until RPMValue.Value == 1874 * LeverPositionValue.Value * 10
+end
+function CalcOutputEnergy()
+	repeat
+		if LeverPositionValue.Value > PreviousLeverPositionValue.Value then
+			OutputEnergyValue.Value = OutputEnergyValue.Value + 84
+		elseif LeverPositionValue.Value < PreviousLeverPositionValue.Value then
+			OutputEnergyValue.Value = OutputEnergyValue.Value - 84
+		end
+		wait(0.1)
+	until OutputEnergyValue.Value == 84 * LeverPositionValue.Value * 1000
+end
 function DoReactor(Mode)
 	if Mode == "START" then
 		TNERStatusValue.Value = "POWER ON"
@@ -222,8 +277,8 @@ function DoReactor(Mode)
 		wait(4.5)
 		DoSmoke("Grey", false)
 		DoEmergencyLamps("OFF")
-		TNERStatusValue.Value = "OFFLINE"
-		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0, 0))
+		TNERStatusValue.Value = "COOLING"
+		DoMonitoring(TNERStatusValue.Value, Color3.new(0.333333, 0.666667, 1))
 	end
 end
 --
@@ -301,8 +356,20 @@ TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		wait(18)
 		repeat
-			local Num1 = LeverPositionValue.Value * 3.5 - 2
-			local Num2 = LeverPositionValue.Value * 3.5 + 2
+			local InvertedLeverPositionValue = 3
+			if LeverPositionValue.Value == 5 then
+				InvertedLeverPositionValue = 1
+			elseif LeverPositionValue.Value == 4 then
+				InvertedLeverPositionValue = 2
+			elseif LeverPositionValue.Value == 3 then
+				InvertedLeverPositionValue = 3
+			elseif LeverPositionValue.Value == 2 then
+				InvertedLeverPositionValue = 4
+			elseif LeverPositionValue.Value == 1 then
+				InvertedLeverPositionValue = 5
+			end
+			local Num1 = InvertedLeverPositionValue * 3.5 - 2
+			local Num2 = InvertedLeverPositionValue * 3.5 + 2
 			DoLightning("Lightning")
 			wait(math.random(Num1, Num2) / 10)
 		until TNERStatusValue.Value == "SHUT DOWN"
@@ -310,30 +377,36 @@ TNERStatusValue.Changed:Connect(function()
 end)
 
 LeverPositionValue.Changed:Connect(function()
-	if LeverPositionValue.Value == 1 then
+	if LeverPositionValue.Value == 5 then
 		FlywheelRotationSpeedValue.Value = 27
-	elseif LeverPositionValue.Value == 2 then
+	elseif LeverPositionValue.Value == 4 then
 		FlywheelRotationSpeedValue.Value = 25
 	elseif LeverPositionValue.Value == 3 then
 		FlywheelRotationSpeedValue.Value = 10
-	elseif LeverPositionValue.Value == 4 then
+	elseif LeverPositionValue.Value == 2 then
 		FlywheelRotationSpeedValue.Value = 6
-	elseif LeverPositionValue.Value == 5 then
+	elseif LeverPositionValue.Value == 1 then
 		FlywheelRotationSpeedValue.Value = 4
 	end
 	DoFlywheels("START")
 
-	if LeverPositionValue.Value == 1 then
-		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 1.2 }):Play()
-	elseif LeverPositionValue.Value == 2 then
-		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 1.1 }):Play()
-	elseif LeverPositionValue.Value == 3 then
-		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 1 }):Play()
+	if LeverPositionValue.Value == 5 then
+		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 0.8 }):Play()
 	elseif LeverPositionValue.Value == 4 then
 		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 0.9 }):Play()
-	elseif LeverPositionValue.Value == 5 then
-		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 0.8 }):Play()
+	elseif LeverPositionValue.Value == 3 then
+		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 1 }):Play()
+	elseif LeverPositionValue.Value == 2 then
+		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 1.1 }):Play()
+	elseif LeverPositionValue.Value == 1 then
+		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 1.2 }):Play()
 	end
+end)
+
+LeverPositionValue.Changed:Connect(function()
+	CalcTemperature()
+	CalcRPM()
+	CalcOutputEnergy()
 end)
 
 TNERStatusValue.Changed:Connect(function()
@@ -380,6 +453,86 @@ TNERStatusValue.Changed:Connect(function()
 			wait(1.2)
 		until TNERStatusValue.Value == "SHUT DOWN"
 	end
+end)
+
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "ONLINE" then
+		CalcTemperature()
+	end
+end)
+
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "POWER ON" then
+		wait(16.8)
+		CalcRPM()
+	elseif TNERStatusValue.Value == "SHUT DOWN" then
+		repeat
+			RPMValue.Value = RPMValue.Value - 937
+			wait(0.1)
+		until RPMValue.Value == 0
+	end
+end)
+
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "POWER ON" then
+		repeat
+			InputEnergyValue.Value = InputEnergyValue.Value + 28
+			wait(0.1)
+		until InputEnergyValue.Value > 670
+		wait(8)
+		repeat
+			InputEnergyValue.Value = InputEnergyValue.Value - 28
+			wait(0.1)
+		until InputEnergyValue.Value < 130
+		wait(2)
+		repeat
+			InputEnergyValue.Value = InputEnergyValue.Value - 28
+			wait(0.1)
+		until InputEnergyValue.Value == 0
+	end
+end)
+
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "POWER ON" then
+		wait(16.8)
+		CalcOutputEnergy()
+	elseif TNERStatusValue.Value == "SHUT DOWN" then
+		repeat
+			OutputEnergyValue.Value = OutputEnergyValue.Value - 84
+			wait(0.1)
+		until OutputEnergyValue.Value == 0
+	end
+end)
+
+TemperatureValue.Changed:Connect(function()
+	if TemperatureValue.Value > 35 then
+		repeat
+			TemperatureValue.Value = TemperatureValue.Value - 10
+			wait(1)
+		until TemperatureValue.Value < 35
+	end
+end)
+
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "COOLING" then
+		if TemperatureValue.Value < 35 then
+			TNERStatusValue.Value = "OFFLINE"
+			DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0, 0))
+		end
+	end
+end)
+
+TemperatureValue.Changed:Connect(function()
+	DoValuesMonitoring()
+end)
+RPMValue.Changed:Connect(function()
+	DoValuesMonitoring()
+end)
+InputEnergyValue.Changed:Connect(function()
+	DoValuesMonitoring()
+end)
+OutputEnergyValue.Changed:Connect(function()
+	DoValuesMonitoring()
 end)
 
 -- Electrical Discharges
