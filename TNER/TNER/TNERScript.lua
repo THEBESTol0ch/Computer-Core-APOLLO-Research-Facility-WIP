@@ -1,14 +1,3 @@
--- ReactorStatusValue.Value = 0 [OFFLINE]
--- ReactorStatusValue.Value = 1 [POWERING ON]
--- ReactorStatusValue.Value = 2 [ONLINE]
--- ReactorStatusValue.Value = 3 [SHUTTING DOWN]
--- ReactorStatusValue.Value = 4 [COOLING]
-
--- ReactorStatusValue.Value = 5 [MAINTENANCE MODE]
-
--- ReactorStatusValue.Value = 6 [UNSTABLE]
--- ReactorStatusValue.Value = 7 [OVERLOADING]
-
 -- Control
 local TweenService = game:GetService("TweenService")
 local Trigger = workspace.TNERDriver.AdvancedLever.Lever.Handle
@@ -22,6 +11,7 @@ local InputEnergyValue = script.Parent.Parent.Values.InputEnergyValue
 local OutputEnergyValue = script.Parent.Parent.Values.OutputEnergyValue
 local FlywheelRotationSpeedValue = script.Parent.Parent.Values.FlywheelRotationSpeedValue
 
+local AllFuelCellsInjectedValue = workspace.TNERFuelSystem.CPU.Values.AllFuelCellsInjectedValue
 local FuelCapacityValue = workspace.TNERFuelSystem.CPU.Values.FuelCapacityValue
 local HatchStatusValue = workspace.TNERFuseSystem.Hatch.CPU.Values.HatchStatusValue
 local TNERServers = workspace.TNERSystemServer.Servers
@@ -287,18 +277,23 @@ function DoReactor(Mode)
 end
 --
 
+-- Reactor Control
 Trigger.ClickDetector.MouseClick:Connect(function()
-	if TNERStatusValue.Value == "OFFLINE" and FuelCapacityValue.Value > 10 and HatchStatusValue.Value == "LOCKED" then
-		if SuperchargerServerStatusValue.Value == "ONLINE" and FuelServerStatusValue.Value == "ONLINE" and CoolingServerStatusValue.Value == "ONLINE" then
-			wait(1)
-			DoReactor("START")
-		end	
+	if TNERStatusValue.Value == "OFFLINE" and HatchStatusValue.Value == "LOCKED" then
+		if FuelCapacityValue.Value > 10 and AllFuelCellsInjectedValue.Value == true then
+			if SuperchargerServerStatusValue.Value == "ONLINE" and FuelServerStatusValue.Value == "ONLINE" and CoolingServerStatusValue.Value == "ONLINE" then
+				wait(1)
+				DoReactor("START")
+			end	
+		end
 	elseif TNERStatusValue.Value == "ONLINE" then
 		wait(1)
 		DoReactor("STOP")
 	end
 end)
+--
 
+-- Large Lightning
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		wait(10.955)
@@ -311,7 +306,9 @@ TNERStatusValue.Changed:Connect(function()
 		DoLightning("LargeLightning")
 	end
 end)
+--
 
+-- Round Lightning
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		wait(15.3)
@@ -355,7 +352,9 @@ TNERStatusValue.Changed:Connect(function()
 		until TNERStatusValue.Value == "ONLINE"
 	end
 end)
+--
 
+-- Lightning and LeverPosition Control
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		wait(18)
@@ -379,7 +378,6 @@ TNERStatusValue.Changed:Connect(function()
 		until TNERStatusValue.Value == "SHUT DOWN"
 	end
 end)
-
 LeverPositionValue.Changed:Connect(function()
 	if LeverPositionValue.Value == 5 then
 		FlywheelRotationSpeedValue.Value = 27
@@ -406,7 +404,19 @@ LeverPositionValue.Changed:Connect(function()
 		TweenService:Create(FlywheelsRotationSound, FlywheelsRotationSoundAnimationSettings, { PlaybackSpeed = 0.8 }):Play()
 	end
 end)
+LeverPositionValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "ONLINE" then
+		CalcRPM()
+	end
+end)
+LeverPositionValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "ONLINE" then
+		CalcOutputEnergy()
+	end
+end)
+--
 
+-- Blue Lamps
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		for Count = 1, 7, 1 do
@@ -422,7 +432,9 @@ TNERStatusValue.Changed:Connect(function()
 		end
 	end
 end)
+--
 
+-- Side Lamps
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		repeat
@@ -436,7 +448,9 @@ TNERStatusValue.Changed:Connect(function()
 		DoSideLamps("OFF")
 	end
 end)
+--
 
+-- RedLamps
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		repeat
@@ -453,7 +467,9 @@ TNERStatusValue.Changed:Connect(function()
 		until TNERStatusValue.Value == "ONLINE"
 	end
 end)
+--
 
+-- RPM Control
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		wait(16.8)
@@ -465,7 +481,9 @@ TNERStatusValue.Changed:Connect(function()
 		until RPMValue.Value == 0
 	end
 end)
+--
 
+-- Input Energy Control
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		repeat
@@ -484,7 +502,9 @@ TNERStatusValue.Changed:Connect(function()
 		until InputEnergyValue.Value == 0
 	end
 end)
+--
 
+-- Output Energy Control
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		wait(16.8)
@@ -496,7 +516,9 @@ TNERStatusValue.Changed:Connect(function()
 		until OutputEnergyValue.Value == 0
 	end
 end)
+--
 
+-- Monitoring
 TemperatureValue.Changed:Connect(function()
 	DoValuesMonitoring()
 end)
@@ -509,18 +531,9 @@ end)
 OutputEnergyValue.Changed:Connect(function()
 	DoValuesMonitoring()
 end)
+--
 
-LeverPositionValue.Changed:Connect(function()
-	if TNERStatusValue.Value == "ONLINE" then
-		CalcRPM()
-	end
-end)
-LeverPositionValue.Changed:Connect(function()
-	if TNERStatusValue.Value == "ONLINE" then
-		CalcOutputEnergy()
-	end
-end)
-
+-- Temperature Control
 while true do
 	if TemperatureValue.Value > (27 + 9 + CoolingCoeffValue.Value) then
 		TemperatureValue.Value = TemperatureValue.Value - (9 + CoolingCoeffValue.Value)
@@ -537,3 +550,4 @@ while true do
 	end
 	wait(1)
 end
+--
