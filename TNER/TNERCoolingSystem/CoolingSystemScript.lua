@@ -5,6 +5,7 @@ local CSDisengageButton = workspace.TNERCoolingSystemConsole.CSDisengageButton.B
 
 -- Values
 local CoolingSystemStatusValue = script.Parent.Parent.Values.CoolingSystemStatusValue
+local CoolingCoeffValue = script.Parent.Parent.Values.CoolingCoeffValue
 local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 --
 
@@ -31,6 +32,7 @@ function DoRadiator(Mode)
 		DoMonitoring(CoolingSystemStatusValue.Value, Color3.new(1, 0.666667, 0))
 		Alarm:Play()
 		wait(20)
+		CoolingCoeffValue.Value = 40
 		CoolingSystemStatusValue.Value = "ONLINE"
 		DoMonitoring(CoolingSystemStatusValue.Value, Color3.new(0, 1, 0))
 		CSDisengageButton.ClickDetector.MaxActivationDistance = 10
@@ -39,7 +41,9 @@ function DoRadiator(Mode)
 		CoolingSystemStatusValue.Value = "DISENGAGE"
 		DoMonitoring(CoolingSystemStatusValue.Value, Color3.new(1, 0.666667, 0))
 		Alarm:Play()
-		wait(20)
+		wait(5)
+		CoolingCoeffValue.Value = 0
+		wait(15)
 		CoolingSystemStatusValue.Value = "OFFLINE"
 		DoMonitoring(CoolingSystemStatusValue.Value, Color3.new(1, 0, 0))
 		CSEngageButton.ClickDetector.MaxActivationDistance = 10
