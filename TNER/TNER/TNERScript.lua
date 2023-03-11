@@ -433,6 +433,7 @@ TNERStatusValue.Changed:Connect(function()
 				wait(0.3)
 			end
 		until TNERStatusValue.Value == "SHUT DOWN"
+		DoSideLamps("OFF")
 	end
 end)
 
