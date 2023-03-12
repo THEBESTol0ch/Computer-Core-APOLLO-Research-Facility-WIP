@@ -24,7 +24,7 @@ FuelCapacityValue.Changed:Connect(function()
 		FuelCapacityLable.TextColor3 = Color3.new(0, 1, 0)
 	elseif FuelCapacityValue.Value < 50 then
 		FuelCapacityLable.TextColor3 = Color3.new(1, 0.666667, 0)
-	elseif FuelCapacityValue.Value < 25 then
+	elseif FuelCapacityValue.Value < 10 then
 		FuelCapacityLable.TextColor3 = Color3.new(1, 0, 0)
 	end
 end)
