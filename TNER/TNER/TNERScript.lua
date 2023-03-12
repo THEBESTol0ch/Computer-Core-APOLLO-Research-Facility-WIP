@@ -43,18 +43,17 @@ local FlywheelsRotationSound = SoundEmitter.FlywheelsRotationSound
 local FlywheelsRotationStopSound = SoundEmitter.FlywheelsRotationStopSound
 local ShutDownSound1 = SoundEmitter.ShutDownSound1
 local ShutDownSound2 = SoundEmitter.ShutDownSound2
-local RoomAlarm1Sound = workspace.TNERConsoleSpeaker.SoundEmitter.RoomAlarm1Sound
 local ActionAlarm = workspace.TNERAlarmSystem.SoundEmitter.Alarm3
 --
 
 -- Monitoring
-local StatusLable = workspace.ReactorOutputMonitor.Monitor.Lines.ReactorStatus.SurfaceGui.TextLabel
-local TemperatureLable = workspace.ReactorOutputMonitor.Monitor.Lines.ReactorTemperature.SurfaceGui.TextLabel
-local RPMLable = workspace.ReactorOutputMonitor.Monitor.Lines.ReactorRPM.SurfaceGui.TextLabel
-local InputEnergyLable = workspace.ReactorOutputMonitor.Monitor.Lines.InputEnergy.SurfaceGui.TextLabel
-local OutputEnergyLable = workspace.ReactorOutputMonitor.Monitor.Lines.OutputEnergy.SurfaceGui.TextLabel
+local StatusLabel = workspace.ReactorOutputMonitor.Monitor.Lines.ReactorStatus.SurfaceGui.TextLabel
+local TemperatureLabel = workspace.ReactorOutputMonitor.Monitor.Lines.ReactorTemperature.SurfaceGui.TextLabel
+local RPMLabel = workspace.ReactorOutputMonitor.Monitor.Lines.ReactorRPM.SurfaceGui.TextLabel
+local InputEnergyLabel = workspace.ReactorOutputMonitor.Monitor.Lines.InputEnergy.SurfaceGui.TextLabel
+local OutputEnergyLabel = workspace.ReactorOutputMonitor.Monitor.Lines.OutputEnergy.SurfaceGui.TextLabel
 
-local FuelCapacityLable = workspace.FuelSystemMonitor.Monitor.Lines.FuelCapacity.SurfaceGui.TextLabel
+local FuelCapacityLabel = workspace.FuelSystemMonitor.Monitor.Lines.FuelCapacity.SurfaceGui.TextLabel
 --
 
 -- Logic
@@ -89,40 +88,48 @@ local FlywheelsRotationSoundAnimationSettings = TweenInfo.new(
 
 -- Functions
 function DoMonitoring(Text, Color)
-	StatusLable.Text = Text
-	StatusLable.TextColor3 = Color
+	StatusLabel.Text = Text
+	StatusLabel.TextColor3 = Color
 end
 function DoValuesMonitoring()
-	TemperatureLable.Text = (TemperatureValue.Value.." °C")
-	RPMLable.Text = RPMValue.Value
-	InputEnergyLable.Text = (InputEnergyValue.Value.." V")
-	OutputEnergyLable.Text = (OutputEnergyValue.Value.." V")
+	TemperatureLabel.Text = (TemperatureValue.Value.." °C")
+	RPMLabel.Text = RPMValue.Value
+	InputEnergyLabel.Text = (InputEnergyValue.Value.." V")
+	OutputEnergyLabel.Text = (OutputEnergyValue.Value.." V")
+	FuelCapacityLabel.Text = (FuelCapacityValue.Value.." %")
 	
 	if TemperatureValue.Value > 3200 then
-		TemperatureLable.TextColor3 = Color3.new(1, 0, 0)
+		TemperatureLabel.TextColor3 = Color3.new(1, 0, 0)
 	elseif TemperatureValue.Value < 3200 and TemperatureValue.Value > 1600 then
-		TemperatureLable.TextColor3 = Color3.new(1, 0.666667, 0)
+		TemperatureLabel.TextColor3 = Color3.new(1, 0.666667, 0)
 	elseif TemperatureValue.Value < 1600 then
-		TemperatureLable.TextColor3 = Color3.new(0, 1, 0)
+		TemperatureLabel.TextColor3 = Color3.new(0, 1, 0)
 	end
 	if RPMValue.Value > 75000 then
-		RPMLable.TextColor3 = Color3.new(1, 0, 0)
+		RPMLabel.TextColor3 = Color3.new(1, 0, 0)
 	elseif RPMValue.Value < 75000 and RPMValue.Value > 37500 then
-		RPMLable.TextColor3 = Color3.new(1, 0.666667, 0)
+		RPMLabel.TextColor3 = Color3.new(1, 0.666667, 0)
 	elseif RPMValue.Value < 37500 then
-		RPMLable.TextColor3 = Color3.new(0, 1, 0)
+		RPMLabel.TextColor3 = Color3.new(0, 1, 0)
 	end
 	if InputEnergyValue.Value > 500 then
-		InputEnergyLable.TextColor3 = Color3.new(1, 0.666667, 0)
+		InputEnergyLabel.TextColor3 = Color3.new(1, 0.666667, 0)
 	elseif InputEnergyValue.Value < 500 then
-		InputEnergyLable.TextColor3 = Color3.new(0, 1, 0)
+		InputEnergyLabel.TextColor3 = Color3.new(0, 1, 0)
 	end
 	if OutputEnergyValue.Value > 340000 then
-		OutputEnergyLable.TextColor3 = Color3.new(1, 0, 0)
+		OutputEnergyLabel.TextColor3 = Color3.new(1, 0, 0)
 	elseif OutputEnergyValue.Value < 340000 and OutputEnergyValue.Value > 168000 then
-		OutputEnergyLable.TextColor3 = Color3.new(1, 0.666667, 0)
+		OutputEnergyLabel.TextColor3 = Color3.new(1, 0.666667, 0)
 	elseif OutputEnergyValue.Value < 168000 then
-		OutputEnergyLable.TextColor3 = Color3.new(0, 1, 0)
+		OutputEnergyLabel.TextColor3 = Color3.new(0, 1, 0)
+	end
+	if FuelCapacityValue.Value > 51 then
+		FuelCapacityLabel.TextColor3 = Color3.new(1, 0, 0)
+	elseif FuelCapacityValue.Value < 51 and FuelCapacityValue.Value > 11 then
+		FuelCapacityLabel.TextColor3 = Color3.new(1, 0.666667, 0)
+	elseif FuelCapacityValue.Value < 11 then
+		FuelCapacityLabel.TextColor3 = Color3.new(0, 1, 0)
 	end
 end
 function CalcRPM()
@@ -542,6 +549,7 @@ end)
 -- Fuel Consumption
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
+		wait(18)
 		repeat
 			FuelCapacityValue.Value = FuelCapacityValue.Value - 1
 			wait(FuelConsumtionWaitTime)
