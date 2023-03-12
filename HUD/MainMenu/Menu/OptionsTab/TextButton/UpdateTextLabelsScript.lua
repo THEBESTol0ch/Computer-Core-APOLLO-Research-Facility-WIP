@@ -1,17 +1,23 @@
+-- Control
 local Button = script.Parent
+--
 
-local Descendants = workspace:GetDescendants()
+-- Logic
+local BufferFont
+local TextBoldStatus
+--
 
 Button.MouseButton1Click:Connect(function()
-	for _, Descendant in pairs(Descendants) do
+	for _, Descendant in pairs(workspace:GetDescendants()) do
 		if Descendant:IsA("TextLabel") then
-			Descendant.TextScaled = false
-		end
-	end
-	wait(2)
-	for _, Descendant in pairs(Descendants) do
-		if Descendant:IsA("TextLabel") then
-			Descendant.TextScaled = true
+			BufferFont = Descendant.Font
+			TextBoldStatus = Descendant.FontFace.Bold
+			print(TextBoldStatus)
+			Descendant.Font = "Ubuntu"
+			Descendant.Font = BufferFont
+			if TextBoldStatus then
+				Descendant.FontFace.Weight = Enum.FontWeight.Bold
+			end
 		end
 	end
 end)
