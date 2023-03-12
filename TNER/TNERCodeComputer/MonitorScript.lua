@@ -59,5 +59,9 @@ end
 --
 
 KeyboardTrigger.ClickDetector.MouseClick:Connect(function()
-	ActivateCode(TNERStatusValue.Value)
+	if TNERStatusValue.Value == "OFFLINE" then
+		ActivateCode(TNERStatusValue.Value)
+	elseif TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "MAINTENANCE MODE" then
+		ActivateCode("ONLINE")
+	end
 end)
