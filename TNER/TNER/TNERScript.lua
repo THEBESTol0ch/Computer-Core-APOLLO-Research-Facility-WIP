@@ -1,6 +1,7 @@
 -- Control
 local TweenService = game:GetService("TweenService")
 local Trigger = workspace.TNERDriver.AdvancedLever.Lever.Handle
+local MaintenanceButton = workspace.TNERMaintenanceModeConsole.CapButton.Button
 --
 
 -- Values
@@ -54,6 +55,11 @@ local InputEnergyLable = workspace.ReactorOutputMonitor.Monitor.Lines.InputEnerg
 local OutputEnergyLable = workspace.ReactorOutputMonitor.Monitor.Lines.OutputEnergy.SurfaceGui.TextLabel
 
 local FuelCapacityLable = workspace.FuelSystemMonitor.Monitor.Lines.FuelCapacity.SurfaceGui.TextLabel
+--
+
+-- Logic
+local InvertedLeverPositionValue = 3
+local FuelConsumtionWaitTime = 9.9
 --
 
 local FlywheelAnimationSettings = TweenInfo.new(
@@ -359,7 +365,6 @@ TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		wait(18)
 		repeat
-			local InvertedLeverPositionValue = 3
 			if LeverPositionValue.Value == 5 then
 				InvertedLeverPositionValue = 1
 			elseif LeverPositionValue.Value == 4 then
@@ -371,6 +376,7 @@ TNERStatusValue.Changed:Connect(function()
 			elseif LeverPositionValue.Value == 1 then
 				InvertedLeverPositionValue = 5
 			end
+			FuelConsumtionWaitTime = InvertedLeverPositionValue * 3.3
 			local Num1 = InvertedLeverPositionValue * 3.5 - 2
 			local Num2 = InvertedLeverPositionValue * 3.5 + 2
 			DoLightning("Lightning")
@@ -533,6 +539,33 @@ OutputEnergyValue.Changed:Connect(function()
 end)
 --
 
+-- Fuel Consumption
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "POWER ON" then
+		repeat
+			FuelCapacityValue.Value = FuelCapacityValue.Value - 1
+			wait(FuelConsumtionWaitTime)
+		until FuelCapacityValue.Value == 0
+	end
+end)
+--
+
+-- Maintenance Mode
+MaintenanceButton.ClickDetector.MouseClick:Connect(function()
+	ActionAlarm:Play()
+	if TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "COOLING" then
+		TNERStatusValue.Value = "MAINTENANCE MODE"
+		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0.666667, 0))
+	elseif TemperatureValue.Value > (27 + 9 + CoolingCoeffValue.Value) then
+		TNERStatusValue.Value = "COOLING"
+		DoMonitoring(TNERStatusValue.Value, Color3.new(0.333333, 0.666667, 1))
+	else
+		TNERStatusValue.Value = "OFFLINE"
+		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0, 0))
+	end
+end)
+--
+
 -- Temperature Control
 while true do
 	if TemperatureValue.Value > (27 + 9 + CoolingCoeffValue.Value) then
@@ -546,6 +579,9 @@ while true do
 		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0, 0))
 	end
 	if TemperatureValue.Value >= 3959 then
+		DoReactor("STOP")
+	end
+	if FuelCapacityValue.Value == 0 then
 		DoReactor("STOP")
 	end
 	wait(1)
