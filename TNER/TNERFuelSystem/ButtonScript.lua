@@ -1,11 +1,11 @@
 -- Control
 local TweenService = game:GetService("TweenService")
 local Button = script.Parent.Button
-local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 --
 
 -- Values
 local FRStatusValue = workspace.TNERFuelSystem[script.Parent.Name:split("CapButton")[1]].CPU.Values.FRStatusValue
+local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 --
 
 -- Items
