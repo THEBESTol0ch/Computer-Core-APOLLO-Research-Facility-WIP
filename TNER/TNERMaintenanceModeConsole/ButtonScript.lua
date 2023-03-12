@@ -1,11 +1,11 @@
 -- Control
 local TweenService = game:GetService("TweenService")
 local Button = script.Parent.Button
-local Trigger = script.Parent.Trigger
 --
 
 -- Values
 local AllFuelCellsInjectedValue = workspace.TNERFuelSystem.CPU.Values.AllFuelCellsInjectedValue
+local KeyTurnedValue = script.Parent.Parent.KeyLock.CPU.Values.KeyTurnedValue
 --
 
 -- Items
@@ -61,14 +61,19 @@ Button.ClickDetector.MouseClick:Connect(function()
 	CapDown:Play()
 end)
 
-Trigger.ClickDetector.MouseClick:Connect(function()
-	Button.ClickDetector.MaxActivationDistance = 10
-	CapUp:Play()
-end)
-
 AllFuelCellsInjectedValue.Changed:Connect(function()
 	if AllFuelCellsInjectedValue.Value == true then
 		Button.ClickDetector.MaxActivationDistance = 10
 		CapUp:Play()
+	end
+end)
+
+KeyTurnedValue.Changed:Connect(function()
+	if KeyTurnedValue.Value == true then
+		Button.ClickDetector.MaxActivationDistance = 10
+		CapUp:Play()
+	else
+		Button.ClickDetector.MaxActivationDistance = 0
+		CapDown:Play()
 	end
 end)
