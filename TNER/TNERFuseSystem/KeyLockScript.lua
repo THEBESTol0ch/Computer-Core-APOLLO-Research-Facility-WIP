@@ -203,7 +203,7 @@ Trigger.Changed:Connect(function()
 	if Trigger.Value == "LOCKED" then
 		GlassUp:Play()
 		Key.ClickDetector.MaxActivationDistance = 10
-	elseif Trigger.FakeValue.Value == "OFFLINE" then
+	elseif Trigger.Value == "OFFLINE" then
 		KeyToHanger(true)
 	end
 end)
