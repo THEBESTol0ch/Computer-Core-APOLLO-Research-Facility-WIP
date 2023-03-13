@@ -59,4 +59,7 @@ TNERStatusValue.Changed:Connect(function()
 		Trigger.ClickDetector.MaxActivationDistance = 0	
 		LeverPositionValue.Value = 3
 	end
+	if TNERStatusValue.Value == "UNSTABLE" then
+		Trigger.ClickDetector.MaxActivationDistance = 0
+	end
 end)
