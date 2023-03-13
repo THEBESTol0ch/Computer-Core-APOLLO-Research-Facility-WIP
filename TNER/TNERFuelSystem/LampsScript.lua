@@ -78,6 +78,7 @@ FRStatusValue.Changed:Connect(function()
 		DoLamp(BigLamp, "Green", "ON")
 		StartBlinking("RedLamps")
 	elseif FRStatusValue.Value == "REMOVED" then
+		wait(1.1)
 		DoLamp(BigLamp, "Persimmon", "ON")
 	end
 end)
