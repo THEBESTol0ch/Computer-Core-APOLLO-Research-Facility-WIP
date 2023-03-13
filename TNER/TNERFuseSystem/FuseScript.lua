@@ -6,6 +6,8 @@ local Button = script.Parent.Parent.Parent.FuseButton.Button
 
 -- Values
 local FuseStatusValue = script.Parent.Parent.Values.FuseStatusValue
+local FuseGroundedValue = script.Parent.Parent.Values.FuseGroundedValue
+local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 --
 
 -- Parts
@@ -152,12 +154,15 @@ Bolt.ClickDetector.MouseClick:Connect(function()
 	Bolt.ClickDetector.MaxActivationDistance = 0
 	if Step == 1 then
 		FuseStatusValue.Value = "BOLTING"
+		FuseGroundedValue.Value = false
 		TurnBolt("IN")
 		Bolt.ClickDetector.MaxActivationDistance = 10
 		Step = 2
 		FuseStatusValue.Value = "ONLINE"
+		FuseGroundedValue.Value = true
 	elseif Step == 2 then
 		FuseStatusValue.Value = "FUSE UP"
+		FuseGroundedValue.Value = false
 		MoveFuse("UP1")
 		wait(5)
 		Bolt.ClickDetector.MaxActivationDistance = 10
@@ -170,6 +175,7 @@ Bolt.ClickDetector.MouseClick:Connect(function()
 		Bolt.ClickDetector.MaxActivationDistance = 10
 		Step = 2
 		FuseStatusValue.Value = "ONLINE"
+		FuseGroundedValue.Value = true
 	end
 end)
 
@@ -177,10 +183,12 @@ Bolt.ClickDetector.RightMouseClick:Connect(function()
 	if Step == 2 then
 		Bolt.ClickDetector.MaxActivationDistance = 0
 		FuseStatusValue.Value = "BOLTING"
+		FuseGroundedValue.Value = false
 		TurnBolt("OUT")
 		Bolt.ClickDetector.MaxActivationDistance = 10
 		Step = 1
 		FuseStatusValue.Value = "ONLINE"
+		FuseGroundedValue.Value = true
 	end
 end)
 
@@ -218,6 +226,15 @@ Button.ClickDetector.MouseClick:Connect(function()
 		Step = 3
 		FuseStatusValue.Value = "ONLINE"
 		DoMonitoring(FuseStatusValue.Value, Color3.new(0, 1, 0))
+		Button.ClickDetector.MaxActivationDistance = 10
+	end
+end)
+
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "UNSTABLE" then
+		Button.ClickDetector.MaxActivationDistance = 0
+	end
+	if TNERStatusValue.Value == "SHUT DOWN" then
 		Button.ClickDetector.MaxActivationDistance = 10
 	end
 end)
