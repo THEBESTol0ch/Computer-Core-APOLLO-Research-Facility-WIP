@@ -95,25 +95,35 @@ local ButtonUp2 = TweenService:Create(Button, ButtonAnimationSettings, ButtonUp2
 local ButtonDown1 = TweenService:Create(Button, ButtonAnimationSettings, ButtonDown1)
 local ButtonDown2 = TweenService:Create(Button, MainFrameAnimationSettings, ButtonDown2)
 
+-- Functions
+function DoButton(Mode)
+	if Mode == "Open" then
+		CapUp:Play()
+		MainFrameUp:Play()
+		ButtonUp1:Play()
+		wait(3.5)
+		ButtonUp2:Play()
+		wait(0.5)
+		Button.Material = ("Neon")
+		ButtonTrigger.ClickDetector.MaxActivationDistance = 10
+	elseif Mode == "Close" then
+		ButtonTrigger.ClickDetector.MaxActivationDistance = 0
+		ButtonSound:Play()
+		ButtonDown1:Play()
+		Button.Material = ("Metal")
+		wait(0.5)
+		MainFrameDown:Play()
+		ButtonDown2:Play()
+		wait(1.5)
+		CapDown:Play()
+	end
+end
+--
+
 ButtonTrigger.ClickDetector.MouseClick:Connect(function()
-	ButtonTrigger.ClickDetector.MaxActivationDistance = 0
-	ButtonSound:Play()
-	ButtonDown1:Play()
-	Button.Material = ("Metal")
-	wait(0.5)
-	MainFrameDown:Play()
-	ButtonDown2:Play()
-	wait(1.5)
-	CapDown:Play()
+	DoButton("Close")
 end)
 
 Trigger.ClickDetector.MouseClick:Connect(function()
-	CapUp:Play()
-	MainFrameUp:Play()
-	ButtonUp1:Play()
-	wait(3.5)
-	ButtonUp2:Play()
-	wait(0.5)
-	Button.Material = ("Neon")
-	ButtonTrigger.ClickDetector.MaxActivationDistance = 10
+	DoButton("Open")
 end)
