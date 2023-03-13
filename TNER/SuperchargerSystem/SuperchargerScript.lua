@@ -1,6 +1,7 @@
 -- Values
 local SuperchargerStatusValue = script.Parent.Parent.Values.SuperchargerStatusValue
 local LeverValue = workspace.SuperchargerPullLever.CPU.Values.LeverValue
+local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 --
 
 -- Items
@@ -19,7 +20,6 @@ local SuperchargerDecreaseSound = workspace.TNER.SoundEmitter.SuperchargerDecrea
 -- Functions
 function TurnOnSupercharger()
 	if SuperchargerStatusValue.Value == "OFFLINE" then
-		SuperchargerStatusValue.Value = "ONLINE"
 		SuperchargerIncreaseSound:Play()
 		DeathTriggerScript.Enabled = true
 		for Count = 1, 6, 1 do
@@ -33,15 +33,13 @@ function TurnOnSupercharger()
 		end
 		SuperchargerSystemConsoleMonitor.SuperchargerOfflineDecal.Transparency = 1
 		SuperchargerSystemConsoleMonitor.SuperchargerOnlineDecal.Transparency = 0
+		wait(5)
+		SuperchargerStatusValue.Value = "ONLINE"
 	end
 end
 function TurnOffSupercharger()
 	if SuperchargerStatusValue.Value == "ONLINE" then
 		SuperchargerStatusValue.Value = "OFFLINE"
-		SuperchargerDecreaseSound:Play()
-		wait(0.5)
-		SuperchargerIncreaseSound:Stop()
-		SuperchargerWorkSound:Stop()
 		for Count = 1, 6, 1 do
 			Flywheels["Flywheel"..Count].MainFrame.HingeConstraint.AngularVelocity = 0
 			FlywheelsStats["Flywheel"..Count.."Status"].SurfaceGui.TextLabel.Text = ("OFFLINE")
@@ -49,6 +47,11 @@ function TurnOffSupercharger()
 		end
 		SuperchargerSystemConsoleMonitor.SuperchargerOfflineDecal.Transparency = 0
 		SuperchargerSystemConsoleMonitor.SuperchargerOnlineDecal.Transparency = 1
+		wait(2)
+		SuperchargerDecreaseSound:Play()
+		wait(0.5)
+		SuperchargerIncreaseSound:Stop()
+		SuperchargerWorkSound:Stop()
 		wait(10)
 		DeathTriggerScript.Enabled = false
 	end
@@ -58,7 +61,7 @@ end
 SuperchargerStatusValue.Changed:Connect(function()
 	if SuperchargerStatusValue.Value == "ONLINE" then
 		wait(SuperchargerIncreaseSound.TimeLength)
-		if SuperchargerStatusValue.Value == "ONLINE" then
+		if SuperchargerStatusValue.Value == "ONLINE" and TNERStatusValue.Value == "ONLINE" then
 			SuperchargerWorkSound:Play()	
 		end
 	end
@@ -69,5 +72,12 @@ LeverValue.Changed:Connect(function()
 		TurnOnSupercharger()
 	else
 		TurnOffSupercharger()
+	end
+end)
+
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "UNSTABLE" then
+		SuperchargerIncreaseSound:Stop()
+		SuperchargerWorkSound:Stop()
 	end
 end)
