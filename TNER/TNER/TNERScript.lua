@@ -2,6 +2,7 @@
 local TweenService = game:GetService("TweenService")
 local Trigger = workspace.TNERDriver.AdvancedLever.Lever.Handle
 local MaintenanceButton = workspace.TNERMaintenanceModeConsole.CapButton.Button
+local UnstableModeLever = workspace.TNERUnstableModePanel.Switch.Handle
 --
 
 -- Values
@@ -19,6 +20,10 @@ local TNERServers = workspace.TNERSystemServer.Servers
 local SuperchargerServerStatusValue = TNERServers.SuperchargerSystemServer.CPU.Values.ServerStatusValue
 local FuelServerStatusValue = TNERServers.FuelSystemServer.CPU.Values.ServerStatusValue
 local CoolingServerStatusValue = TNERServers.CoolingSystemServer.CPU.Values.ServerStatusValue
+
+local SuperchargerStatusValue = workspace.TNER.SuperchargerSystem.CPU.Values.SuperchargerStatusValue
+local FESStatusValue = workspace.TNERFuelEnrichmentSystem.CPU.Values.FESStatusValue
+local FuseSystemStatusValue = workspace.TNERFuseSystem.CPU.Values.FuseSystemStatusValue
 
 local LeverPositionValue = workspace.TNERPullLever.CPU.Values.LeverPositionValue
 local PreviousLeverPositionValue = workspace.TNERPullLever.CPU.Values.PreviousLeverPositionValue
@@ -44,6 +49,7 @@ local FlywheelsRotationStopSound = SoundEmitter.FlywheelsRotationStopSound
 local ShutDownSound1 = SoundEmitter.ShutDownSound1
 local ShutDownSound2 = SoundEmitter.ShutDownSound2
 local ActionAlarm = workspace.TNERAlarmSystem.SoundEmitter.Alarm3
+local OverloadProcessSound = script.Parent.Parent.Parent.SoundEmitter.OverloadProcessSound
 --
 
 -- Monitoring
@@ -125,11 +131,11 @@ function DoValuesMonitoring()
 		OutputEnergyLabel.TextColor3 = Color3.new(0, 1, 0)
 	end
 	if FuelCapacityValue.Value > 51 then
-		FuelCapacityLabel.TextColor3 = Color3.new(1, 0, 0)
+		FuelCapacityLabel.TextColor3 = Color3.new(0, 1, 0)
 	elseif FuelCapacityValue.Value < 51 and FuelCapacityValue.Value > 11 then
 		FuelCapacityLabel.TextColor3 = Color3.new(1, 0.666667, 0)
 	elseif FuelCapacityValue.Value < 11 then
-		FuelCapacityLabel.TextColor3 = Color3.new(0, 1, 0)
+		FuelCapacityLabel.TextColor3 = Color3.new(1, 0, 0)
 	end
 end
 function CalcRPM()
@@ -175,6 +181,21 @@ function DoSideLamps(Mode)
 		for _, SideLamp in pairs(SideLamps:GetChildren()) do
 			SideLamp.Material = ("SmoothPlastic")
 			SideLamp.BrickColor = BrickColor.new("Institutional white")
+		end
+	end
+end
+function DoBlueLights(Mode, Color, WaitTime)
+	if Mode == "ON" then
+		for Count = 1, 7, 1 do
+			if WaitTime > 0 then wait(WaitTime) end
+			BlueLamps["BlueLamp"..Count].Material = ("Neon")
+			BlueLamps["BlueLamp"..Count].BrickColor = BrickColor.new(Color)
+		end
+	elseif Mode == "OFF" then
+		for Count = 7, 1, -1 do
+			if WaitTime > 0 then wait(WaitTime) end
+			BlueLamps["BlueLamp"..Count].Material = ("Metal")
+			BlueLamps["BlueLamp"..Count].BrickColor = BrickColor.new(Color)
 		end
 	end
 end
@@ -266,7 +287,7 @@ function DoReactor(Mode)
 		DoMonitoring(TNERStatusValue.Value, Color3.new(0, 1, 0))
 		wait(6.467)
 		FlywheelsRotationSound:Play()
-	elseif Mode == "STOP" and TNERStatusValue.Value == "ONLINE" then
+	elseif Mode == "STOP" and TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" then
 		TNERStatusValue.Value = "SHUT DOWN"
 		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0.666667, 0))
 		DoEmergencyLamps("ON")
@@ -274,6 +295,7 @@ function DoReactor(Mode)
 		ShutDownSound1:Play()
 		FlywheelsRotationSound:Stop()
 		FlywheelsRotationStopSound:Play()
+		OverloadProcessSound:Stop()
 		wait(10)
 		DoFlywheels("STOP")
 		wait(4)
@@ -299,7 +321,7 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 				DoReactor("START")
 			end	
 		end
-	elseif TNERStatusValue.Value == "ONLINE" then
+	elseif TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" then
 		wait(1)
 		DoReactor("STOP")
 	end
@@ -432,17 +454,19 @@ end)
 -- Blue Lamps
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
-		for Count = 1, 7, 1 do
-			wait(1)
-			BlueLamps["BlueLamp"..Count].Material = ("Neon")
-			BlueLamps["BlueLamp"..Count].BrickColor = BrickColor.new("Electric blue")
-		end
+		DoBlueLights("ON", "Electric blue", 1)
 	elseif TNERStatusValue.Value == "SHUT DOWN" then
-		for Count = 7, 1, -1 do
-			wait(1)
-			BlueLamps["BlueLamp"..Count].Material = ("Metal")
-			BlueLamps["BlueLamp"..Count].BrickColor = BrickColor.new("Deep blue")
-		end
+		DoBlueLights("OFF", "Deep blue", 1)
+	end
+	if TNERStatusValue.Value == "UNSTABLE" then
+		repeat
+			DoBlueLights("OFF", "Deep blue", 0)
+			wait(math.random(1, 15) / 10)
+			if math.random(1, 2) == 1 then DoBlueLights("ON", "Electric blue", 0) else DoBlueLights("ON", "Really red", 0) end
+			wait(math.random(1, 15) / 10)
+		until TNERStatusValue.Value == "SHUT DOWN"
+		DoBlueLights("ON", "Electric blue", 0)
+		DoBlueLights("OFF", "Deep blue", 1)
 	end
 end)
 --
@@ -457,15 +481,23 @@ TNERStatusValue.Changed:Connect(function()
 				SideLamps["SideLamp"..Count].BrickColor = BrickColor.new("Electric blue")
 				wait(0.3)
 			end
-		until TNERStatusValue.Value == "SHUT DOWN"
+		until TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "UNSTABLE"
 		DoSideLamps("OFF")
+		if TNERStatusValue.Value == "UNSTABLE" then
+			repeat
+				DoSideLamps("ON")
+				wait(1)
+				DoSideLamps("OFF")
+				wait(1)
+			until TNERStatusValue.Value == "SHUT DOWN"
+		end
 	end
 end)
 --
 
 -- RedLamps
 TNERStatusValue.Changed:Connect(function()
-	if TNERStatusValue.Value == "POWER ON" then
+	if TNERStatusValue.Value == "POWER ON" or TNERStatusValue.Value == "UNSTABLE" then
 		repeat
 			for _, RedLamp in pairs(RedLamps:GetChildren()) do
 				RedLamp.Material = ("Neon")
@@ -477,7 +509,7 @@ TNERStatusValue.Changed:Connect(function()
 				RedLamp.BrickColor = BrickColor.new("Crimson")
 			end
 			wait(1.2)
-		until TNERStatusValue.Value == "ONLINE"
+		until TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "SHUT DOWN"
 	end
 end)
 --
@@ -491,7 +523,7 @@ TNERStatusValue.Changed:Connect(function()
 		repeat
 			RPMValue.Value = RPMValue.Value - 1874
 			wait(0.02)
-		until RPMValue.Value == 0
+		until RPMValue.Value <= 0
 	end
 end)
 --
@@ -512,7 +544,7 @@ TNERStatusValue.Changed:Connect(function()
 		repeat
 			InputEnergyValue.Value = InputEnergyValue.Value - 28
 			wait(0.1)
-		until InputEnergyValue.Value == 0
+		until InputEnergyValue.Value <= 0
 	end
 end)
 --
@@ -526,7 +558,7 @@ TNERStatusValue.Changed:Connect(function()
 		repeat
 			OutputEnergyValue.Value = OutputEnergyValue.Value - 16800
 			wait(0.02)
-		until OutputEnergyValue.Value == 0
+		until OutputEnergyValue.Value <= 0
 	end
 end)
 --
@@ -544,6 +576,9 @@ end)
 OutputEnergyValue.Changed:Connect(function()
 	DoValuesMonitoring()
 end)
+FuelCapacityValue.Changed:Connect(function()
+	DoValuesMonitoring()
+end)
 --
 
 -- Fuel Consumption
@@ -553,7 +588,7 @@ TNERStatusValue.Changed:Connect(function()
 		repeat
 			FuelCapacityValue.Value = FuelCapacityValue.Value - 1
 			wait(FuelConsumtionWaitTime)
-		until FuelCapacityValue.Value == 0
+		until FuelCapacityValue.Value <= 0 or TNERStatusValue.Value == "SHUT DOWN"
 	end
 end)
 --
@@ -574,12 +609,30 @@ MaintenanceButton.ClickDetector.MouseClick:Connect(function()
 end)
 --
 
+-- Unstable Mode
+UnstableModeLever.ClickDetector.MouseClick:Connect(function()
+	if TNERStatusValue.Value == "ONLINE" and SuperchargerStatusValue.Value == "ONLINE" and FESStatusValue.Value == "ONLINE" and FuseSystemStatusValue.Value == "OFFLINE" and LeverPositionValue.Value == 5 and FuelCapacityValue.Value > 11 then
+		TNERStatusValue.Value = "UNSTABLE"
+		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0, 0))
+		OverloadProcessSound:Play()
+	end
+end)
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "UNSTABLE" then
+		wait(70)
+		if TNERStatusValue.Value == "UNSTABLE" then
+			DoReactor("STOP")
+		end
+	end
+end)
+--
+
 -- Temperature Control
 while true do
 	if TemperatureValue.Value > (27 + 9 + CoolingCoeffValue.Value) then
 		TemperatureValue.Value = TemperatureValue.Value - (9 + CoolingCoeffValue.Value)
 	end
-	if TNERStatusValue.Value == "ONLINE" then
+	if TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" then
 		TemperatureValue.Value = TemperatureValue.Value + LeverPositionValue.Value * 8
 	end
 	if TNERStatusValue.Value == "COOLING" and TemperatureValue.Value < (27 + 9 + CoolingCoeffValue.Value) then
@@ -591,6 +644,23 @@ while true do
 	end
 	if FuelCapacityValue.Value == 0 then
 		DoReactor("STOP")
+	end
+	
+	-- Fail Safe Values Check
+	if TemperatureValue.Value < 27 then
+		TemperatureValue.Value = 27
+	end
+	if RPMValue.Value < 0 then
+		RPMValue.Value = 0
+	end
+	if InputEnergyValue.Value < 0 then
+		InputEnergyValue.Value = 0
+	end
+	if OutputEnergyValue.Value < 0 then
+		OutputEnergyValue.Value = 0
+	end
+	if FuelCapacityValue.Value < 0 then
+		FuelCapacityValue.Value = 0
 	end
 	wait(1)
 end
