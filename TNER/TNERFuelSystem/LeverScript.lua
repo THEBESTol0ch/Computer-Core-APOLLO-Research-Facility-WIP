@@ -1,12 +1,12 @@
 -- Control
 local TweenService = game:GetService("TweenService")
 local Trigger = script.Parent.Parent.Parent.Lever.Trigger
+local FRButton = workspace[script.Parent.Parent.Parent.Name:split("PullLever")[1].."CapButton"].Button
 --
 
 -- Values
 local LeverValue = script.Parent.Parent.Values.LeverValue
 local FRStatusValue = workspace.TNERFuelSystem[script.Parent.Parent.Parent.Name:split("PullLever")[1]].CPU.Values.FRStatusValue
-local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 local ServerStatusValue = workspace.TNERSystemServer.Servers.FuelSystemServer.CPU.Values.ServerStatusValue
 --
 
@@ -53,7 +53,7 @@ function PullOut()
 	wait(1)
 	LeverValue.Value = "LOW"
 end
-function CheckCondition()
+function DoCheck()
 	if FRStatusValue.Value == "FUEL INSERTED" and ServerStatusValue.Value == "ONLINE" then
 		Trigger.ClickDetector.MaxActivationDistance = 10
 	end
@@ -68,16 +68,16 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 	end
 end)
 
-TNERStatusValue.Changed:Connect(function()
-	if TNERStatusValue.Value == "MAINTENANCE MODE" then
+FRButton.ClickDetector.MouseClick:Connect(function()
+	if FRStatusValue.Value == "INJECTED" then
 		Trigger.ClickDetector.MaxActivationDistance = 10
 	end
 end)
 
 FRStatusValue.Changed:Connect(function()
-	CheckCondition()
+	DoCheck()
 end)
 
 ServerStatusValue.Changed:Connect(function()
-	CheckCondition()
+	DoCheck()
 end)
