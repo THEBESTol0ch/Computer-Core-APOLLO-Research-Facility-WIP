@@ -76,4 +76,7 @@ TNERStatusValue.Changed:Connect(function()
 	else
 		Trigger.ClickDetector.MaxActivationDistance = 0
 	end
+	if TNERStatusValue.Value == "UNSTABLE" then
+		Trigger.ClickDetector.MaxActivationDistance = 0
+	end
 end)
