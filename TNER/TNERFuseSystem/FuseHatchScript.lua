@@ -7,6 +7,11 @@ local HatchTrigger = script.Parent.Parent.Parent.Parent.Hatch.Trigger
 -- Values
 local HatchStatusValue = script.Parent.Parent.Values.HatchStatusValue
 
+local Fuse1GroundedValue = script.Parent.Parent.Parent.Parent.Fuse1.CPU.Values.FuseGroundedValue
+local Fuse2GroundedValue = script.Parent.Parent.Parent.Parent.Fuse2.CPU.Values.FuseGroundedValue
+local Fuse3GroundedValue = script.Parent.Parent.Parent.Parent.Fuse3.CPU.Values.FuseGroundedValue
+local Fuse4GroundedValue = script.Parent.Parent.Parent.Parent.Fuse4.CPU.Values.FuseGroundedValue
+
 local Fuse1StatusValue = script.Parent.Parent.Parent.Parent.Fuse1.CPU.Values.FuseStatusValue
 local Fuse2StatusValue = script.Parent.Parent.Parent.Parent.Fuse2.CPU.Values.FuseStatusValue
 local Fuse3StatusValue = script.Parent.Parent.Parent.Parent.Fuse3.CPU.Values.FuseStatusValue
@@ -65,7 +70,7 @@ function DoMonitoring(Text, Color)
 	FuseHatchConsoleStatus.TextColor3 = Color
 end
 function DoCheck()
-	if Fuse1StatusValue.Value == "ONLINE" and Fuse2StatusValue.Value == "ONLINE" and Fuse3StatusValue.Value == "ONLINE" and Fuse4StatusValue.Value == "ONLINE" then
+	if Fuse1GroundedValue.Value == true and Fuse2GroundedValue.Value == true and Fuse3GroundedValue.Value == true and Fuse4GroundedValue.Value == true then
 		if HatchStatusValue.Value == "OPENED" then
 			HatchTrigger.ClickDetector.MaxActivationDistance = 10
 		end
@@ -126,18 +131,18 @@ HatchTrigger.ClickDetector.RightMouseClick:Connect(function()
 	end
 end)
 
-Fuse1StatusValue.Changed:Connect(function()
+Fuse1GroundedValue.Changed:Connect(function()
 	DoCheck()
 end)
 
-Fuse2StatusValue.Changed:Connect(function()
+Fuse2GroundedValue.Changed:Connect(function()
 	DoCheck()
 end)
 
-Fuse3StatusValue.Changed:Connect(function()
+Fuse3GroundedValue.Changed:Connect(function()
 	DoCheck()
 end)
 
-Fuse4StatusValue.Changed:Connect(function()
+Fuse4GroundedValue.Changed:Connect(function()
 	DoCheck()
 end)
