@@ -1,6 +1,6 @@
 -- Control
 local TweenService = game:GetService("TweenService")
-local CapButton = workspace[script.Parent.Parent.Parent.Name.."CapButton"].Button
+local FRButton = workspace[script.Parent.Parent.Parent.Name.."CapButton"].Button
 local Trigger = script.Parent.Parent.Parent.Trigger
 local FuelCellTrigger = script.Parent.Parent.Parent.FuelCellTrigger
 --
@@ -157,6 +157,7 @@ LeverValue.Changed:Connect(function()
 		FRStatusValue.Value = "LOADED"
 	else
 		FRStatusValue.Value = "REMOVING"
+		FuelCell.Solution.BrickColor = BrickColor.new("Dark stone grey")
 		FuelCellOutSound:Play()
 		LeftGrapplerOpen:Play()
 		RightGrapplerOpen:Play()
@@ -175,9 +176,10 @@ LeverValue.Changed:Connect(function()
 	end
 end)
 
-CapButton.ClickDetector.MouseClick:Connect(function()
+FRButton.ClickDetector.MouseClick:Connect(function()
 	if FRStatusValue.Value == "LOADED" then
 		FuelInjectionSound:Play()
+		DoMonitoring("INJECT", Color3.new(1, 0.666667, 0))
 		wait(4.5)
 		DoMonitoring("ONLINE", Color3.new(0, 1, 0))
 		FuelCapacityValue.Value = FuelCapacityValue.Value + 33
@@ -185,6 +187,7 @@ CapButton.ClickDetector.MouseClick:Connect(function()
 	elseif FRStatusValue.Value == "INJECTED" then
 		FuelInjectionSound:Play()
 		DoMonitoring("OFFLINE", Color3.new(1, 0, 0))
+		wait(2)
 		FRStatusValue.Value = "DISINJECTED"
 	end
 end)
@@ -193,7 +196,6 @@ FuelCellTrigger.ClickDetector.MouseClick:Connect(function(Player)
 	FuelCellTrigger.ClickDetector.MaxActivationDistance = 0
 	FuelCellOut:Play()
 	wait(1)
-	FuelCell.Solution.BrickColor = BrickColor.new("Dark stone grey")
 	DoFuelCell(true)
 	local DepletedFuelCell = game.ReplicatedStorage.DepletedFuelCell
 	local Backpack = Player.Backpack
@@ -202,5 +204,4 @@ FuelCellTrigger.ClickDetector.MouseClick:Connect(function(Player)
 	wait(1)
 	FuelCell.Solution.BrickColor = BrickColor.new("Medium green")
 	Trigger.CanTouch = true
-	FRStatusValue.Value = "OFFLINE"
 end)
