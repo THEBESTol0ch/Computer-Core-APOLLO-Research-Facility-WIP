@@ -58,6 +58,7 @@ TNERStatusValue.Changed:Connect(function()
 	elseif TNERStatusValue.Value == "SHUT DOWN" then
 		Trigger.ClickDetector.MaxActivationDistance = 0	
 		LeverPositionValue.Value = 3
+		PreviousLeverPositionValue.Value = 2
 	end
 	if TNERStatusValue.Value == "UNSTABLE" then
 		Trigger.ClickDetector.MaxActivationDistance = 0
