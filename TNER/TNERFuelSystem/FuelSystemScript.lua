@@ -13,7 +13,7 @@ local ActionAlarm = workspace.TNERAlarmSystem.SoundEmitter.Alarm3
 --
 
 FuelCapacityValue.Changed:Connect(function()
-	if FuelCapacityValue.Value == 99 and TNERStatusValue.Value == "MAINTENANCE MODE" then
+	if FuelCapacityValue.Value >= 99 and TNERStatusValue.Value == "MAINTENANCE MODE" then
 		FuelCapacityValue.Value = 100
 		AllFuelCellsInjectedValue.Value = true
 	end
