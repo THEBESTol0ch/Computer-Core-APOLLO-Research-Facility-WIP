@@ -7,45 +7,37 @@ local CSDisengageButton = workspace.TNERCoolingSystemConsole.CSDisengageButton.B
 local CoolingSystemStatusValue = script.Parent.Parent.Values.CoolingSystemStatusValue
 local CoolingCoeffValue = script.Parent.Parent.Values.CoolingCoeffValue
 local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
+local Radiator1StatusValue = script.Parent.Parent.Parent.Radiator1.CPU.Values.RadiatorStatusValue
+local Radiator2StatusValue = script.Parent.Parent.Parent.Radiator2.CPU.Values.RadiatorStatusValue
+local Radiator3StatusValue = script.Parent.Parent.Parent.Radiator3.CPU.Values.RadiatorStatusValue
+local Radiator4StatusValue = script.Parent.Parent.Parent.Radiator4.CPU.Values.RadiatorStatusValue
 --
 
 -- Sounds
 local Alarm = workspace.TNERAlarmSystem.SoundEmitter.Alarm3
 --
 
--- Monitoring
-local RadiatorsStats = workspace.CoolingSystemMonitor.Monitor.Lines
---
-
 -- Functions
-function DoMonitoring(Text, Color)
-	for Count = 1, 4, 1 do
-		wait(0.5)
-		RadiatorsStats["Radiator"..Count.."Status"].SurfaceGui.TextLabel.Text = Text
-		RadiatorsStats["Radiator"..Count.."Status"].SurfaceGui.TextLabel.TextColor3 = Color
-	end
-end
 function DoRadiator(Mode)
+	Alarm:Play()
 	if Mode == "ON" then
 		CSEngageButton.ClickDetector.MaxActivationDistance = 0
 		CoolingSystemStatusValue.Value = "ENGAGE"
-		DoMonitoring(CoolingSystemStatusValue.Value, Color3.new(1, 0.666667, 0))
-		Alarm:Play()
-		wait(20)
-		CoolingCoeffValue.Value = 23
-		CoolingSystemStatusValue.Value = "ONLINE"
-		DoMonitoring(CoolingSystemStatusValue.Value, Color3.new(0, 1, 0))
-		CSDisengageButton.ClickDetector.MaxActivationDistance = 10
 	elseif Mode == "OFF" then
 		CSDisengageButton.ClickDetector.MaxActivationDistance = 0
 		CoolingSystemStatusValue.Value = "DISENGAGE"
-		DoMonitoring(CoolingSystemStatusValue.Value, Color3.new(1, 0.666667, 0))
-		Alarm:Play()
-		wait(5)
+	end
+end
+function DoCheck()
+	if Radiator1StatusValue.Value == "ONLINE" and Radiator2StatusValue.Value == "ONLINE" and Radiator3StatusValue.Value == "ONLINE" and Radiator4StatusValue.Value == "ONLINE" then
+		CoolingCoeffValue.Value = 23
+		CSDisengageButton.ClickDetector.MaxActivationDistance = 10
+		CoolingSystemStatusValue.Value = "ONLINE"
+	else
 		CoolingCoeffValue.Value = 0
-		wait(15)
 		CoolingSystemStatusValue.Value = "OFFLINE"
-		DoMonitoring(CoolingSystemStatusValue.Value, Color3.new(1, 0, 0))
+	end
+	if Radiator1StatusValue.Value == "OFFLINE" and Radiator2StatusValue.Value == "OFFLINE" and Radiator3StatusValue.Value == "OFFLINE" and Radiator4StatusValue.Value == "OFFLINE" then
 		CSEngageButton.ClickDetector.MaxActivationDistance = 10
 	end
 end
@@ -54,7 +46,19 @@ end
 CSEngageButton.ClickDetector.MouseClick:Connect(function()
 	DoRadiator("ON")
 end)
-
 CSDisengageButton.ClickDetector.MouseClick:Connect(function()
 	DoRadiator("OFF")
+end)
+
+Radiator1StatusValue.Changed:Connect(function()
+	DoCheck()
+end)
+Radiator2StatusValue.Changed:Connect(function()
+	DoCheck()
+end)
+Radiator3StatusValue.Changed:Connect(function()
+	DoCheck()
+end)
+Radiator4StatusValue.Changed:Connect(function()
+	DoCheck()
 end)
