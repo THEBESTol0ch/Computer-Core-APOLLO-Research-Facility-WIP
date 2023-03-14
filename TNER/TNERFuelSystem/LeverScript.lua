@@ -8,6 +8,7 @@ local FRButton = workspace[script.Parent.Parent.Parent.Name:split("PullLever")[1
 local LeverValue = script.Parent.Parent.Values.LeverValue
 local FRStatusValue = workspace.TNERFuelSystem[script.Parent.Parent.Parent.Name:split("PullLever")[1]].CPU.Values.FRStatusValue
 local ServerStatusValue = workspace.TNERSystemServer.Servers.FuelSystemServer.CPU.Values.ServerStatusValue
+local FuelCapacityValue = workspace.TNERFuelSystem.CPU.Values.FuelCapacityValue
 --
 
 -- Items
@@ -71,6 +72,7 @@ end)
 FRButton.ClickDetector.MouseClick:Connect(function()
 	if FRStatusValue.Value == "INJECTED" then
 		Trigger.ClickDetector.MaxActivationDistance = 10
+		FuelCapacityValue.Value = 0
 	end
 end)
 
