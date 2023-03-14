@@ -62,8 +62,8 @@ end
 
 SuperchargerStatusValue.Changed:Connect(function()
 	if SuperchargerStatusValue.Value == "ONLINE" then
-		wait(SuperchargerIncreaseSound.TimeLength)
-		if SuperchargerStatusValue.Value == "ONLINE" and TNERStatusValue.Value == "ONLINE" then
+		wait(SuperchargerIncreaseSound.TimeLength - 5)
+		if SuperchargerStatusValue.Value == "ONLINE" and not (TNERStatusValue.Value == "OFFLINE") then
 			SuperchargerWorkSound:Play()	
 		end
 	end
