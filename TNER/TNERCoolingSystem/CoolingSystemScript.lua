@@ -58,18 +58,3 @@ end)
 CSDisengageButton.ClickDetector.MouseClick:Connect(function()
 	DoRadiator("OFF")
 end)
-
-TNERStatusValue.Changed:Connect(function()
-	if TNERStatusValue.Value == "OVERLOAD" then
-		wait(23)
-		if TNERStatusValue.Value == "OVERLOAD" and CoolingSystemStatusValue.Value == "OFFLINE" then
-			DoRadiator("ON")
-			wait(58)
-			DoRadiator("OFF")
-		elseif TNERStatusValue.Value == "OVERLOAD" and CoolingSystemStatusValue.Value == "ONLINE" or CoolingSystemStatusValue.Value == "ENGAGE" then
-			CSDisengageButton.ClickDetector.MaxActivationDistance = 0
-			wait(95)
-			DoRadiator("OFF")
-		end
-	end
-end)
