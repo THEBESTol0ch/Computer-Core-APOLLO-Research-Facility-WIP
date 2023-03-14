@@ -3,28 +3,33 @@ local TweenService = game:GetService("TweenService")
 --
 
 -- Values
-local CoolingSystemStatusValue = script.Parent.Parent.CPU.Values.CoolingSystemStatusValue
+local CoolingSystemStatusValue = script.Parent.Parent.Parent.Parent.CPU.Values.CoolingSystemStatusValue
 local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
+local RadiatorStatusValue = script.Parent.Parent.Values.RadiatorStatusValue
 --
 
 -- Items
-local PrimaryAnimationPart1 = script.Parent.CoolingSystemPoses.PrimaryAnimationPart1
-local PrimaryAnimationPart2 = script.Parent.CoolingSystemPoses.PrimaryAnimationPart2
-local PrimaryAnimationPart3 = script.Parent.CoolingSystemPoses.PrimaryAnimationPart3
+local PrimaryAnimationPart1 = script.Parent.Parent.Parent.CoolingSystemPositions.PrimaryAnimationPart1
+local PrimaryAnimationPart2 = script.Parent.Parent.Parent.CoolingSystemPositions.PrimaryAnimationPart2
+local PrimaryAnimationPart3 = script.Parent.Parent.Parent.CoolingSystemPositions.PrimaryAnimationPart3
 
-local PrimaryAnimationPart1Pos1 = script.Parent.CoolingSystemPoses.PrimaryAnimationPart1Pos1
-local PrimaryAnimationPart1Pos2 = script.Parent.CoolingSystemPoses.PrimaryAnimationPart1Pos2
-local PrimaryAnimationPart1Pos3 = script.Parent.CoolingSystemPoses.PrimaryAnimationPart1Pos3
+local PrimaryAnimationPart1Pos1 = script.Parent.Parent.Parent.CoolingSystemPositions.PrimaryAnimationPart1Pos1
+local PrimaryAnimationPart1Pos2 = script.Parent.Parent.Parent.CoolingSystemPositions.PrimaryAnimationPart1Pos2
+local PrimaryAnimationPart1Pos3 = script.Parent.Parent.Parent.CoolingSystemPositions.PrimaryAnimationPart1Pos3
 
-local PrimaryAnimationPart2Pos1 = script.Parent.CoolingSystemPoses.PrimaryAnimationPart2Pos1
-local PrimaryAnimationPart2Pos2 = script.Parent.CoolingSystemPoses.PrimaryAnimationPart2Pos2
-local PrimaryAnimationPart2Pos3 = script.Parent.CoolingSystemPoses.PrimaryAnimationPart2Pos3
-local PrimaryAnimationPart2Pos4 = script.Parent.CoolingSystemPoses.PrimaryAnimationPart2Pos4
+local PrimaryAnimationPart2Pos1 = script.Parent.Parent.Parent.CoolingSystemPositions.PrimaryAnimationPart2Pos1
+local PrimaryAnimationPart2Pos2 = script.Parent.Parent.Parent.CoolingSystemPositions.PrimaryAnimationPart2Pos2
+local PrimaryAnimationPart2Pos3 = script.Parent.Parent.Parent.CoolingSystemPositions.PrimaryAnimationPart2Pos3
+local PrimaryAnimationPart2Pos4 = script.Parent.Parent.Parent.CoolingSystemPositions.PrimaryAnimationPart2Pos4
 
-local PrimaryAnimationPart3Pos1 = script.Parent.CoolingSystemPoses.PrimaryAnimationPart3Pos1
-local PrimaryAnimationPart3Pos2 = script.Parent.CoolingSystemPoses.PrimaryAnimationPart3Pos2
+local PrimaryAnimationPart3Pos1 = script.Parent.Parent.Parent.CoolingSystemPositions.PrimaryAnimationPart3Pos1
+local PrimaryAnimationPart3Pos2 = script.Parent.Parent.Parent.CoolingSystemPositions.PrimaryAnimationPart3Pos2
 
-local Smoke = script.Parent.SmokeEmitter.Smoke
+local Smoke = script.Parent.Parent.Parent.SmokeEmitter.Smoke
+--
+
+-- Monitoring
+local RadiatorsStats = workspace.CoolingSystemMonitor.Monitor.Lines
 --
 
 local KnotsAnimationSettings = TweenInfo.new(
@@ -107,54 +112,49 @@ local LiftUp = TweenService:Create(PrimaryAnimationPart3, SystemLiftAnimationSet
 local LiftDown = TweenService:Create(PrimaryAnimationPart3, SystemLiftAnimationSettings, LiftDown)
 
 -- Functions
-function TurnOnRadiator()
-	wait(math.random(1, 3))
-	KnotsUp1:Play()
-	wait(4)
-	KnotsUp2:Play()
-	GearPipesUp:Play()
-	LiftUp:Play()
-	wait(10)
-	GearPipesIn:Play()
-	KnotsIn:Play()
+function DoMonitoring(Text, Color)
+	RadiatorsStats[script.Parent.Parent.Parent.Name.."Status"].SurfaceGui.TextLabel.Text = Text
+	RadiatorsStats[script.Parent.Parent.Parent.Name.."Status"].SurfaceGui.TextLabel.TextColor3 = Color
 end
-function TurnOffRadiator()
-	wait(math.random(1, 3))
-	GearPipesOut:Play()
-	KnotsOut:Play()
-	wait(2)
-	KnotsDown1:Play()
-	GearPipesDown:Play()
-	LiftDown:Play()
-	wait(10)
-	KnotsDown2:Play()
+function DoRadiator(Mode)
+	if Mode == "ON" then
+		wait(math.random(1, 3))
+		RadiatorStatusValue.Value = "ENGAGE"
+		DoMonitoring(RadiatorStatusValue.Value, Color3.new(1, 0.666667, 0))
+		KnotsUp1:Play()
+		wait(4)
+		KnotsUp2:Play()
+		GearPipesUp:Play()
+		LiftUp:Play()
+		wait(10)
+		GearPipesIn:Play()
+		KnotsIn:Play()
+		wait(2)
+		RadiatorStatusValue.Value = "ONLINE"
+		DoMonitoring(RadiatorStatusValue.Value, Color3.new(0, 1, 0))
+	elseif Mode == "OFF" then
+		wait(math.random(1, 3))
+		RadiatorStatusValue.Value = "DISENGAGE"
+		DoMonitoring(RadiatorStatusValue.Value, Color3.new(1, 0.666667, 0))
+		GearPipesOut:Play()
+		KnotsOut:Play()
+		wait(2)
+		KnotsDown1:Play()
+		GearPipesDown:Play()
+		LiftDown:Play()
+		wait(10)
+		KnotsDown2:Play()
+		wait(4)
+		RadiatorStatusValue.Value = "OFFLINE"
+		DoMonitoring(RadiatorStatusValue.Value, Color3.new(0, 1, 0))
+	end
 end
 --
 
 CoolingSystemStatusValue.Changed:Connect(function()
 	if CoolingSystemStatusValue.Value == "ENGAGE" then
-		TurnOnRadiator()
+		DoRadiator("ON")
 	elseif CoolingSystemStatusValue.Value == "DISENGAGE" then
-		TurnOffRadiator()
-	end
-end)
-
-TNERStatusValue.Changed:Connect(function()
-	if TNERStatusValue.Value == "OVERLOAD" then
-		wait(23)
-		if TNERStatusValue.Value == "OVERLOAD" and CoolingSystemStatusValue.Value == "OFFLINE" then
-			TurnOnRadiator()
-			wait(58)
-			TurnOffRadiator()
-			Smoke.Enabled = true
-			wait(25)
-			Smoke.Enabled = false
-		elseif TNERStatusValue.Value == "OVERLOAD" and CoolingSystemStatusValue.Value == "ONLINE" or CoolingSystemStatusValue.Value == "ENGAGE" then
-			wait(95)
-			TurnOffRadiator()
-			Smoke.Enabled = true
-			wait(25)
-			Smoke.Enabled = false
-		end
+		DoRadiator("OFF")
 	end
 end)
