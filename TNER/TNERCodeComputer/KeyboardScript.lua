@@ -9,6 +9,7 @@ local KeyboardTrigger = script.Parent.Parent.Parent.KeyboardTrigger
 -- Values
 local GeneratorStatusValue = workspace.TNERGenerator.CPU.Values.GeneratorStatusValue
 local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
+local TNERDriverStatusValue = workspace.TNERDriver.CPU.Values.TNERDriverStatusValue
 --
 
 -- Items
@@ -74,6 +75,8 @@ GeneratorStatusValue.Changed:Connect(function()
 	end
 end)
 
-TNERStatusValue.Changed:Connect(function()
-	KeyboardTrigger.ClickDetector.MaxActivationDistance = 10
+TNERDriverStatusValue.Changed:Connect(function()
+	if TNERDriverStatusValue.Value == "OFFLINE" then
+		KeyboardTrigger.ClickDetector.MaxActivationDistance = 10
+	end
 end)
