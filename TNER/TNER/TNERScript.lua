@@ -103,7 +103,7 @@ function DoValuesMonitoring()
 	InputEnergyLabel.Text = (InputEnergyValue.Value.." V")
 	OutputEnergyLabel.Text = (OutputEnergyValue.Value.." V")
 	FuelCapacityLabel.Text = (FuelCapacityValue.Value.." %")
-	
+
 	if TemperatureValue.Value > 3200 then
 		TemperatureLabel.TextColor3 = Color3.new(1, 0, 0)
 	elseif TemperatureValue.Value < 3200 and TemperatureValue.Value > 1600 then
@@ -645,7 +645,7 @@ while true do
 	if FuelCapacityValue.Value == 0 then
 		DoReactor("STOP")
 	end
-	
+
 	-- Fail Safe Values Check
 	if TemperatureValue.Value < 27 then
 		TemperatureValue.Value = 27
