@@ -60,9 +60,9 @@ end
 --
 
 KeyboardTrigger.ClickDetector.MouseClick:Connect(function()
-	if TNERStatusValue.Value == "OFFLINE"  or TNERStatusValue.Value == "MAINTENANCE MODE" then
+	if TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "MAINTENANCE MODE" or TNERStatusValue.Value == "COOLING" then
 		ActivateCode("OFFLINE")
-	elseif TNERStatusValue.Value == "ONLINE" then
+	else
 		ActivateCode("ONLINE")
 	end
 end)
@@ -75,9 +75,5 @@ GeneratorStatusValue.Changed:Connect(function()
 end)
 
 TNERStatusValue.Changed:Connect(function()
-	if TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "MAINTENANCE MODE" then
-		KeyboardTrigger.ClickDetector.MaxActivationDistance = 10
-	else
-		KeyboardTrigger.ClickDetector.MaxActivationDistance = 0
-	end
+	KeyboardTrigger.ClickDetector.MaxActivationDistance = 10
 end)
