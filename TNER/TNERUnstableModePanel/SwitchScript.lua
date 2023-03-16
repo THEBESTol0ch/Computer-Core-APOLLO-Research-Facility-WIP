@@ -4,11 +4,13 @@ local Trigger = script.Parent.Handle
 --
 
 -- Values
+local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 local SuperchargerStatusValue = workspace.TNER.SuperchargerSystem.CPU.Values.SuperchargerStatusValue
 local FESStatusValue = workspace.TNERFuelEnrichmentSystem.CPU.Values.FESStatusValue
 local FuseSystemStatusValue = workspace.TNERFuseSystem.CPU.Values.FuseSystemStatusValue
 local LeverPositionValue = workspace.TNERPullLever.CPU.Values.LeverPositionValue
 local FuelCapacityValue = workspace.TNERFuelSystem.CPU.Values.FuelCapacityValue
+local MinFuelCapacityValue = workspace.TNER.CPU.Values.MinFuelCapacityValue
 --
 
 -- Items
@@ -42,7 +44,7 @@ function DoLamp(Lamp, Color, Mode)
 	end
 end
 function DoCheck()
-	if SuperchargerStatusValue.Value == "ONLINE" and FESStatusValue.Value == "ONLINE" and FuseSystemStatusValue.Value == "OFFLINE" and LeverPositionValue.Value == 5 and FuelCapacityValue.Value > 11 then
+	if TNERStatusValue.Value == "ONLINE" and SuperchargerStatusValue.Value == "ONLINE" and FESStatusValue.Value == "ONLINE" and FuseSystemStatusValue.Value == "OFFLINE" and LeverPositionValue.Value == 5 and FuelCapacityValue.Value > MinFuelCapacityValue.Value then
 		DoLamp(GreenLamp, "Green", "ON")
 		DoLamp(RedLamp, "Red", "OFF")
 	else
@@ -80,22 +82,21 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 	Trigger.ClickDetector.MaxActivationDistance = 10
 end)
 
+TNERStatusValue.Changed:Connect(function()
+	DoCheck()
+end)
 SuperchargerStatusValue.Changed:Connect(function()
 	DoCheck()
 end)
-
 FESStatusValue.Changed:Connect(function()
 	DoCheck()
 end)
-
 FuseSystemStatusValue.Changed:Connect(function()
 	DoCheck()
 end)
-
 LeverPositionValue.Changed:Connect(function()
 	DoCheck()
 end)
-
 FuelCapacityValue.Changed:Connect(function()
 	DoCheck()
 end)
