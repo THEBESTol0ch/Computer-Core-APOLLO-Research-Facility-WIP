@@ -22,7 +22,7 @@ function DoCheck()
 	if Fuse1StatusValue.Value == "OFFLINE" and Fuse2StatusValue.Value == "OFFLINE" and Fuse3StatusValue.Value == "OFFLINE" and Fuse4StatusValue.Value == "OFFLINE" then
 		FuseSystemStatusValue.Value = "OFFLINE"
 		DoMonitoring(FuseSystemStatusValue.Value, Color3.new(1, 0, 0))
-	elseif Fuse1StatusValue.Value == "ONLINE" or Fuse2StatusValue.Value == "ONLINE" or Fuse3StatusValue.Value == "ONLINE" or Fuse4StatusValue.Value == "ONLINE" then
+	elseif not (Fuse1StatusValue.Value == "OFFLINE") or not (Fuse2StatusValue.Value == "OFFLINE") or not (Fuse3StatusValue.Value == "OFFLINE") or not (Fuse4StatusValue.Value == "OFFLINE") then
 		FuseSystemStatusValue.Value = "ONLINE"
 		DoMonitoring(FuseSystemStatusValue.Value, Color3.new(0, 1, 0))
 	end
