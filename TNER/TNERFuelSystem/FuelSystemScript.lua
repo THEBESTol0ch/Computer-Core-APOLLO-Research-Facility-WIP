@@ -6,6 +6,7 @@ local MaintenanceModeButton = workspace.TNERMaintenanceModeConsole.CapButton.But
 local FuelCapacityValue = script.Parent.Parent.Values.FuelCapacityValue
 local AllFuelCellsInjectedValue = script.Parent.Parent.Values.AllFuelCellsInjectedValue
 local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
+local MinFuelCapacityValue = workspace.TNER.CPU.Values.MinFuelCapacityValue
 --
 
 -- Sounds
@@ -21,7 +22,7 @@ end)
 
 MaintenanceModeButton.ClickDetector.MouseClick:Connect(function()
 	ActionAlarm:Play()
-	if FuelCapacityValue.Value < 11 then
+	if FuelCapacityValue.Value < MinFuelCapacityValue.Value then
 		AllFuelCellsInjectedValue.Value = false
 	end
 end)
