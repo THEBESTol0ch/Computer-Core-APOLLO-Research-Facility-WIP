@@ -8,6 +8,7 @@ local KeyTurnedValue = script.Parent.Parent.Values.KeyTurnedValue
 local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 local FuelCapacityValue = workspace.TNERFuelSystem.CPU.Values.FuelCapacityValue
 local AllFuelCellsInjectedValue = workspace.TNERFuelSystem.CPU.Values.AllFuelCellsInjectedValue
+local MinFuelCapacityValue = workspace.TNER.CPU.Values.MinFuelCapacityValue
 --
 
 -- Items
@@ -168,6 +169,15 @@ function KeyToHanger(Lock)
 		end
 	end
 end
+
+function DoCheck()
+	if TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "COOLING" then
+		if FuelCapacityValue.Value < MinFuelCapacityValue.Value then
+			GlassUp:Play()
+			Key.ClickDetector.MaxActivationDistance = 10
+		end
+	end
+end
 --
 
 Key.ClickDetector.MouseClick:Connect(function()
@@ -197,12 +207,10 @@ Key.ClickDetector.RightMouseClick:Connect(function()
 end)
 
 TNERStatusValue.Changed:Connect(function()
-	if TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "COOLING" then
-		if FuelCapacityValue.Value < 11 then
-			GlassUp:Play()
-			Key.ClickDetector.MaxActivationDistance = 10
-		end
-	end
+	DoCheck()
+end)
+FuelCapacityValue.Changed:Connect(function()
+	DoCheck()
 end)
 
 Trigger.ClickDetector.MouseClick:Connect(function()
