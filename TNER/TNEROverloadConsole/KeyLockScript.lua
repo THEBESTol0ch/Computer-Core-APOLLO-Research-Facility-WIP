@@ -6,6 +6,7 @@ local Trigger = workspace.TNER.CPU.Values.TNERStatusValue
 -- Values
 local KeyTurnedValue = script.Parent.Parent.Values.KeyTurnedValue
 local FuelCapacityValue = workspace.TNERFuelSystem.CPU.Values.FuelCapacityValue
+local MinFuelCapacityValue = workspace.TNER.CPU.Values.MinFuelCapacityValue
 --
 
 -- Items
@@ -204,7 +205,7 @@ Trigger.Changed:Connect(function()
 end)
 
 FuelCapacityValue.Changed:Connect(function()
-	if FuelCapacityValue.Value < 11 then
+	if FuelCapacityValue.Value < MinFuelCapacityValue.Value then
 		KeyToHanger(true)
 	end
 end)
