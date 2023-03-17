@@ -8,6 +8,8 @@ local TNERStatusValue = Values.TNERStatusValue
 local LeverPositionValue = workspace.TNERPullLever.CPU.Values.LeverPositionValue
 local PreviousLeverPositionValue = workspace.TNERPullLever.CPU.Values.PreviousLeverPositionValue
 local TNERStartUpTime = Values.TNERStartUpTime
+local TNEROverloadStartUpTime = Values.TNEROverloadStartUpTime
+local TNEROverloadDelayTime = Values.TNEROverloadDelayTime
 --
 
 -- Items
@@ -16,6 +18,12 @@ local Lightning = script.Parent.Parent.Parent.Lightning
 
 -- Sounds
 local SoundEmitter = script.Parent.Parent.Parent.SoundEmitter
+--
+
+-- Logic
+local InvertedLeverPositionValue = 3
+local InvertedLeverPositionMultiplier = 3.5
+local SpreadValue = 2
 --
 
 local RoundLightningAnimationSettings = TweenInfo.new(
@@ -42,7 +50,7 @@ function DoLightning(Class, Mode, Side)
 		Lightning.MainLightnings.Lightning.Orientation = Lightning.MainLightnings.Positions[Class.."Pos"..RandomIndex].Orientation
 		Lightning.MainLightnings.Lightning.Transparency = 0
 		Lightning.MainLightnings.Lightning.PointLight.Enabled = true
-		SoundEmitter["ElectricDischargeSound"..RandomIndex]:Play()
+		if not (TNERStatusValue.Value == "OVERLOAD") then SoundEmitter["ElectricDischargeSound"..RandomIndex]:Play() end
 		wait(0.05)
 		Lightning.MainLightnings.Lightning.Transparency = 1
 		Lightning.MainLightnings.Lightning.PointLight.Enabled = false
@@ -63,7 +71,6 @@ end
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		wait(TNERStartUpTime.Value)
-		local InvertedLeverPositionValue = 3
 		repeat
 			if LeverPositionValue.Value == 5 then
 				InvertedLeverPositionValue = 1
@@ -76,11 +83,17 @@ TNERStatusValue.Changed:Connect(function()
 			elseif LeverPositionValue.Value == 1 then
 				InvertedLeverPositionValue = 5
 			end
-			local Num1 = InvertedLeverPositionValue * 3.5 - 2
-			local Num2 = InvertedLeverPositionValue * 3.5 + 2
+			local Num1 = InvertedLeverPositionValue * InvertedLeverPositionMultiplier - SpreadValue
+			local Num2 = InvertedLeverPositionValue * InvertedLeverPositionMultiplier + SpreadValue
 			DoLightning("Lightning")
 			wait(math.random(Num1, Num2) / 10)
-		until TNERStatusValue.Value == "SHUT DOWN"
+		until TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "OVERLOAD"
+		if TNERStatusValue.Value == "OVERLOAD" then
+			wait(TNEROverloadDelayTime.Value + TNEROverloadStartUpTime.Value)
+			repeat
+				DoLightning("Lightning")
+			until TNERStatusValue.Value == "SHUT DOWN"
+		end
 	end
 end)
 
