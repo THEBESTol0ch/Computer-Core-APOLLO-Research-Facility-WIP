@@ -7,6 +7,7 @@ local Trigger = workspace.TNER.CPU.Values.TNERStatusValue
 local KeyTurnedValue = script.Parent.Parent.Values.KeyTurnedValue
 local FuelCapacityValue = workspace.TNERFuelSystem.CPU.Values.FuelCapacityValue
 local MinFuelCapacityValue = workspace.TNER.CPU.Values.MinFuelCapacityValue
+local ButtonStatusValue = script.Parent.Parent.Parent.Parent.AdvancedButton.CPU.Values.ButtonStatusValue
 --
 
 -- Items
@@ -179,15 +180,12 @@ Key.ClickDetector.MouseClick:Connect(function()
 		KeySound:Play()
 		wait(1)
 		KeyTurnedValue.Value = true
-		Key.ClickDetector.MaxActivationDistance = 10
 	elseif KeyTurnedValue.Value == true then
 		Key.ClickDetector.MaxActivationDistance = 0
 		KeyTurnedValue.Value = false
 		KeyTurn2:Play()
 		HoleTurn2:Play()
 		KeySound:Play()
-		wait(1)
-		Key.ClickDetector.MaxActivationDistance = 10
 	end
 end)
 
@@ -207,5 +205,13 @@ end)
 FuelCapacityValue.Changed:Connect(function()
 	if FuelCapacityValue.Value < MinFuelCapacityValue.Value then
 		KeyToHanger(true)
+	end
+end)
+
+ButtonStatusValue.Changed:Connect(function()
+	if ButtonStatusValue.Value == "OPENED" or ButtonStatusValue.Value == "CLOSED" then
+		Key.ClickDetector.MaxActivationDistance = 10
+	else
+		Key.ClickDetector.MaxActivationDistance = 0
 	end
 end)
