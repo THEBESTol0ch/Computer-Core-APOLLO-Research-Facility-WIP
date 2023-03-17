@@ -3,6 +3,7 @@ local TweenService = game:GetService("TweenService")
 local Trigger = workspace.TNERDriver.AdvancedLever.Lever.Handle
 local MaintenanceButton = workspace.TNERMaintenanceModeConsole.CapButton.Button
 local UnstableModeLever = workspace.TNERUnstableModePanel.Switch.Handle
+local OverloadButton = workspace.TNEROverloadConsole.AdvancedButton.Button.Trigger
 --
 
 -- Values
@@ -13,6 +14,8 @@ local TemperatureValue = Values.TemperatureValue
 local MinTemperatureValue = Values.MinTemperatureValue
 local NaturalCoolingValue = Values.NaturalCoolingValue
 local TNERStartUpTime = Values.TNERStartUpTime
+local TNEROverloadStartUpTime = Values.TNEROverloadStartUpTime
+local TNEROverloadDelayTime = Values.TNEROverloadDelayTime
 local MinFuelCapacityValue = Values.MinFuelCapacityValue
 
 local AllFuelCellsInjectedValue = workspace.TNERFuelSystem.CPU.Values.AllFuelCellsInjectedValue
@@ -46,6 +49,9 @@ local FlywheelsRotationStopSound = SoundEmitter.FlywheelsRotationStopSound
 local ShutDownSound1 = SoundEmitter.ShutDownSound1
 local ShutDownSound2 = SoundEmitter.ShutDownSound2
 local OverloadProcessSound = SoundEmitter.OverloadProcessSound
+local OverloadStartSound = SoundEmitter.OverloadStartSound
+local OverloadLoopSound = SoundEmitter.OverloadLoopSound
+local OverloadStopSound = SoundEmitter.OverloadStopSound
 --
 
 -- Logic
@@ -68,7 +74,15 @@ local FlywheelAnimationSettings = TweenInfo.new(
 )
 local FlywheelsRotationSoundAnimationSettings = TweenInfo.new(
 	1,
-	Enum.EasingStyle.Linear,
+	Enum.EasingStyle.Sine,
+	Enum.EasingDirection.In,
+	0,
+	false,
+	0
+)
+local OverloadLoopSoundAnimationSettings = TweenInfo.new(
+	1,
+	Enum.EasingStyle.Sine,
 	Enum.EasingDirection.In,
 	0,
 	false,
@@ -132,11 +146,19 @@ function DoReactor(Mode)
 		wait(1)
 		TNERStatusValue.Value = "ONLINE"
 		DoMonitoring(TNERStatusValue.Value, Color3.new(0, 1, 0))
-		wait(6.467)
 		FlywheelsRotationSound:Play()
-	elseif Mode == "STOP" and TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" then
+		TweenService:Create(FlywheelsRotationSound, OverloadLoopSoundAnimationSettings, { Volume = 0.3 }):Play()
+	elseif Mode == "STOP" and TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" or TNERStatusValue.Value == "OVERLOAD" then
+		if TNERStatusValue.Value == "OVERLOAD" then
+			OverloadStartSound:Stop()
+			OverloadLoopSound:Stop()
+			OverloadStopSound:Play()
+		end
 		TNERStatusValue.Value = "SHUT DOWN"
 		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0.666667, 0))
+		FuelConsumtionMultiplier = 3.3
+		TemperatureMultiplier = 8
+		OverloadLoopSound.Volume = 0
 		ShutDownSound1:Play()
 		FlywheelsRotationSound:Stop()
 		FlywheelsRotationStopSound:Play()
@@ -163,7 +185,7 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 				DoReactor("START")
 			end	
 		end
-	elseif TNERStatusValue.Value == "ONLINE" then
+	elseif TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" or TNERStatusValue.Value == "OVERLOAD" then
 		wait(1)
 		DoReactor("STOP")
 	end
@@ -180,7 +202,7 @@ FuelCapacityValue.Changed:Connect(function()
 end)
 
 TemperatureValue.Changed:Connect(function()
-	if TemperatureValue.Value >= 3959 then
+	if TemperatureValue.Value >= 3959 and not (TNERStatusValue.Value == "OVERLOAD") then
 		DoReactor("STOP")
 	end
 	if TNERStatusValue.Value == "COOLING" and TemperatureValue.Value < (MinTemperatureValue.Value + NaturalCoolingValue.Value + CoolingCoeffValue.Value) then
@@ -253,11 +275,29 @@ TNERStatusValue.Changed:Connect(function()
 	end
 end)
 
+OverloadButton.ClickDetector.MouseClick:Connect(function()
+	if TNERStatusValue.Value == "UNSTABLE" then
+		TNERStatusValue.Value = "OVERLOAD"
+		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0, 0))
+		if TNERStatusValue.Value == "OVERLOAD" then wait(TNEROverloadDelayTime.Value) end
+		if TNERStatusValue.Value == "OVERLOAD" then OverloadProcessSound:Stop() end
+		if TNERStatusValue.Value == "OVERLOAD" then OverloadStartSound:Play() end
+		if TNERStatusValue.Value == "OVERLOAD" then wait(TNEROverloadStartUpTime.Value) end
+		if TNERStatusValue.Value == "OVERLOAD" then TemperatureMultiplier = 16 end
+		if TNERStatusValue.Value == "OVERLOAD" then FlywheelRotationSpeedValue.Value = 40 end
+		if TNERStatusValue.Value == "OVERLOAD" then FuelConsumtionMultiplier = OverloadStartSound.TimeLength / FuelCapacityValue.Value + 1 end
+		if TNERStatusValue.Value == "OVERLOAD" then TweenService:Create(FlywheelsRotationSound, OverloadLoopSoundAnimationSettings, { Volume = 0 }):Play() end
+		if TNERStatusValue.Value == "OVERLOAD" then wait(64) end
+		if TNERStatusValue.Value == "OVERLOAD" then OverloadLoopSound:Play() end
+		if TNERStatusValue.Value == "OVERLOAD" then TweenService:Create(OverloadLoopSound, OverloadLoopSoundAnimationSettings, { Volume = 2 }):Play() end
+	end
+end)
+
 while true do
 	if TemperatureValue.Value > (MinTemperatureValue.Value + NaturalCoolingValue.Value + CoolingCoeffValue.Value) then
 		TemperatureValue.Value = TemperatureValue.Value - (NaturalCoolingValue.Value + CoolingCoeffValue.Value)
 	end
-	if TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" then
+	if TemperatureValue.Value < 10000 and TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" or TNERStatusValue.Value == "OVERLOAD" then
 		TemperatureValue.Value = TemperatureValue.Value + LeverPositionValue.Value * TemperatureMultiplier
 	end
 	wait(1)
