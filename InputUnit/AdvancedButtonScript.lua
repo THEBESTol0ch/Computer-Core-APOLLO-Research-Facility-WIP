@@ -4,7 +4,7 @@
 
 -- Control
 local TweenService = game:GetService("TweenService")
-local ButtonTrigger = script.Parent.Parent.Parent.Button.ButtonTrigger
+local ButtonTrigger = script.Parent.Parent.Parent.Button.Trigger
 local Trigger = script.Parent.Parent.Parent.Trigger
 --
 
