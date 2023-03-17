@@ -4,8 +4,12 @@
 
 -- Control
 local TweenService = game:GetService("TweenService")
-local ButtonTrigger = script.Parent.Parent.Parent.Button.ButtonTrigger
+local ButtonTrigger = script.Parent.Parent.Parent.Button.Trigger
 local Trigger = script.Parent.Parent.Parent.Parent.KeyLock.CPU.Values.KeyTurnedValue
+--
+
+-- Values
+local ButtonStatusValue = script.Parent.Parent.Values.ButtonStatusValue
 --
 
 -- Items
@@ -98,6 +102,7 @@ local ButtonDown2 = TweenService:Create(Button, MainFrameAnimationSettings, Butt
 -- Functions
 function DoButton(Mode)
 	if Mode == "Open" then
+		ButtonStatusValue.Value = "OPEN"
 		CapUp:Play()
 		MainFrameUp:Play()
 		ButtonUp1:Play()
@@ -106,8 +111,10 @@ function DoButton(Mode)
 		wait(0.5)
 		Button.Material = ("Neon")
 		ButtonTrigger.ClickDetector.MaxActivationDistance = 10
+		ButtonStatusValue.Value = "OPENED"
 	elseif Mode == "Close" then
 		ButtonTrigger.ClickDetector.MaxActivationDistance = 0
+		ButtonStatusValue.Value = "CLOSE"
 		ButtonSound:Play()
 		ButtonDown1:Play()
 		Button.Material = ("Metal")
@@ -116,6 +123,8 @@ function DoButton(Mode)
 		ButtonDown2:Play()
 		wait(1.5)
 		CapDown:Play()
+		wait(1)
+		ButtonStatusValue.Value = "CLOSED"
 	end
 end
 --
