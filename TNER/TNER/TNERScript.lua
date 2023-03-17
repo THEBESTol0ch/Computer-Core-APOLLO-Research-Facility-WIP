@@ -167,7 +167,7 @@ function DoReactor(Mode)
 		DoFlywheels("STOP")
 		wait(4)
 		ShutDownSound2:Play()
-		DoSmoke("Grey", true)
+		if Ventilation.LeftVentilation.Vent1.SmokeEmitter.BlackSmoke.Enabled == false then DoSmoke("Grey", true) end
 		DoFlywheels("WELD")
 		DoFlywheels("HIDE")
 		wait(4.5)
@@ -209,6 +209,7 @@ TemperatureValue.Changed:Connect(function()
 		TNERStatusValue.Value = "OFFLINE"
 		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0, 0))
 		DoSmoke("Grey", false)
+		DoSmoke("Black", false)
 	end
 end)
 
@@ -297,8 +298,10 @@ while true do
 	if TemperatureValue.Value > (MinTemperatureValue.Value + NaturalCoolingValue.Value + CoolingCoeffValue.Value) then
 		TemperatureValue.Value = TemperatureValue.Value - (NaturalCoolingValue.Value + CoolingCoeffValue.Value)
 	end
-	if TemperatureValue.Value < 10000 and TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" or TNERStatusValue.Value == "OVERLOAD" then
-		TemperatureValue.Value = TemperatureValue.Value + LeverPositionValue.Value * TemperatureMultiplier
+	if TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" or TNERStatusValue.Value == "OVERLOAD" then
+		if TemperatureValue.Value < 10000 then
+			TemperatureValue.Value = TemperatureValue.Value + LeverPositionValue.Value * TemperatureMultiplier
+		end
 	end
 	wait(1)
 end
