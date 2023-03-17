@@ -1,5 +1,8 @@
 -- Values
-local TNERStatusValue = script.Parent.Parent.Values.TNERStatusValue
+local Values = script.Parent.Parent.Values
+local TNERStatusValue = Values.TNERStatusValue
+local TNEROverloadStartUpTime = Values.TNEROverloadStartUpTime
+local TNEROverloadDelayTime = Values.TNEROverloadDelayTime
 --
 
 -- Items
@@ -28,12 +31,12 @@ function DoLamps(Class, Mode, Color, WaitTime)
 		if Mode == "ON" then
 			for _, SideLamp in pairs(SideLamps:GetChildren()) do
 				SideLamp.Material = ("Neon")
-				SideLamp.BrickColor = BrickColor.new("Electric blue")
+				SideLamp.BrickColor = BrickColor.new(Color)
 			end
 		elseif Mode == "OFF" then
 			for _, SideLamp in pairs(SideLamps:GetChildren()) do
 				SideLamp.Material = ("SmoothPlastic")
-				SideLamp.BrickColor = BrickColor.new("Institutional white")
+				SideLamp.BrickColor = BrickColor.new(Color)
 			end
 		end
 	elseif Class == "BlueLamps" then
@@ -67,7 +70,7 @@ end
 --
 
 TNERStatusValue.Changed:Connect(function()
-	if TNERStatusValue.Value == "POWER ON" or TNERStatusValue.Value == "SHUT DOWN" then
+	if TNERStatusValue.Value == "POWER ON" or TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "OVERLOAD" then
 		DoLamps("EmergencyLamps", "ON")
 	elseif TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "COOLING" then
 		DoLamps("EmergencyLamps", "OFF")
@@ -76,40 +79,67 @@ end)
 
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
-		DoLamps("BlueLamps", "ON", "Electric blue", 1)
-	elseif TNERStatusValue.Value == "SHUT DOWN" then
-		DoLamps("BlueLamps", "OFF", "Deep blue", 1)
-	end
-	if TNERStatusValue.Value == "UNSTABLE" then
-		repeat
-			DoLamps("BlueLamps", "OFF", "Deep blue", 0)
-			wait(math.random(1, 15) / 10)
-			if math.random(1, 2) == 1 then DoLamps("BlueLamps", "ON", "Electric blue", 0) else DoLamps("BlueLamps", "ON", "Really red", 0) end
-			wait(math.random(1, 15) / 10)
-		until TNERStatusValue.Value == "SHUT DOWN"
-		DoLamps("BlueLamps", "ON", "Electric blue", 0)
-		DoLamps("BlueLamps", "OFF", "Deep blue", 1)
-	end
-end)
-
-TNERStatusValue.Changed:Connect(function()
-	if TNERStatusValue.Value == "POWER ON" then
 		repeat
 			for Count = 1, 4, 1 do
-				DoLamps("SideLamps", "OFF")
+				DoLamps("SideLamps", "OFF", "Institutional white")
 				SideLamps["SideLamp"..Count].Material = ("Neon")
 				SideLamps["SideLamp"..Count].BrickColor = BrickColor.new("Electric blue")
 				wait(0.3)
 			end
 		until TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "UNSTABLE"
-		DoLamps("SideLamps", "OFF")
+		DoLamps("SideLamps", "OFF", "Institutional white")
 		if TNERStatusValue.Value == "UNSTABLE" then
 			repeat
-				DoLamps("SideLamps", "ON")
+				DoLamps("SideLamps", "ON", "Electric blue")
 				wait(1)
-				DoLamps("SideLamps", "OFF")
+				DoLamps("SideLamps", "OFF", "Institutional white")
 				wait(1)
-			until TNERStatusValue.Value == "SHUT DOWN"
+			until TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "OVERLOAD"
+			wait(TNEROverloadDelayTime.Value)
+			if TNERStatusValue.Value == "OVERLOAD" then
+				DoLamps("SideLamps", "ON", "Really red")
+			end
+		end
+	elseif TNERStatusValue.Value == "SHUT DOWN" then
+		if SideLamps.SideLamp1.BrickColor == BrickColor.new("Really red") then
+			for Count = 0, 40, 1 do
+				DoLamps("SideLamps", "ON", "Electric blue")
+				wait(0.02)
+				DoLamps("SideLamps", "ON", "Really red")
+				wait(0.02)
+			end
+		end
+		DoLamps("SideLamps", "OFF", "Institutional white")
+	end
+end)
+
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "POWER ON" then
+		DoLamps("BlueLamps", "ON", "Electric blue", 1)
+	elseif TNERStatusValue.Value == "SHUT DOWN" then
+		if BlueLamps.BlueLamp1.BrickColor == BrickColor.new("Really red") then
+			for Count = 0, 40, 1 do
+				DoLamps("BlueLamps", "ON", "Electric blue", 0)
+				wait(0.02)
+				DoLamps("BlueLamps", "ON", "Really red", 0)
+				wait(0.02)
+			end
+		end
+		DoLamps("BlueLamps", "ON", "Electric blue", 0)
+		DoLamps("BlueLamps", "OFF", "Deep blue", 1)
+	elseif TNERStatusValue.Value == "UNSTABLE" then
+		repeat
+			DoLamps("BlueLamps", "OFF", "Deep blue", 0)
+			wait(math.random(1, 15) / 10)
+			if math.random(1, 2) == 1 then DoLamps("BlueLamps", "ON", "Electric blue", 0) else DoLamps("BlueLamps", "ON", "Really red", 0) end
+			wait(math.random(1, 15) / 10)
+		until TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "OVERLOAD"
+		DoLamps("BlueLamps", "ON", "Electric blue", 0)
+		wait(TNEROverloadDelayTime.Value)
+		if TNERStatusValue.Value == "OVERLOAD" then
+			DoLamps("BlueLamps", "ON", "Really red", 0.02)
+		else
+			DoLamps("BlueLamps", "OFF", "Deep blue", 1)
 		end
 	end
 end)
@@ -121,6 +151,12 @@ TNERStatusValue.Changed:Connect(function()
 			wait(1.2)
 			DoLamps("RedLamps", "OFF")
 			wait(1.2)
-		until TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "SHUT DOWN"
+		until TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "OVERLOAD"
+		wait(TNEROverloadDelayTime.Value)
+		if TNERStatusValue.Value == "OVERLOAD" then
+			DoLamps("RedLamps", "ON")
+		end
+	elseif TNERStatusValue.Value == "SHUT DOWN" then
+		DoLamps("RedLamps", "OFF")
 	end
 end)
