@@ -16,6 +16,7 @@ local NaturalCoolingValue = Values.NaturalCoolingValue
 local TNERStartUpTime = Values.TNERStartUpTime
 local TNEROverloadStartUpTime = Values.TNEROverloadStartUpTime
 local TNEROverloadDelayTime = Values.TNEROverloadDelayTime
+local TNEROverloadStopUnsuccessStartUpTime = Values.TNEROverloadStopUnsuccessStartUpTime
 local MinFuelCapacityValue = Values.MinFuelCapacityValue
 
 local AllFuelCellsInjectedValue = workspace.TNERFuelSystem.CPU.Values.AllFuelCellsInjectedValue
@@ -34,6 +35,8 @@ local FuseSystemStatusValue = workspace.TNERFuseSystem.CPU.Values.FuseSystemStat
 local CoolingCoeffValue = workspace.TNERCoolingSystem.CPU.Values.CoolingCoeffValue
 
 local LeverPositionValue = workspace.TNERPullLever.CPU.Values.LeverPositionValue
+
+local TNERFuse5StatusValue = workspace.TNERFuse5.CPU.Values.TNERFuse5StatusValue
 --
 
 -- Items
@@ -52,6 +55,7 @@ local OverloadProcessSound = SoundEmitter.OverloadProcessSound
 local OverloadStartSound = SoundEmitter.OverloadStartSound
 local OverloadLoopSound = SoundEmitter.OverloadLoopSound
 local OverloadStopSound = SoundEmitter.OverloadStopSound
+local OverloadStopUnsuccessSound = SoundEmitter.OverloadStopUnsuccessSound
 --
 
 -- Logic
@@ -132,6 +136,23 @@ function DoSmoke(Color, Mode)
 		end
 	end
 end
+function DoOverloadSequence()
+	if TNERStatusValue.Value == "UNSTABLE" then
+		TNERStatusValue.Value = "OVERLOAD"
+		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0, 0))
+		if TNERStatusValue.Value == "OVERLOAD" then wait(TNEROverloadDelayTime.Value) end
+		if TNERStatusValue.Value == "OVERLOAD" then OverloadProcessSound:Stop() end
+		if TNERStatusValue.Value == "OVERLOAD" then OverloadStartSound:Play() end
+		if TNERStatusValue.Value == "OVERLOAD" then wait(TNEROverloadStartUpTime.Value) end
+		if TNERStatusValue.Value == "OVERLOAD" then TemperatureMultiplier = 16 end
+		if TNERStatusValue.Value == "OVERLOAD" then FlywheelRotationSpeedValue.Value = 40 end
+		if TNERStatusValue.Value == "OVERLOAD" then FuelConsumtionMultiplier = OverloadStartSound.TimeLength / FuelCapacityValue.Value + 1 end
+		if TNERStatusValue.Value == "OVERLOAD" then TweenService:Create(FlywheelsRotationSound, OverloadLoopSoundAnimationSettings, { Volume = 0 }):Play() end
+		if TNERStatusValue.Value == "OVERLOAD" then wait(64) end
+		if TNERStatusValue.Value == "OVERLOAD" then OverloadLoopSound:Play() end
+		if TNERStatusValue.Value == "OVERLOAD" then TweenService:Create(OverloadLoopSound, OverloadLoopSoundAnimationSettings, { Volume = 2 }):Play() end
+	end
+end
 function DoReactor(Mode)
 	if Mode == "START" and TNERStatusValue.Value == "OFFLINE" then
 		TNERStatusValue.Value = "POWER ON"
@@ -150,9 +171,11 @@ function DoReactor(Mode)
 		TweenService:Create(FlywheelsRotationSound, OverloadLoopSoundAnimationSettings, { Volume = 0.3 }):Play()
 	elseif Mode == "STOP" and TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" or TNERStatusValue.Value == "OVERLOAD" then
 		if TNERStatusValue.Value == "OVERLOAD" then
-			OverloadStartSound:Stop()
-			OverloadLoopSound:Stop()
-			OverloadStopSound:Play()
+			if TNERFuse5StatusValue.Value == "ONLINE" then
+				OverloadStopSound:Play()
+			elseif TNERFuse5StatusValue.Value == "OFFLINE" then
+				OverloadStopUnsuccessSound:Play()	
+			end
 		end
 		TNERStatusValue.Value = "SHUT DOWN"
 		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0.666667, 0))
@@ -163,16 +186,24 @@ function DoReactor(Mode)
 		FlywheelsRotationSound:Stop()
 		FlywheelsRotationStopSound:Play()
 		OverloadProcessSound:Stop()
+		OverloadStartSound:Stop()
+		OverloadLoopSound:Stop()
 		wait(10)
-		DoFlywheels("STOP")
-		wait(4)
-		ShutDownSound2:Play()
-		if Ventilation.LeftVentilation.Vent1.SmokeEmitter.BlackSmoke.Enabled == false then DoSmoke("Grey", true) end
-		DoFlywheels("WELD")
-		DoFlywheels("HIDE")
-		wait(4.5)
-		TNERStatusValue.Value = "COOLING"
-		DoMonitoring(TNERStatusValue.Value, Color3.new(0.333333, 0.666667, 1))
+		if OverloadStopUnsuccessSound.IsPlaying == false then
+			DoFlywheels("STOP")
+			wait(4)
+			ShutDownSound2:Play()
+			if Ventilation.LeftVentilation.Vent1.SmokeEmitter.BlackSmoke.Enabled == false then DoSmoke("Grey", true) end
+			DoFlywheels("WELD")
+			DoFlywheels("HIDE")
+			wait(4.5)
+			TNERStatusValue.Value = "COOLING"
+			DoMonitoring(TNERStatusValue.Value, Color3.new(0.333333, 0.666667, 1))
+		end
+		if TNERFuse5StatusValue.Value == "OFFLINE" and OverloadStopUnsuccessSound.IsPlaying == true then wait(3.4) end
+		if TNERFuse5StatusValue.Value == "OFFLINE" and OverloadStopUnsuccessSound.IsPlaying == true then TNERStatusValue.Value = "UNSTABLE" end
+		if TNERFuse5StatusValue.Value == "OFFLINE" and OverloadStopUnsuccessSound.IsPlaying == true then DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0, 0)) end
+		if TNERFuse5StatusValue.Value == "OFFLINE" and OverloadStopUnsuccessSound.IsPlaying == true then wait(56) end
 	end
 end
 --
@@ -181,8 +212,10 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 	if TNERStatusValue.Value == "OFFLINE" and HatchStatusValue.Value == "LOCKED" then
 		if FuelCapacityValue.Value > 10 and AllFuelCellsInjectedValue.Value == true then
 			if SuperchargerServerStatusValue.Value == "ONLINE" and FuelServerStatusValue.Value == "ONLINE" and CoolingServerStatusValue.Value == "ONLINE" then
-				wait(1)
-				DoReactor("START")
+				if TNERFuse5StatusValue.Value == "ONLINE" then
+					wait(1)
+					DoReactor("START")
+				end
 			end	
 		end
 	elseif TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" or TNERStatusValue.Value == "OVERLOAD" then
@@ -196,16 +229,16 @@ FlywheelRotationSpeedValue.Changed:Connect(function()
 end)
 
 FuelCapacityValue.Changed:Connect(function()
-	if FuelCapacityValue.Value == 0 then
+	if FuelCapacityValue.Value == 0 and OverloadStopUnsuccessSound.IsPlaying == false then
 		DoReactor("STOP")
 	end
 end)
 
 TemperatureValue.Changed:Connect(function()
-	if TemperatureValue.Value >= 3959 and not (TNERStatusValue.Value == "OVERLOAD") then
+	if TemperatureValue.Value >= 3959 and not (TNERStatusValue.Value == "OVERLOAD") and OverloadStopUnsuccessSound.IsPlaying == false then
 		DoReactor("STOP")
 	end
-	if TNERStatusValue.Value == "COOLING" and TemperatureValue.Value < (MinTemperatureValue.Value + NaturalCoolingValue.Value + CoolingCoeffValue.Value) then
+	if TNERStatusValue.Value == "COOLING" and TemperatureValue.Value < 100 then
 		TNERStatusValue.Value = "OFFLINE"
 		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0, 0))
 		DoSmoke("Grey", false)
@@ -277,20 +310,13 @@ TNERStatusValue.Changed:Connect(function()
 end)
 
 OverloadButton.ClickDetector.MouseClick:Connect(function()
-	if TNERStatusValue.Value == "UNSTABLE" then
-		TNERStatusValue.Value = "OVERLOAD"
-		DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0, 0))
-		if TNERStatusValue.Value == "OVERLOAD" then wait(TNEROverloadDelayTime.Value) end
-		if TNERStatusValue.Value == "OVERLOAD" then OverloadProcessSound:Stop() end
-		if TNERStatusValue.Value == "OVERLOAD" then OverloadStartSound:Play() end
-		if TNERStatusValue.Value == "OVERLOAD" then wait(TNEROverloadStartUpTime.Value) end
-		if TNERStatusValue.Value == "OVERLOAD" then TemperatureMultiplier = 16 end
-		if TNERStatusValue.Value == "OVERLOAD" then FlywheelRotationSpeedValue.Value = 40 end
-		if TNERStatusValue.Value == "OVERLOAD" then FuelConsumtionMultiplier = OverloadStartSound.TimeLength / FuelCapacityValue.Value + 1 end
-		if TNERStatusValue.Value == "OVERLOAD" then TweenService:Create(FlywheelsRotationSound, OverloadLoopSoundAnimationSettings, { Volume = 0 }):Play() end
-		if TNERStatusValue.Value == "OVERLOAD" then wait(64) end
-		if TNERStatusValue.Value == "OVERLOAD" then OverloadLoopSound:Play() end
-		if TNERStatusValue.Value == "OVERLOAD" then TweenService:Create(OverloadLoopSound, OverloadLoopSoundAnimationSettings, { Volume = 2 }):Play() end
+	DoOverloadSequence()
+end)
+
+TNERFuse5StatusValue.Changed:Connect(function()
+	if TNERFuse5StatusValue.Value == "ONLINE" and TNERStatusValue.Value == "UNSTABLE" then
+		OverloadStopUnsuccessSound:Stop()
+		DoReactor("STOP")
 	end
 end)
 
