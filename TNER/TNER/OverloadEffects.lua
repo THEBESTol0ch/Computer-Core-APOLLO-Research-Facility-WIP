@@ -27,6 +27,7 @@ local Wires = script.Parent.Parent.Parent.Wires
 
 -- Sounds
 local OverloadStopSound = script.Parent.Parent.Parent.SoundEmitter.OverloadStopSound
+local OverloadStopUnsuccessSound = script.Parent.Parent.Parent.SoundEmitter.OverloadStopUnsuccessSound
 --
 
 -- Logic
@@ -152,8 +153,32 @@ function DoBeam(Number)
 		wait(0.1)
 		Beams["Beam"..Number].Size = BeamSizeValues.BeamSizeValue1.Value
 		wait(0.01)
-	until TNERStatusValue.Value == "SHUT DOWN"
+	until TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "UNSTABLE" or TNERStatusValue.Value == "OFFLINE"
 	Beams["Beam"..Number].DeathTriggerScript.Enabled = false
+end
+function DoCheck()
+	if OverloadStopSound.IsPlaying == true or OverloadStopUnsuccessSound.IsPlaying == true then
+		for _, Item in pairs(Wires:GetDescendants()) do
+			if Item.Name == "WirePart" then
+				TweenService:Create(Item, WireAnimationSettings, WiresPropertiesEnd):Play()
+			end
+		end
+		TweenService:Create(Plasma1, PlasmaAnimationSettingsEnd, PlasmaPropertiesEnd):Play()
+		TweenService:Create(Plasma2, PlasmaAnimationSettingsEnd, PlasmaPropertiesEnd):Play()
+		TweenService:Create(Plasma3, PlasmaAnimationSettingsEnd, Plasma3PropertiesEnd):Play()
+		TweenService:Create(Plasma3.PointLight, PlasmaAnimationSettingsEnd, PlasmaLightPropertiesEnd):Play()
+		TweenService:Create(DarkMatter1, DarkMatterAnimationSettingsEnd, DarkMatter1PropertiesEnd):Play()
+		TweenService:Create(DarkMatter2, DarkMatterAnimationSettingsEnd, DarkMatter2PropertiesEnd):Play()
+		BeamsMode = 2
+		wait(40)
+		for _, Item in pairs(Wires:GetDescendants()) do
+			if Item.Name == "WirePart" then
+				Item.Material = ("SmoothPlastic")
+			elseif Item.Name == "Smoke" then
+				Item.Enabled = false
+			end
+		end
+	end
 end
 --
 
@@ -221,26 +246,8 @@ TNERStatusValue.Changed:Connect(function()
 end)
 
 OverloadStopSound.Changed:Connect(function()
-	if OverloadStopSound.IsPlaying == true then
-		for _, Item in pairs(Wires:GetDescendants()) do
-			if Item.Name == "WirePart" then
-				TweenService:Create(Item, WireAnimationSettings, WiresPropertiesEnd):Play()
-			end
-		end
-		TweenService:Create(Plasma1, PlasmaAnimationSettingsEnd, PlasmaPropertiesEnd):Play()
-		TweenService:Create(Plasma2, PlasmaAnimationSettingsEnd, PlasmaPropertiesEnd):Play()
-		TweenService:Create(Plasma3, PlasmaAnimationSettingsEnd, Plasma3PropertiesEnd):Play()
-		TweenService:Create(Plasma3.PointLight, PlasmaAnimationSettingsEnd, PlasmaLightPropertiesEnd):Play()
-		TweenService:Create(DarkMatter1, DarkMatterAnimationSettingsEnd, DarkMatter1PropertiesEnd):Play()
-		TweenService:Create(DarkMatter2, DarkMatterAnimationSettingsEnd, DarkMatter2PropertiesEnd):Play()
-		BeamsMode = 2
-		wait(40)
-		for _, Item in pairs(Wires:GetDescendants()) do
-			if Item.Name == "WirePart" then
-				Item.Material = ("SmoothPlastic")
-			elseif Item.Name == "Smoke" then
-				Item.Enabled = false
-			end
-		end
-	end
+	DoCheck()
+end)
+OverloadStopUnsuccessSound.Changed:Connect(function()
+	DoCheck()
 end)
