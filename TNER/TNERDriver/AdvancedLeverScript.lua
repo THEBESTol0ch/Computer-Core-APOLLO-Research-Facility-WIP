@@ -7,6 +7,7 @@ local Switch = script.Parent.Parent.Switch.Handle
 -- Values
 local TNERDriverStatusValue = script.Parent.Parent.CPU.Values.TNERDriverStatusValue
 local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
+local TNERFuse5StatusValue = workspace.TNERFuse5.CPU.Values.TNERFuse5StatusValue
 --
 
 -- Items
@@ -78,7 +79,7 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 	LeverUp:Play()
 	Handle2Up:Play()
 	wait(0.5)
-	if TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "COOLING" or TNERStatusValue.Value == "MAINTENANCE MODE" then
+	if TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "COOLING" or TNERStatusValue.Value == "MAINTENANCE MODE" or TNERFuse5StatusValue.Value == "OFFLINE" then
 		Trigger.ClickDetector.MaxActivationDistance = 10
 	end
 end)
