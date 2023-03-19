@@ -26,6 +26,7 @@ local HolePos = script.Parent.Parent.Parent.Positions.HolePos
 -- Sounds
 local HoleSound = script.Parent.Parent.Parent.SoundEmitter.HoleSound
 local KeySound = script.Parent.Parent.Parent.SoundEmitter.KeySound
+local OverloadStopUnsuccessSound = workspace.TNER.SoundEmitter.OverloadStopUnsuccessSound
 --
 
 
@@ -194,7 +195,7 @@ Key.ClickDetector.RightMouseClick:Connect(function()
 end)
 
 Trigger.Changed:Connect(function()
-	if Trigger.Value == "UNSTABLE" then
+	if Trigger.Value == "UNSTABLE" and OverloadStopUnsuccessSound.IsPlaying == false then
 		GlassUp:Play()
 		Key.ClickDetector.MaxActivationDistance = 10
 	else
