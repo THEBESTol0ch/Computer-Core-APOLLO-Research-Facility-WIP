@@ -66,28 +66,31 @@ function DoLightning(Class, Mode, Side)
 		end
 	end
 end
+function RepeatLightningSequence()
+	repeat
+		if LeverPositionValue.Value == 5 then
+			InvertedLeverPositionValue = 1
+		elseif LeverPositionValue.Value == 4 then
+			InvertedLeverPositionValue = 2
+		elseif LeverPositionValue.Value == 3 then
+			InvertedLeverPositionValue = 3
+		elseif LeverPositionValue.Value == 2 then
+			InvertedLeverPositionValue = 4
+		elseif LeverPositionValue.Value == 1 then
+			InvertedLeverPositionValue = 5
+		end
+		local Num1 = InvertedLeverPositionValue * InvertedLeverPositionMultiplier - SpreadValue
+		local Num2 = InvertedLeverPositionValue * InvertedLeverPositionMultiplier + SpreadValue
+		DoLightning("Lightning")
+		wait(math.random(Num1, Num2) / 10)
+	until TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "OVERLOAD"
+end
 --
 
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		wait(TNERStartUpTime.Value)
-		repeat
-			if LeverPositionValue.Value == 5 then
-				InvertedLeverPositionValue = 1
-			elseif LeverPositionValue.Value == 4 then
-				InvertedLeverPositionValue = 2
-			elseif LeverPositionValue.Value == 3 then
-				InvertedLeverPositionValue = 3
-			elseif LeverPositionValue.Value == 2 then
-				InvertedLeverPositionValue = 4
-			elseif LeverPositionValue.Value == 1 then
-				InvertedLeverPositionValue = 5
-			end
-			local Num1 = InvertedLeverPositionValue * InvertedLeverPositionMultiplier - SpreadValue
-			local Num2 = InvertedLeverPositionValue * InvertedLeverPositionMultiplier + SpreadValue
-			DoLightning("Lightning")
-			wait(math.random(Num1, Num2) / 10)
-		until TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "OVERLOAD"
+		RepeatLightningSequence()
 		if TNERStatusValue.Value == "OVERLOAD" then
 			wait(TNEROverloadDelayTime.Value + TNEROverloadStartUpTime.Value)
 			repeat
@@ -109,6 +112,7 @@ TNERStatusValue.Changed:Connect(function()
 		DoLightning("LargeLightning")
 	end
 end)
+
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "POWER ON" then
 		wait(15.3)
@@ -150,5 +154,48 @@ TNERStatusValue.Changed:Connect(function()
 			Lightning.RoundLightning.RightLightning.Lightning1.Transparency = 1
 			Lightning.RoundLightning.RightLightning.Lightning2.Transparency = 1
 		until TNERStatusValue.Value == "ONLINE"
+	end
+end)
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "OVERLOAD" then
+		wait(TNEROverloadDelayTime.Value + TNEROverloadStartUpTime.Value)
+		repeat
+			DoLightning("RoundLightning", "COMPRESS", "Left")
+			wait(0.3)
+			DoLightning("RoundLightning", "RETURN", "Left")
+			wait(0.01)
+		until TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "UNSTABLE"
+	end
+end)
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "OVERLOAD" then
+		wait(TNEROverloadDelayTime.Value + TNEROverloadStartUpTime.Value + 0.15)
+		repeat
+			DoLightning("RoundLightning", "COMPRESS", "Right")
+			wait(0.3)
+			DoLightning("RoundLightning", "RETURN", "Right")
+			wait(0.01)
+		until TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "UNSTABLE"
+	end
+end)
+TNERStatusValue.Changed:Connect(function()
+	if TNERStatusValue.Value == "OVERLOAD" then
+		wait(TNEROverloadDelayTime.Value + TNEROverloadStartUpTime.Value)
+		repeat
+			Lightning.RoundLightning.LeftLightning.Lightning1.Transparency = 0
+			Lightning.RoundLightning.LeftLightning.Lightning2.Transparency = 1
+			Lightning.RoundLightning.RightLightning.Lightning1.Transparency = 0
+			Lightning.RoundLightning.RightLightning.Lightning2.Transparency = 1
+			wait(0.01)
+			Lightning.RoundLightning.LeftLightning.Lightning1.Transparency = 1
+			Lightning.RoundLightning.LeftLightning.Lightning2.Transparency = 0
+			Lightning.RoundLightning.RightLightning.Lightning1.Transparency = 1
+			Lightning.RoundLightning.RightLightning.Lightning2.Transparency = 0
+			wait(0.01)
+			Lightning.RoundLightning.LeftLightning.Lightning1.Transparency = 1
+			Lightning.RoundLightning.LeftLightning.Lightning2.Transparency = 1
+			Lightning.RoundLightning.RightLightning.Lightning1.Transparency = 1
+			Lightning.RoundLightning.RightLightning.Lightning2.Transparency = 1
+		until TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "UNSTABLE"
 	end
 end)
