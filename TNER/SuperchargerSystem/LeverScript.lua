@@ -6,6 +6,7 @@ local Trigger = script.Parent.Parent.Parent.Lever.Trigger
 -- Values
 local LeverValue = script.Parent.Parent.Values.LeverValue
 local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
+local TNERFuse5StatusValue = workspace.TNERFuse5.CPU.Values.TNERFuse5StatusValue
 --
 
 -- Items
@@ -15,6 +16,7 @@ local LeverPos = script.Parent.Parent.Parent.Lever.LeverPos
 
 -- Sounds
 local LeverSound = script.Parent.Parent.Parent.Lever.Handle.LeverSound
+local OverloadStopUnsuccessSound = workspace.TNER.SoundEmitter.OverloadStopUnsuccessSound
 --
 
 local PullLeverAnimationSettings = TweenInfo.new(
@@ -76,7 +78,7 @@ TNERStatusValue.Changed:Connect(function()
 	else
 		Trigger.ClickDetector.MaxActivationDistance = 0
 	end
-	if TNERStatusValue.Value == "UNSTABLE" then
-		Trigger.ClickDetector.MaxActivationDistance = 0
+	if TNERStatusValue.Value == "UNSTABLE" and TNERFuse5StatusValue.Value == "OFFLINE" and OverloadStopUnsuccessSound.IsPlaying == true then
+		PullIn()
 	end
 end)
