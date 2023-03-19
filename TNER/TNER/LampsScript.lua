@@ -3,6 +3,7 @@ local Values = script.Parent.Parent.Values
 local TNERStatusValue = Values.TNERStatusValue
 local TNEROverloadStartUpTime = Values.TNEROverloadStartUpTime
 local TNEROverloadDelayTime = Values.TNEROverloadDelayTime
+local TNERFuse5StatusValue = workspace.TNERFuse5.CPU.Values.TNERFuse5StatusValue
 --
 
 -- Items
@@ -110,6 +111,15 @@ TNERStatusValue.Changed:Connect(function()
 			end
 		end
 		DoLamps("SideLamps", "OFF", "Institutional white")
+		wait(15)
+		if TNERStatusValue.Value == "UNSTABLE" then
+			repeat
+				DoLamps("SideLamps", "ON", "Electric blue")
+				wait(1)
+				DoLamps("SideLamps", "OFF", "Institutional white")
+				wait(1)
+			until TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "OVERLOAD"
+		end
 	end
 end)
 
@@ -139,6 +149,7 @@ TNERStatusValue.Changed:Connect(function()
 		if TNERStatusValue.Value == "OVERLOAD" then
 			DoLamps("BlueLamps", "ON", "Really red", 0.02)
 		else
+			wait(1)
 			DoLamps("BlueLamps", "OFF", "Deep blue", 1)
 		end
 	end
