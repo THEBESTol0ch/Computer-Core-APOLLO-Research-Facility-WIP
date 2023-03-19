@@ -100,8 +100,8 @@ function DoMonitors(Text, Color)
 	FEMConsoleMonitorStatus.Text = Text
 	FEMConsoleMonitorStatus.TextColor3 = Color
 end
-function DoFEM(Mode)
-	if Mode == "ON" then
+function DoFEM()
+	if FEMStatusValue.Value == "OFFLINE" and LeverValue.Value == "FULL" then
 		FEMStatusValue.Value = "ENGAGE"
 		DoMonitors(FEMStatusValue.Value, Color3.new(1, 0.666667, 0))
 		wait(10)
@@ -123,48 +123,37 @@ function DoFEM(Mode)
 		FEM.FEMOfflineDecal.Transparency = 1
 		FEM.FEMOnlineDecal.Transparency = 0
 		DoMonitors(FEMStatusValue.Value, Color3.new(0, 255, 0))
-	elseif Mode == "OFF" then
-		if FEMStatusValue.Value == "ONLINE" then
-			FEMStatusValue.Value = "DISENGAGE"
-			DoMonitors(FEMStatusValue.Value, Color3.new(1, 0.666667, 0))
-			FEM.FEMOfflineDecal.Transparency = 0
-			FEM.FEMOnlineDecal.Transparency = 1
-			for Count = 4, 1, -1 do
-				BlueLamps["Lamp"..Count].Material = ("Glass")
-				wait(math.random(1, 2))
-			end
-			wait(1)
-			LockUp:Play()
-			wait(2)
-			TritiumEnrichmentSystemSound:Play()
-			wait(1)
-			BaseDown1:Play()
-			wait(9.5)
-			BaseDown2:Play()
-			wait(3.4)
-			BaseDown3:Play()
-			wait(3)
-			FEMStatusValue.Value = "OFFLINE"
-			DoMonitors(FEMStatusValue.Value, Color3.new(1, 0, 0))
+	elseif FEMStatusValue.Value == "ONLINE" and LeverValue.Value == "LOW" then
+		FEMStatusValue.Value = "DISENGAGE"
+		DoMonitors(FEMStatusValue.Value, Color3.new(1, 0.666667, 0))
+		FEM.FEMOfflineDecal.Transparency = 0
+		FEM.FEMOnlineDecal.Transparency = 1
+		for Count = 4, 1, -1 do
+			BlueLamps["Lamp"..Count].Material = ("Glass")
+			wait(math.random(1, 2))
 		end
+		wait(1)
+		LockUp:Play()
+		wait(2)
+		TritiumEnrichmentSystemSound:Play()
+		wait(1)
+		BaseDown1:Play()
+		wait(9.5)
+		BaseDown2:Play()
+		wait(3.4)
+		BaseDown3:Play()
+		wait(3)
+		FEMStatusValue.Value = "OFFLINE"
+		DoMonitors(FEMStatusValue.Value, Color3.new(1, 0, 0))
 	end
 end
 --
 
 LeverValue.Changed:Connect(function()
-	if LeverValue.Value == "FULL" then
-		DoFEM("ON")
-	else
-		DoFEM("OFF")
-	end
+	DoFEM()
 end)
 
 FEMStatusValue.Changed:Connect(function()
 	wait(1)
-	if FEMStatusValue.Value == "ONLINE" and LeverValue.Value == "LOW" then
-		DoFEM("OFF")
-	end
-	if FEMStatusValue.Value == "OFFLINE" and LeverValue.Value == "FULL" then
-		DoFEM("ON")
-	end
+	DoFEM()
 end)
