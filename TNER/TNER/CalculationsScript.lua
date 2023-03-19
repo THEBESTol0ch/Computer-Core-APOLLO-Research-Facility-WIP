@@ -120,11 +120,11 @@ end)
 
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "OVERLOAD" then
-		Multiplier1 = 100
+		Multiplier1 = 110
 		Multiplier2 = 10
 		wait(TNEROverloadDelayTime.Value + TNEROverloadStartUpTime.Value)
 		Calc("RPM")
-	elseif TNERStatusValue.Value == "OFFLINE" then
+	elseif TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "UNSTABLE" then
 		Multiplier1 = 1
 		Multiplier2 = 1
 	end
