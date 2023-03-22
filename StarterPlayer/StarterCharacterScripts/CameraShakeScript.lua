@@ -7,7 +7,18 @@ local Humanoid = Character:WaitForChild("Humanoid")
 --
 
 local CameraShaker = require(game.ReplicatedStorage.CameraShaker)
-local Camera = game.Workspace.CurrentCamera
+
+local camera = game.Workspace.CurrentCamera
+
+local camShake = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
+	camera.CFrame = camera.CFrame * shakeCf
+end)
+
+camShake:Start()
+
+game.ReplicatedStorage.CameraShakeEvent.OnClientEvent:Connect(function()
+	camShake:Shake(CameraShaker.Presets.Earthquake)
+end)
 
 local TNERShakeInTrigger = workspace.Triggers.TNERTriggers.TNERShakeInTrigger
 local TNERShakeOutTrigger = workspace.Triggers.TNERTriggers.TNERShakeOutTrigger
@@ -15,14 +26,6 @@ local OverloadStartSound = workspace.TNER.SoundEmitter.OverloadStartSound
 local OverloadLoopSound = workspace.TNER.SoundEmitter.OverloadLoopSound
 local OverloadStopSound = workspace.TNER.SoundEmitter.OverloadStopSound
 local TNEROverloadStartUpTime = workspace.TNER.CPU.Values.TNEROverloadStartUpTime
-
-local CamShake = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
-	Camera.CFrame = Camera.CFrame * shakeCf
-end)
-
-game.ReplicatedStorage.CameraShakeEvent.OnClientEvent:Connect(function()
-	CamShake:Shake(CameraShaker.Presets.Earthquake)
-end)
 
 local ForceIncreaseAnimationSettings = TweenInfo.new(
 	65.2,
