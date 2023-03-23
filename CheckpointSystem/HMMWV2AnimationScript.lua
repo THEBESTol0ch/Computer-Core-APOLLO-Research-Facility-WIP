@@ -136,7 +136,7 @@ local ObjectMove16 = TweenService:Create(HMMWVPrimaryPart, ObjectAnimationSettin
 
 -- Functions
 function DoAction()
-	if StatusValue.Value == "DEPARTED" and MilitaryForceControlValue.Value == "CALL" then
+	if StatusValue.Value == "DEPARTED" and MilitaryForceStatusValue.Value == "DEPARTED" and MilitaryForceControlValue.Value == "CALL" then
 		StatusValue.Value = "ARRIVE"
 		wait(9)
 		ObjectMove1:Play()
@@ -153,7 +153,7 @@ function DoAction()
 		wait(2.5)
 		ObjectMove7:Play()
 		StatusValue.Value = "ARRIVED"
-	elseif StatusValue.Value == "ARRIVED" and MilitaryForceControlValue.Value == "CALL OFF" then
+	elseif StatusValue.Value == "ARRIVED" and MilitaryForceStatusValue.Value == "ARRIVED" and MilitaryForceControlValue.Value == "CALL OFF" then
 		StatusValue.Value = "DEPART"
 		wait(11)
 		ObjectMove8:Play()
@@ -171,10 +171,10 @@ function DoAction()
 		ObjectMove14:Play()
 		wait(2)
 		ObjectMove15:Play()
-		StatusValue.Value = "DEPARTED"
 		wait(30)
 		ObjectMove16:Play()
 		wait(1)
+		StatusValue.Value = "DEPARTED"
 	end
 end
 --
@@ -182,7 +182,9 @@ end
 StatusValue.Changed:Connect(function()
 	DoAction()
 end)
-
 MilitaryForceControlValue.Changed:Connect(function()
+	DoAction()
+end)
+MilitaryForceStatusValue.Changed:Connect(function()
 	DoAction()
 end)
