@@ -172,7 +172,7 @@ local RampClose = TweenService:Create(StaticRampHinge, RampAnimationSettings, {
 
 -- Functions
 function DoAction()
-	if StatusValue.Value == "DEPARTED" and MilitaryForceControlValue.Value == "CALL" then
+	if StatusValue.Value == "DEPARTED" and MilitaryForceStatusValue.Value == "DEPARTED" and MilitaryForceControlValue.Value == "CALL" then
 		StatusValue.Value = "ARRIVE"
 		wait(13)
 		ObjectMove1:Play()
@@ -207,7 +207,7 @@ function DoAction()
 		for _, Item in pairs(Benches:GetDescendants()) do
 			if Item:IsA("Seat") then Item.CanTouch = true end
 		end
-	elseif StatusValue.Value == "ARRIVED" and MilitaryForceControlValue.Value == "CALL OFF" then
+	elseif StatusValue.Value == "ARRIVED" and MilitaryForceStatusValue.Value == "ARRIVED" and MilitaryForceControlValue.Value == "CALL OFF" then
 		StatusValue.Value = "DEPART"
 		wait(1)
 		RampClose:Play()
@@ -238,13 +238,13 @@ function DoAction()
 		ObjectMove17:Play()
 		wait(2)
 		ObjectMove18:Play()
-		StatusValue.Value = "DEPARTED"
 		for _, Item in pairs(Benches:GetDescendants()) do
 			if Item:IsA("Seat") then Item.CanTouch = false end
 		end
 		wait(30)
 		ObjectMove19:Play()
 		wait(1)
+		StatusValue.Value = "DEPARTED"
 	end
 end
 --
@@ -252,7 +252,9 @@ end
 StatusValue.Changed:Connect(function()
 	DoAction()
 end)
-
 MilitaryForceControlValue.Changed:Connect(function()
+	DoAction()
+end)
+MilitaryForceStatusValue.Changed:Connect(function()
 	DoAction()
 end)
