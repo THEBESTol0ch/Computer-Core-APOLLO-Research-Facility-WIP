@@ -30,6 +30,10 @@ local CloseSound = script.Parent.Parent.Parent.CargoDoor.SoundEmitter1.BlastDoor
 local AlarmSound = script.Parent.Parent.Parent.CargoDoor.SoundEmitter2.CargoDoorAlarmSound
 --
 
+-- Logic
+local CanEvent = true
+--
+
 local LeftDoorOpen = {
 	CFrame = LeftDoorPos.CFrame:ToWorldSpace(CFrame.new(0, 0, 0))
 }
@@ -92,8 +96,9 @@ function DoDoor()
 	wait(1)
 	if MilitaryForceControlValue.Value == "CALL" or MilitaryForceControlValue.Value == "CALL OFF" then
 		if MilitaryForceStatusValue.Value == "ARRIVE" or MilitaryForceStatusValue.Value == "DEPART" then
-			if CheckpointSystemStatusValue.Value == "CLOSED" then
+			if CheckpointSystemStatusValue.Value == "CLOSED" and CanEvent == true then
 				CheckpointSystemStatusValue.Value = "OPEN"
+				CanEvent = false
 				AlarmSound:Play()
 				CargoDoorUpLamp.BrickColor = BrickColor.new("Really black")
 				CargoDoorDownLamp.BrickColor = BrickColor.new("Neon orange")
@@ -132,12 +137,19 @@ function DoDoor()
 end
 function DoCheck()
 	if HMMWV1StatusValue.Value == "ARRIVED" and HMMWV2StatusValue.Value == "ARRIVED" and MilitaryTruck1StatusValue.Value == "ARRIVED" and MilitaryTruck2StatusValue.Value == "ARRIVED" then
+		wait(0.5)
 		MilitaryForceStatusValue.Value = "ARRIVED"
+		CanEvent = true
 	elseif HMMWV1StatusValue.Value == "DEPARTED" and HMMWV2StatusValue.Value == "DEPARTED" and MilitaryTruck1StatusValue.Value == "DEPARTED" and MilitaryTruck2StatusValue.Value == "DEPARTED" then
+		wait(0.5)
 		MilitaryForceStatusValue.Value = "DEPARTED"
+		CargoDoorUpLamp.BrickColor = BrickColor.new("Lime green")
+		CanEvent = true
 	elseif HMMWV1StatusValue.Value == "ARRIVE" or HMMWV2StatusValue.Value == "ARRIVE" or MilitaryTruck1StatusValue.Value == "ARRIVE" or MilitaryTruck2StatusValue.Value == "ARRIVE" then
+		wait(0.5)
 		MilitaryForceStatusValue.Value = "ARRIVE"
 	elseif HMMWV1StatusValue.Value == "DEPART" or HMMWV2StatusValue.Value == "DEPART" or MilitaryTruck1StatusValue.Value == "DEPART" or MilitaryTruck2StatusValue.Value == "DEPART" then
+		wait(0.5)
 		MilitaryForceStatusValue.Value = "DEPART"
 	end
 end
@@ -160,5 +172,8 @@ CheckpointSystemStatusValue.Changed:Connect(function()
 	DoDoor()
 end)
 MilitaryForceControlValue.Changed:Connect(function()
+	DoDoor()
+end)
+MilitaryForceStatusValue.Changed:Connect(function()
 	DoDoor()
 end)
