@@ -201,7 +201,7 @@ function DoAction()
 		for _, Item in pairs(Benches:GetDescendants()) do
 			if Item:IsA("Seat") then Item.CanTouch = true end
 		end
-	elseif StatusValue.Value == "ARRIVED" and MilitaryForceStatusValue.Value ==  and MilitaryForceControlValue.Value == "CALL OFF" then
+	elseif StatusValue.Value == "ARRIVED" and MilitaryForceControlValue.Value == "CALL OFF" then
 		StatusValue.Value = "DEPART"
 		RampClose:Play()
 		wait(1.5)
