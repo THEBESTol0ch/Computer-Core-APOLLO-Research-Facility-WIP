@@ -7,14 +7,17 @@ local Humanoid = Character:WaitForChild("Humanoid")
 --
 
 -- Earthquake
+local FacilityDestructionEffectValue = workspace.FacilityDestructionEffect.CPU.Values.FacilityDestructionEffectValue
 local CameraShaker = require(game.ReplicatedStorage.CameraShaker)
 local camera = game.Workspace.CurrentCamera
 local camShake = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
 	camera.CFrame = camera.CFrame * shakeCf
 end)
 camShake:Start()
-game.ReplicatedStorage.CameraShakeEvent.OnClientEvent:Connect(function()
-	camShake:Shake(CameraShaker.Presets.Earthquake)
+FacilityDestructionEffectValue.Changed:Connect(function()
+	if FacilityDestructionEffectValue.Value == "SHAKING" then
+		camShake:Shake(CameraShaker.Presets.Earthquake)
+	end
 end)
 --
 
