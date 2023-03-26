@@ -4,7 +4,7 @@ local Trigger = script.Parent.Parent.Parent.Trigger
 --
 
 -- Values
-local AccessGrantedValue = script.Parent.Parent.Parent.Parent.Door.CPU.Values.AccessGrantedValue
+local AccessGrantedValue = script.Parent.Parent.Parent.Parent.CPU.Values.AccessGrantedValue
 --
 
 -- Items
