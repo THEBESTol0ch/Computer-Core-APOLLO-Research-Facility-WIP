@@ -1,5 +1,10 @@
-local DustyHUD = script.Parent.DustyHUD
+-- Values
 local FacilityDestructionEffectValue = workspace.FacilityDestructionEffect.CPU.Values.FacilityDestructionEffectValue
+--
+
+-- Items
+local DustyHUD = script.Parent.DustyHUD
+--
 
 FacilityDestructionEffectValue.Changed:Connect(function()
 	if FacilityDestructionEffectValue.Value == "SHAKING" then
