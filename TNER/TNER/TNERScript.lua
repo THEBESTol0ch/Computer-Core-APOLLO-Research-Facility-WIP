@@ -236,7 +236,7 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 					wait(1)
 					DoReactor("START")
 				end
-			end	
+			end
 		end
 	elseif TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" or TNERStatusValue.Value == "OVERLOAD" then
 		if OverloadStopUnsuccessSound.IsPlaying == false then
