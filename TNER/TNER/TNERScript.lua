@@ -18,6 +18,7 @@ local TNEROverloadStartUpTime = Values.TNEROverloadStartUpTime
 local TNEROverloadDelayTime = Values.TNEROverloadDelayTime
 local TNEROverloadStopUnsuccessStartUpTime = Values.TNEROverloadStopUnsuccessStartUpTime
 local MinFuelCapacityValue = Values.MinFuelCapacityValue
+local ShakeForceValue = Values.ShakeForceValue
 
 local AllFuelCellsInjectedValue = workspace.TNERFuelSystem.CPU.Values.AllFuelCellsInjectedValue
 local FuelCapacityValue = workspace.TNERFuelSystem.CPU.Values.FuelCapacityValue
@@ -92,6 +93,22 @@ local OverloadLoopSoundAnimationSettings = TweenInfo.new(
 	false,
 	0
 )
+local ForceIncreaseAnimationSettings = TweenInfo.new(
+	65.2,
+	Enum.EasingStyle.Sine,
+	Enum.EasingDirection.In,
+	0,
+	false,
+	0
+)
+local ForceDecreaseAnimationSettings = TweenInfo.new(
+	9,
+	Enum.EasingStyle.Sine,
+	Enum.EasingDirection.Out,
+	0,
+	false,
+	0
+)
 
 -- Functions
 function DoMonitoring(Text, Color)
@@ -144,6 +161,7 @@ function DoOverloadSequence()
 		if TNERStatusValue.Value == "OVERLOAD" then OverloadProcessSound:Stop() end
 		if TNERStatusValue.Value == "OVERLOAD" then OverloadStartSound:Play() end
 		if TNERStatusValue.Value == "OVERLOAD" then wait(TNEROverloadStartUpTime.Value) end
+		if TNERStatusValue.Value == "OVERLOAD" then TweenService:Create(ShakeForceValue, ForceIncreaseAnimationSettings, { Value = 100 }):Play() end
 		if TNERStatusValue.Value == "OVERLOAD" then TemperatureMultiplier = 16 end
 		if TNERStatusValue.Value == "OVERLOAD" then FlywheelRotationSpeedValue.Value = 40 end
 		if TNERStatusValue.Value == "OVERLOAD" then FuelConsumtionMultiplier = OverloadStartSound.TimeLength / FuelCapacityValue.Value + 1 end
@@ -182,6 +200,7 @@ function DoReactor(Mode)
 		FuelConsumtionMultiplier = 3.3
 		TemperatureMultiplier = 8
 		OverloadLoopSound.Volume = 0
+		TweenService:Create(ShakeForceValue, ForceDecreaseAnimationSettings, { Value = 0 }):Play()
 		ShutDownSound1:Play()
 		FlywheelsRotationSound:Stop()
 		FlywheelsRotationStopSound:Play()
@@ -204,6 +223,7 @@ function DoReactor(Mode)
 		if TNERFuse5StatusValue.Value == "OFFLINE" and OverloadStopUnsuccessSound.IsPlaying == true then TNERStatusValue.Value = "UNSTABLE" end
 		if TNERFuse5StatusValue.Value == "OFFLINE" and OverloadStopUnsuccessSound.IsPlaying == true then DoMonitoring(TNERStatusValue.Value, Color3.new(1, 0, 0)) end
 		if TNERFuse5StatusValue.Value == "OFFLINE" and OverloadStopUnsuccessSound.IsPlaying == true then wait(56) end
+		if TNERFuse5StatusValue.Value == "OFFLINE" and OverloadStopUnsuccessSound.IsPlaying == true then TNERStatusValue.Value = "EXPLODE" end
 	end
 end
 --
@@ -219,8 +239,10 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 			end	
 		end
 	elseif TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "UNSTABLE" or TNERStatusValue.Value == "OVERLOAD" then
-		wait(1)
-		DoReactor("STOP")
+		if OverloadStopUnsuccessSound.IsPlaying == false then
+			wait(1)
+			DoReactor("STOP")
+		end
 	end
 end)
 
