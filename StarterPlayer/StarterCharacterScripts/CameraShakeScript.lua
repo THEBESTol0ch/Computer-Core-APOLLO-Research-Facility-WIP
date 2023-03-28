@@ -29,79 +29,50 @@ local OverloadLoopSound = workspace.TNER.SoundEmitter.OverloadLoopSound
 local OverloadStopSound = workspace.TNER.SoundEmitter.OverloadStopSound
 local OverloadStopUnsuccessSound = workspace.TNER.SoundEmitter.OverloadStopUnsuccessSound
 local TNEROverloadStartUpTime = workspace.TNER.CPU.Values.TNEROverloadStartUpTime
+local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
+local ShakeForceValue = workspace.TNER.CPU.Values.ShakeForceValue
 --
 
 -- Logic
-local ShakeForceValue = game.ReplicatedStorage.GameValues.ShakeForceValue
 local PlayerInShakeZone = false
-local Shaking = false
 --
 
-local ForceIncreaseAnimationSettings = TweenInfo.new(
-	65.2,
-	Enum.EasingStyle.Sine,
-	Enum.EasingDirection.In,
-	0,
-	false,
-	0
-)
-local ForceDecreaseAnimationSettings = TweenInfo.new(
-	9,
-	Enum.EasingStyle.Sine,
-	Enum.EasingDirection.Out,
-	0,
-	false,
-	0
-)
-
 -- Functions
-function ShakeCamera(Force)
-	if PlayerInShakeZone and Shaking == false then
-		Shaking = true
+function ShakeCamera()
+	if PlayerInShakeZone then
+		print("Shake Started")
 		repeat
-			local XOffset = math.random(-Force, Force) / 1000
-			local YOffset = math.random(-Force, Force) / 1000
-			local ZOffset = math.random(-Force, Force) / 1000
+			local XOffset = math.random(-ShakeForceValue.Value, ShakeForceValue.Value) / 1000
+			local YOffset = math.random(-ShakeForceValue.Value, ShakeForceValue.Value) / 1000
+			local ZOffset = math.random(-ShakeForceValue.Value, ShakeForceValue.Value) / 1000
 			Humanoid.CameraOffset = Vector3.new(XOffset, YOffset, ZOffset)
 			wait(0.02)
 			Humanoid.CameraOffset = Vector3.new(0, 0, 0)
-		until PlayerInShakeZone == false
-		Shaking = false
+		until PlayerInShakeZone == false or ShakeForceValue.Value == 0
+		print("Shake Ended")
+	end
+end
+function DoCheck()
+	if TNERStatusValue.Value == "OVERLOAD" then
+		ShakeCamera()
 	end
 end
 --
 
-OverloadStartSound.Changed:Connect(function()
-	if OverloadStartSound.IsPlaying == true then
-		wait(TNEROverloadStartUpTime.Value)
-		TweenService:Create(ShakeForceValue, ForceIncreaseAnimationSettings, { Value = 100 }):Play()
-	end
-end)
-
-OverloadStopSound.Changed:Connect(function()
-	if OverloadStopSound.IsPlaying == true then
-		wait(TNEROverloadStartUpTime.Value)
-		TweenService:Create(ShakeForceValue, ForceDecreaseAnimationSettings, { Value = 0 }):Play()
-	end
-end)
-
-OverloadStopUnsuccessSound.Changed:Connect(function()
-	if OverloadStopUnsuccessSound.IsPlaying == true then
-		wait(TNEROverloadStartUpTime.Value)
-		TweenService:Create(ShakeForceValue, ForceDecreaseAnimationSettings, { Value = 0 }):Play()
-	end
-end)
-
 TNERShakeInTrigger.Touched:Connect(function(Hit)
 	local PlayerCheck = Players:GetPlayerFromCharacter(Hit.Parent)
-	if PlayerCheck and PlayerCheck == Player then
+	if PlayerCheck == Player then
 		PlayerInShakeZone = true
-		ShakeCamera(ShakeForceValue.Value)
+		DoCheck()
 	end
 end)
 TNERShakeOutTrigger.Touched:Connect(function(Hit)
 	local PlayerCheck = Players:GetPlayerFromCharacter(Hit.Parent)
-	if PlayerCheck and PlayerCheck == Player then
+	if PlayerCheck == Player then
 		PlayerInShakeZone = false
 	end
+end)
+
+TNERStatusValue.Changed:Connect(function()
+	DoCheck()
 end)
