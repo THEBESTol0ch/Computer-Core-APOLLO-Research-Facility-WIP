@@ -79,7 +79,7 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 	LeverUp:Play()
 	Handle2Up:Play()
 	wait(0.5)
-	if TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "COOLING" or TNERStatusValue.Value == "MAINTENANCE MODE" or TNERFuse5StatusValue.Value == "OFFLINE" then
+	if TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "COOLING" or TNERStatusValue.Value == "MAINTENANCE MODE" then
 		Trigger.ClickDetector.MaxActivationDistance = 10
 	end
 end)
