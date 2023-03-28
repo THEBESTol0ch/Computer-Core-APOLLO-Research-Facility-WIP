@@ -21,7 +21,7 @@ local CreditsTab = script.Parent.Menu.CreditsTab
 --
 
 -- Values
-local EndingScreenStatusValue = workspace.EndingScreenStatusValue
+local EndGameControlValue = game.ReplicatedStorage.GameValues.EndGameControlValue
 --
 
 -- Logic
@@ -29,7 +29,7 @@ local MenuOpened = false
 --
 
 -- Functions
-local function HideAllTabs()
+function HideAllTabs()
 	Title.Text = ""
 	Logo.Visible = false
 	TeamsTab.Visible = false
@@ -37,8 +37,7 @@ local function HideAllTabs()
 	DevLogTab.Visible = false
 	CreditsTab.Visible = false
 end
-
-local function OpenMenu()
+function OpenMenu()
 	if MenuOpened == false then
 		Menu.Visible = true
 		MenuOpened = true
@@ -52,8 +51,7 @@ local function OpenMenu()
 		Menu.Visible = false
 	end
 end
-
-local function CloseMenu()
+function CloseMenu()
 	if MenuOpened == false then
 		Menu.Visible = true
 		MenuOpened = true
@@ -105,8 +103,8 @@ CreditsButton.MouseButton1Down:Connect(function()
 	Title.Text = "CREDITS"
 end)
 
-EndingScreenStatusValue.Changed:Connect(function()
-	if EndingScreenStatusValue.Value == 1 then
+EndGameControlValue.Changed:Connect(function()
+	if EndGameControlValue.Value == "END" then
 		MenuButton.Visible = false
 	end
 end)
