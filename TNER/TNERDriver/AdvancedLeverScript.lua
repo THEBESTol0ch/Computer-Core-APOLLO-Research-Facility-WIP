@@ -20,6 +20,7 @@ local HandlePos = script.Parent.HandlePos
 
 -- Sounds
 local LeverSound = script.Parent.SoundEmitter.LeverSound
+local OverloadStopUnsuccessSound = workspace.TNER.SoundEmitter.OverloadStopUnsuccessSound
 --
 
 -- Functions
@@ -80,6 +81,8 @@ Trigger.ClickDetector.MouseClick:Connect(function()
 	Handle2Up:Play()
 	wait(0.5)
 	if TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "COOLING" or TNERStatusValue.Value == "MAINTENANCE MODE" then
+		Trigger.ClickDetector.MaxActivationDistance = 10
+	elseif OverloadStopUnsuccessSound.IsPlaying == true then
 		Trigger.ClickDetector.MaxActivationDistance = 10
 	end
 end)
