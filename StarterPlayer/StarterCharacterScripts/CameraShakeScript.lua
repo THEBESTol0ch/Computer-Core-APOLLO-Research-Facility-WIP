@@ -26,12 +26,13 @@ local TNERShakeInTrigger = workspace.Triggers.TNERTriggers.TNERShakeInTrigger
 local TNERShakeOutTrigger = workspace.Triggers.TNERTriggers.TNERShakeOutTrigger
 local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 local ShakeForceValue = workspace.TNER.CPU.Values.ShakeForceValue
+local TNEROverloadDelayTime = workspace.TNER.CPU.Values.TNEROverloadDelayTime
+local TNEROverloadStartUpTime = workspace.TNER.CPU.Values.TNEROverloadStartUpTime
 local InTNERShakeZoneValue = script.Parent:WaitForChild("InTNERShakeZoneValue")
 --
 
 -- Functions
 function ShakeCamera()
-	print("Shake Started")
 	repeat
 		local XOffset = math.random(-ShakeForceValue.Value, ShakeForceValue.Value) / 1000
 		local YOffset = math.random(-ShakeForceValue.Value, ShakeForceValue.Value) / 1000
@@ -40,7 +41,6 @@ function ShakeCamera()
 		wait(0.02)
 		Humanoid.CameraOffset = Vector3.new(0, 0, 0)
 	until InTNERShakeZoneValue.Value == false or ShakeForceValue.Value == 0
-	print("Shake Ended")
 end
 function DoCheck()
 	if TNERStatusValue.Value == "OVERLOAD" and InTNERShakeZoneValue.Value == true then
@@ -63,6 +63,7 @@ TNERShakeOutTrigger.Touched:Connect(function(Hit)
 end)
 
 TNERStatusValue.Changed:Connect(function()
+	wait(TNEROverloadDelayTime.Value + TNEROverloadStartUpTime.Value + 2)
 	DoCheck()
 end)
 InTNERShakeZoneValue.Changed:Connect(function()
