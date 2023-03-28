@@ -1,8 +1,12 @@
+-- Control
 local TweenService = game:GetService("TweenService")
+--
 
-local EndingScreenControlValue = workspace.EndingScreenControlValue
-local EndingScreenStatusValue = workspace.EndingScreenStatusValue
+-- Values
+local EndGameControlValue = game.ReplicatedStorage.GameValues.EndGameControlValue
+--
 
+-- Items
 local Frame = script.Parent.Frame
 local Stator = script.Parent.Frame.TweenParts.Stator
 local Rotor = script.Parent.Frame.TweenParts.Rotor
@@ -12,6 +16,7 @@ local Rectangle = script.Parent.Frame.TweenParts.Rectangle
 local RectangleBG = script.Parent.Frame.TweenParts.RectangleBG
 local VersionLabel = script.Parent.Frame.TweenParts.VersionLabel
 local Titles = script.Parent.Frame.TweenParts.Titles
+--
 
 local FrameAnimationSettings = TweenInfo.new(
 	3,
@@ -28,9 +33,8 @@ local FrameProperties = {
 
 local FrameStart = TweenService:Create(Frame, FrameAnimationSettings, FrameProperties)
 
-EndingScreenStatusValue.Changed:Connect(function()
-	if EndingScreenStatusValue.Value == 1 then
-		EndingScreenStatusValue.Value = 1
+EndGameControlValue.Changed:Connect(function()
+	if EndGameControlValue.Value == "END" then
 		Frame.Visible = true
 		game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
 		FrameStart:Play()
@@ -50,7 +54,7 @@ EndingScreenStatusValue.Changed:Connect(function()
 		CircleBG:TweenPosition(UDim2.new(0.497, 0, 0.269, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 2, false)
 		RectangleBG.BackgroundTransparency = 0
 		wait(2)
-		Titles:TweenPosition(UDim2.new(0.5, 0, -1.8, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 30, false)
+		Titles:TweenPosition(UDim2.new(0.5, 0, -2, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 30, false)
 		wait(5)
 		Rectangle:TweenPosition(UDim2.new(0.495, 0, 0.479, 0), Enum.EasingDirection.InOut, Enum.EasingStyle.Sine, 1, false)
 		wait(1)
