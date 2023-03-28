@@ -24,36 +24,26 @@ end)
 -- TNER
 local TNERShakeInTrigger = workspace.Triggers.TNERTriggers.TNERShakeInTrigger
 local TNERShakeOutTrigger = workspace.Triggers.TNERTriggers.TNERShakeOutTrigger
-local OverloadStartSound = workspace.TNER.SoundEmitter.OverloadStartSound
-local OverloadLoopSound = workspace.TNER.SoundEmitter.OverloadLoopSound
-local OverloadStopSound = workspace.TNER.SoundEmitter.OverloadStopSound
-local OverloadStopUnsuccessSound = workspace.TNER.SoundEmitter.OverloadStopUnsuccessSound
-local TNEROverloadStartUpTime = workspace.TNER.CPU.Values.TNEROverloadStartUpTime
 local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
 local ShakeForceValue = workspace.TNER.CPU.Values.ShakeForceValue
---
-
--- Logic
-local PlayerInShakeZone = false
+local InTNERShakeZoneValue = script.Parent:WaitForChild("InTNERShakeZoneValue")
 --
 
 -- Functions
 function ShakeCamera()
-	if PlayerInShakeZone then
-		print("Shake Started")
-		repeat
-			local XOffset = math.random(-ShakeForceValue.Value, ShakeForceValue.Value) / 1000
-			local YOffset = math.random(-ShakeForceValue.Value, ShakeForceValue.Value) / 1000
-			local ZOffset = math.random(-ShakeForceValue.Value, ShakeForceValue.Value) / 1000
-			Humanoid.CameraOffset = Vector3.new(XOffset, YOffset, ZOffset)
-			wait(0.02)
-			Humanoid.CameraOffset = Vector3.new(0, 0, 0)
-		until PlayerInShakeZone == false or ShakeForceValue.Value == 0
-		print("Shake Ended")
-	end
+	print("Shake Started")
+	repeat
+		local XOffset = math.random(-ShakeForceValue.Value, ShakeForceValue.Value) / 1000
+		local YOffset = math.random(-ShakeForceValue.Value, ShakeForceValue.Value) / 1000
+		local ZOffset = math.random(-ShakeForceValue.Value, ShakeForceValue.Value) / 1000
+		Humanoid.CameraOffset = Vector3.new(XOffset, YOffset, ZOffset)
+		wait(0.02)
+		Humanoid.CameraOffset = Vector3.new(0, 0, 0)
+	until InTNERShakeZoneValue.Value == false or ShakeForceValue.Value == 0
+	print("Shake Ended")
 end
 function DoCheck()
-	if TNERStatusValue.Value == "OVERLOAD" then
+	if TNERStatusValue.Value == "OVERLOAD" and InTNERShakeZoneValue.Value == true then
 		ShakeCamera()
 	end
 end
@@ -62,17 +52,19 @@ end
 TNERShakeInTrigger.Touched:Connect(function(Hit)
 	local PlayerCheck = Players:GetPlayerFromCharacter(Hit.Parent)
 	if PlayerCheck == Player then
-		PlayerInShakeZone = true
-		DoCheck()
+		InTNERShakeZoneValue.Value = true
 	end
 end)
 TNERShakeOutTrigger.Touched:Connect(function(Hit)
 	local PlayerCheck = Players:GetPlayerFromCharacter(Hit.Parent)
 	if PlayerCheck == Player then
-		PlayerInShakeZone = false
+		InTNERShakeZoneValue.Value = false
 	end
 end)
 
 TNERStatusValue.Changed:Connect(function()
+	DoCheck()
+end)
+InTNERShakeZoneValue.Changed:Connect(function()
 	DoCheck()
 end)
