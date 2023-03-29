@@ -180,19 +180,19 @@ game.Players.PlayerAdded:Connect(function(Player)
 			end
 			
 			if Message == ":A, Give Me A. Keycard" then
-				local AKeycard = game.ReplicatedStorage["A. Keycard"]
+				local AKeycard = game.ReplicatedStorage.A_KeyCard
 				local Backpack = Player.Backpack
 				local AKeycardClone = AKeycard:Clone()
 				AKeycardClone.Parent = Backpack
 			end
 			if Message == ":A, Give Me E. Keycard" then
-				local EKeycard = game.ReplicatedStorage["E. Keycard"]
+				local EKeycard = game.ReplicatedStorage.E_KeyCard
 				local Backpack = Player.Backpack
 				local EKeycardClone = EKeycard:Clone()
 				EKeycardClone.Parent = Backpack
 			end
 			if Message == ":A, Give Me S. O. Keycard" then
-				local SOKeycard = game.ReplicatedStorage["S.O. Keycard"]
+				local SOKeycard = game.ReplicatedStorage.SO_KeyCard
 				local Backpack = Player.Backpack
 				local SOKeycardClone = SOKeycard:Clone()
 				SOKeycardClone.Parent = Backpack
