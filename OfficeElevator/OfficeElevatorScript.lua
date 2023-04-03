@@ -6,6 +6,7 @@ local TweenService = game:GetService("TweenService")
 local ElevatorCurrentFloorValue = script.Parent.Parent.Values.ElevatorCurrentFloorValue
 local ElevatorTargetFloorValue = script.Parent.Parent.Values.ElevatorTargetFloorValue
 local ElevatorStatusValue = script.Parent.Parent.Values.ElevatorStatusValue
+local ElevatorDoorControlValue = script.Parent.Parent.Values.ElevatorDoorControlValue
 --
 
 -- Items
@@ -20,6 +21,8 @@ local ElevatorDoorSound = script.Parent.Parent.Parent.Elevator.SoundEmitter.Elev
 
 -- Logic
 local FloorPassTime = 5
+local CurrentPath = script.Parent.Parent.Parent["Portal_"..ElevatorCurrentFloorValue.Value]
+local TargetPath = script.Parent.Parent.Parent["Portal_"..ElevatorTargetFloorValue.Value]
 --
 
 local DoorAnimationSettings = TweenInfo.new(
@@ -59,8 +62,8 @@ end
 
 ElevatorTargetFloorValue.Changed:Connect(function()
 	local PassTime = math.abs((ElevatorTargetFloorValue.Value - ElevatorCurrentFloorValue.Value) * FloorPassTime)
-	local CurrentPath = script.Parent.Parent.Parent["Portal_"..ElevatorCurrentFloorValue.Value]
-	local TargetPath = script.Parent.Parent.Parent["Portal_"..ElevatorTargetFloorValue.Value]
+	CurrentPath = script.Parent.Parent.Parent["Portal_"..ElevatorCurrentFloorValue.Value]
+	TargetPath = script.Parent.Parent.Parent["Portal_"..ElevatorTargetFloorValue.Value]
 	local ElevatorAnimationSettings = TweenInfo.new(
 		PassTime,
 		Enum.EasingStyle.Sine,
@@ -88,4 +91,16 @@ ElevatorTargetFloorValue.Changed:Connect(function()
 	DoDoors("OPEN", CurrentPath)
 	if ElevatorStatusValue.Value == "OPENED" then wait(10) end
 	if ElevatorStatusValue.Value == "OPENED" then DoDoors("CLOSE", CurrentPath) end
+end)
+
+ElevatorDoorControlValue.Changed:Connect(function()
+	if ElevatorDoorControlValue.Value == "OPEN" then
+		ElevatorDoorControlValue.Value = ""
+		DoDoors("OPEN", CurrentPath)
+		if ElevatorStatusValue.Value == "OPENED" then wait(10) end
+		if ElevatorStatusValue.Value == "OPENED" then DoDoors("CLOSE", CurrentPath) end
+	elseif ElevatorDoorControlValue.Value == "CLOSE" then
+		ElevatorDoorControlValue.Value = ""
+		DoDoors("CLOSE", CurrentPath)
+	end
 end)
