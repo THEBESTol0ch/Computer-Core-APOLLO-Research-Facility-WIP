@@ -26,6 +26,9 @@ local SoundAnimationSettings = TweenInfo.new(
 	false,
 	0
 )
+local TeleportData = {
+	TeleportService:ReserveServer(PlaceID)
+}
 
 -- Functions
 function EndGame()
@@ -37,7 +40,8 @@ function EndGame()
 		end
 	end
 	wait(50)
-	TeleportService:TeleportAsync(7237780847, Players:GetPlayers(), { TeleportService:ReserveServer(PlaceID) })
+	local PlayerList = Players:GetPlayers()
+	TeleportService:TeleportPartyAsync(PlaceID, PlayerList, TeleportData)
 end
 --
 
