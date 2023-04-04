@@ -4,6 +4,10 @@ local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 --
 
+-- Values
+local EndGameControlValue = game.ReplicatedStorage.GameValues.EndGameControlValue
+--
+
 -- Triggers
 local SurfaceAmbientSound_Trigger1 = workspace.Triggers.SurfaceAmbientSoundTriggers.SurfaceAmbientSound_Trigger1
 local SurfaceAmbientSound_Trigger2 = workspace.Triggers.SurfaceAmbientSoundTriggers.SurfaceAmbientSound_Trigger2
@@ -97,10 +101,9 @@ function DoCheck(Hit, Ambient, Volume)
 end
 --
 
-TransitStationAmbientSound.Changed:Connect(function()
-	if TransitStationAmbientSound.Volume > 0 then
-		TweenService:Create(TransitSystemPowerDownAmbientSound, SoundAnimationSettings, { Volume = TransitSystemPowerDownAmbientSound_Volume }):Play()
-		TweenService:Create(TransitSystemPowerUpAmbientSound, SoundAnimationSettings, { Volume = TransitSystemPowerUpAmbientSound_Volume }):Play()
+EndGameControlValue.Changed:Connect(function()
+	if EndGameControlValue.Value == "END" then
+		StopSound()
 	end
 end)
 
