@@ -85,7 +85,7 @@ function StopSound()
 end
 function DoCheck(Hit, Ambient, Volume)
 	local PlayerCheck = Players:GetPlayerFromCharacter(Hit.Parent)
-	if PlayerCheck == Player then
+	if PlayerCheck == Player and not (EndGameControlValue.Value == "END") then
 		if Ambient.Volume == 0 then
 			StopSound()
 			TweenService:Create(Ambient, SoundAnimationSettings, { Volume = Volume }):Play()
