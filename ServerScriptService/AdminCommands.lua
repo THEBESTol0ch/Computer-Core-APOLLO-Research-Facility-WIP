@@ -73,28 +73,28 @@ game.Players.PlayerAdded:Connect(function(Player)
 			end
 			
 			if Message == ":A, Turn On Surface Alarm" then
-				game.SoundService.BMAirRaidAmbientSound:Play()
+				game.SoundService.Ambients.BMAirRaidAmbientSound:Play()
 			end
 			if Message == ":A, Turn Off Surface Alarm" then
-				game.SoundService.BMAirRaidAmbientSound:Stop()
+				game.SoundService.Ambients.BMAirRaidAmbientSound:Stop()
 			end
 			if Message == ":A, Turn On Facility Alarm 1" then
-				game.SoundService.FacilityAlarm1:Play()
+				game.SoundService.Ambients.FacilityAlarmAmbientSound1:Play()
 			end
 			if Message == ":A, Turn Off Facility Alarm 1" then
-				game.SoundService.FacilityAlarm1:Stop()
+				game.SoundService.Ambients.FacilityAlarmAmbientSound1:Stop()
 			end
 			if Message == ":A, Turn On Facility Alarm 2" then
-				game.SoundService.FacilityAlarm2:Play()
+				game.SoundService.Ambients.FacilityAlarmAmbientSound2:Play()
 			end
 			if Message == ":A, Turn Off Facility Alarm 2" then
-				game.SoundService.FacilityAlarm2:Stop()
+				game.SoundService.Ambients.FacilityAlarmAmbientSound2:Stop()
 			end
 			if Message == ":A, Turn On Facility Alarm 3" then
-				game.SoundService.FacilityAlarm3:Play()
+				game.SoundService.Ambients.FacilityAlarmAmbientSound3:Play()
 			end
 			if Message == ":A, Turn Off Facility Alarm 3" then
-				game.SoundService.FacilityAlarm3:Stop()
+				game.SoundService.Ambients.FacilityAlarmAmbientSound3:Stop()
 			end
 			if Message == ":A, Turn On Facility Emergency Lamps" then
 				workspace.FacilityLight.CPU.Values.EmergencyLightingControlValue.Value = "ON"
@@ -114,15 +114,15 @@ game.Players.PlayerAdded:Connect(function(Player)
 				game.ReplicatedStorage.GameValues.BlackControlValue.Value = "OUT"
 				game.ReplicatedStorage.GameValues.BlastDoorsControlValue.Value = "CLOSE"
 				wait(3)
-				game.SoundService.FacilityAlarm2:Play()
-				game.SoundService.FacilityAlarm3:Play()
+				game.SoundService.Ambients.FacilityAlarmAmbientSound2:Play()
+				game.SoundService.Ambients.FacilityAlarmAmbientSound3:Play()
 				workspace.FacilityLight.CPU.Values.EmergencyLightingControlValue.Value = "ON"
 			end
 			if Message == ":A, Deactivate Full Facility Containment Lockdown" then
 				game.ReplicatedStorage.GameValues.BlackControlValue.Value = "IN"
 				game.ReplicatedStorage.GameValues.BlastDoorsControlValue.Value = "OPEN"
-				game.SoundService.FacilityAlarm2:Stop()
-				game.SoundService.FacilityAlarm3:Stop()
+				game.SoundService.Ambients.FacilityAlarmAmbientSound2:Stop()
+				game.SoundService.Ambients.FacilityAlarmAmbientSound3:Stop()
 				workspace.FacilityLight.CPU.Values.EmergencyLightingControlValue.Value = "OFF"
 			end
 			
