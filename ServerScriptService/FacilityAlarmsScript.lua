@@ -3,18 +3,18 @@ local FacilitySystemsHackDevicesStatusValue = workspace.FacilitySystemsHackDevic
 --
 
 -- Sounds
-local FacilityAlarm1 = game.SoundService.FacilityAlarm1
-local FacilityAlarm2 = game.SoundService.FacilityAlarm2
-local FacilityAlarm3 = game.SoundService.FacilityAlarm3
-local BMAirRaidAmbientSound = game.SoundService.BMAirRaidAmbientSound
+local FacilityAlarmAmbientSound1 = game.SoundService.Ambients.FacilityAlarmAmbientSound1
+local FacilityAlarmAmbientSound2 = game.SoundService.Ambients.FacilityAlarmAmbientSound2
+local FacilityAlarmAmbientSound3 = game.SoundService.Ambients.FacilityAlarmAmbientSound3
+local BMAirRaidAmbientSound = game.SoundService.Ambients.BMAirRaidAmbientSound
 --
 
 FacilitySystemsHackDevicesStatusValue.Changed:Connect(function()
 	if FacilitySystemsHackDevicesStatusValue.Value == "HACK" then
 		wait(2)
-		FacilityAlarm3:Play()
+		FacilityAlarmAmbientSound3:Play()
 	elseif FacilitySystemsHackDevicesStatusValue.Value == "CLEAR" then
 		wait(2)
-		FacilityAlarm3:Stop()
+		FacilityAlarmAmbientSound3:Stop()
 	end
 end)
