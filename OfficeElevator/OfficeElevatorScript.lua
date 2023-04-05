@@ -11,6 +11,7 @@ local ElevatorDoorControlValue = script.Parent.Parent.Values.ElevatorDoorControl
 
 -- Items
 local Elevator = script.Parent.Parent.Parent.Elevator
+local ElevatorFloorIndicator = Elevator.FloorIndicator.SurfaceGui.TextLabel
 local WeldTrigger = Elevator.WeldTrigger
 --
 
@@ -84,8 +85,8 @@ ElevatorTargetFloorValue.Changed:Connect(function()
 	WeldTrigger.CanTouch = false
 	ElevatorCurrentFloorValue.Value = ElevatorTargetFloorValue.Value
 	CurrentPath = script.Parent.Parent.Parent["Portal_"..ElevatorCurrentFloorValue.Value]
-	Elevator.FloorIndicator.SurfaceGui.TextLabel.Text = ElevatorCurrentFloorValue.Value
 	ElevatorBeepSound:Play()
+	ElevatorFloorIndicator.Text = ElevatorCurrentFloorValue.Value
 	ElevatorStatusValue.Value = "ARRIVED"
 	wait(1)
 	DoDoors("OPEN", CurrentPath)
