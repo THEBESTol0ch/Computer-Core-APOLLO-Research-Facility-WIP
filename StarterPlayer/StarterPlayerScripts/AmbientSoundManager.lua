@@ -6,6 +6,7 @@ local Player = Players.LocalPlayer
 
 -- Values
 local EndGameControlValue = game.ReplicatedStorage.GameValues.EndGameControlValue
+local FacilityTransitSystemStatusValue = workspace.FacilityTransitSystem.CPU.Values.FacilityTransitSystemStatusValue
 --
 
 -- Triggers
@@ -95,6 +96,12 @@ function DoCheck(Hit, Ambient, Volume)
 				TweenService:Create(FacilityAlarmAmbientSound1, SoundAnimationSettings, { Volume = FacilityAlarmAmbientSound1_Volume }):Play()
 				TweenService:Create(FacilityAlarmAmbientSound2, SoundAnimationSettings, { Volume = FacilityAlarmAmbientSound2_Volume }):Play()
 				TweenService:Create(FacilityAlarmAmbientSound3, SoundAnimationSettings, { Volume = FacilityAlarmAmbientSound3_Volume }):Play()
+			end
+			if Ambient.Name == "TransitStationAmbientSound" then
+				TweenService:Create(TransitStationAmbientSound, SoundAnimationSettings, { Volume = TransitStationAmbientSound_Volume }):Play()
+				TweenService:Create(TransitStationPowerOffAmbientSound, SoundAnimationSettings, { Volume = TransitStationPowerOffAmbientSound_Volume }):Play()
+				TweenService:Create(TransitSystemPowerUpAmbientSound, SoundAnimationSettings, { Volume = TransitSystemPowerUpAmbientSound_Volume }):Play()
+				TweenService:Create(TransitSystemPowerDownAmbientSound, SoundAnimationSettings, { Volume = TransitSystemPowerDownAmbientSound_Volume }):Play()
 			end
 		end
 	end
