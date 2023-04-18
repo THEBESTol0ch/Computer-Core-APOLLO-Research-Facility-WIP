@@ -432,7 +432,6 @@ function DoTransitDoorsEmergencyStop(Mode)
 end
 
 function StandardSequence(EmergencyStopped)
-	warn("Sequence Started!")
 	local CurrentPath = script.Parent.Parent.Parent["Station_"..TransitCurrentStationValue.Value]
 	local TargetPath = script.Parent.Parent.Parent["Station_"..TransitTargetStationValue.Value]
 	if EmergencyStopped == false then
@@ -470,7 +469,6 @@ function StandardSequence(EmergencyStopped)
 	wait(2.7)
 	if CanEvent == true and FacilityTransitSystemStatusValue.Value == "ONLINE" then
 		EmergencyStopTrigger.ClickDetector.MaxActivationDistance = 10
-		warn("IM DONE")
 	end
 	TargetPath.TransitPositions.TransitPos.TransitStationArrivingSound:Play()
 	wait(2)
@@ -609,7 +607,6 @@ function DoCheck()
 			FrontStationGateLamps1.BrickColor = BrickColor.new("Bright green")
 			FrontStationGateLamps2.BrickColor = BrickColor.new("Bright green")
 			TransitTargetStationValue.Value = BufferTargetStationValue
-			warn("ITS ME 1")
 			StandardSequence(true)
 		end
 	end
@@ -618,7 +615,6 @@ end
 
 TransitTargetStationValue.Changed:Connect(function()
 	if TransitStatusValue.Value == "OPENED" then
-		warn("ITS ME 2")
 		StandardSequence(false)
 	end 
 end)
@@ -702,7 +698,6 @@ EmergencyStopTrigger.ClickDetector.MouseClick:Connect(function()
 		DoStationEmergencyLamps("OFF", BackStationEmergencyStopLamps)
 		wait(7)
 		DoTransitLamps("ON")
-		warn("ITS ME 3")
 		StandardSequence(true)
 	end
 end)
