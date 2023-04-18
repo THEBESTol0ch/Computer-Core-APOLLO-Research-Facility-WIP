@@ -2,6 +2,8 @@
 local FacilityTransitSystemControlValue = script.Parent.Parent.Values.FacilityTransitSystemControlValue
 local FacilityTransitSystemStatusValue = script.Parent.Parent.Values.FacilityTransitSystemStatusValue
 local TransitStatusValue1 = script.Parent.Parent.Parent.Transit1.CPU.Values.TransitStatusValue
+local TransitStatusValue2 = script.Parent.Parent.Parent.Transit2.CPU.Values.TransitStatusValue
+local TransitStatusValue3 = script.Parent.Parent.Parent.Transit3.CPU.Values.TransitStatusValue
 --
 
 -- Sounds
@@ -27,7 +29,7 @@ function DoCheck()
 		FacilityTransitSystemStatusValue.Value = "POWER ON"
 	end
 	if FacilityTransitSystemStatusValue.Value == "SHUT DOWN" and CanEvent1 == true then
-		if TransitStatusValue1.Value == "PARKING MODE" then
+		if TransitStatusValue1.Value == "PARKING MODE" and TransitStatusValue2.Value == "PARKING MODE" and TransitStatusValue3.Value == "PARKING MODE" then
 			CanEvent1 = false
 			TransitStationAmbientSound:Stop()
 			TransitStationPowerOffAmbientSound:Play()
@@ -56,6 +58,13 @@ end)
 FacilityTransitSystemStatusValue.Changed:Connect(function()
 	DoCheck()
 end)
+
 TransitStatusValue1.Changed:Connect(function()
+	DoCheck()
+end)
+TransitStatusValue2.Changed:Connect(function()
+	DoCheck()
+end)
+TransitStatusValue3.Changed:Connect(function()
 	DoCheck()
 end)
