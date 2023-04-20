@@ -94,10 +94,11 @@ ElevatorTargetFloorValue.Changed:Connect(function()
 	TweenService:Create(Elevator.ElevatorDoor.Frame, ElevatorAnimationSettings, { CFrame = TargetPath.ElevatorPositions.ElevatorDoorClosePos.CFrame:ToWorldSpace(CFrame.new(0, 0, 0)) }):Play()
 	ElevatorStartSound:Play()
 	ElevatorMoveSound:Play()
-	wait(PassTime)
+	wait(1)
+	WeldTrigger.CanTouch = false
+	wait(PassTime - 1)
 	ElevatorMoveSound:Stop()
 	ElevatorStopSound:Play()
-	WeldTrigger.CanTouch = false
 	ElevatorCurrentFloorValue.Value = ElevatorTargetFloorValue.Value
 	CurrentPath = script.Parent.Parent.Parent["Portal_"..ElevatorCurrentFloorValue.Value]
 	ElevatorStatusValue.Value = "ARRIVED"
