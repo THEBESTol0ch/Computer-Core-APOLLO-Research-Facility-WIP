@@ -81,8 +81,9 @@ ElevatorTargetFloorValue.Changed:Connect(function()
 	TweenService:Create(Elevator.Frame, ElevatorAnimationSettings, { CFrame = TargetPath.ElevatorPositions.ElevatorPos.CFrame:ToWorldSpace(CFrame.new(0, 0, 0)) }):Play()
 	TweenService:Create(Elevator.LeftDoor.Door, ElevatorAnimationSettings, { CFrame = TargetPath.ElevatorPositions.ElevatorLeftDoorClosePos.CFrame:ToWorldSpace(CFrame.new(0, 0, 0)) }):Play()
 	TweenService:Create(Elevator.RightDoor.Door, ElevatorAnimationSettings, { CFrame = TargetPath.ElevatorPositions.ElevatorRightDoorClosePos.CFrame:ToWorldSpace(CFrame.new(0, 0, 0)) }):Play()
-	wait(PassTime)
+	wait(1)
 	WeldTrigger.CanTouch = false
+	wait(PassTime - 1)
 	ElevatorCurrentFloorValue.Value = ElevatorTargetFloorValue.Value
 	CurrentPath = script.Parent.Parent.Parent["Portal_"..ElevatorCurrentFloorValue.Value]
 	ElevatorBeepSound:Play()
