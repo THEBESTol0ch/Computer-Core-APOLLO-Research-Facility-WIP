@@ -1,6 +1,11 @@
 -- Values
 local BlackControlValue = game.ReplicatedStorage.GameValues.BlackControlValue
 local FacilityLightingStatusValue = script.Parent.Parent.Values.FacilityLightingStatusValue
+
+local SwitchLeverValue = workspace.FacilityLightSwitchLever.CPU.Values.SwitchLeverValue
+local GeneratorsStatusValue = workspace.FacilityDieselsGenerators.CPU.Values.GeneratorsStatusValue
+local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
+local CentralReactorCoreStatusValue = workspace.CentralReactorCore.CentralCore.CPU.Values.CentralReactorCoreStatusValue
 --
 
 -- Sounds
@@ -38,7 +43,28 @@ function DoLights(Mode)
 		FacilityLightingStatusValue.Value = "OFFLINE"
 	end
 end
+
+function DoCheck()
+	if (GeneratorsStatusValue.Value == "ONLINE" or TNERStatusValue.Value == "ONLINE" or CentralReactorCoreStatusValue.Value == "ONLINE") and SwitchLeverValue.Value == "UP" then
+		BlackControlValue.Value = "IN"
+	elseif (GeneratorsStatusValue.Value == "OFFLINE" and (TNERStatusValue.Value == "OFFLINE" or TNERStatusValue.Value == "SHUT DOWN" or TNERStatusValue.Value == "MAINTENANCE MODE" or TNERStatusValue.Value == "COOLING") and CentralReactorCoreStatusValue.Value == "OFFLINE") or SwitchLeverValue.Value == "DOWN" then
+		BlackControlValue.Value = "OUT"
+	end
+end
 --
+
+SwitchLeverValue.Changed:Connect(function()
+	DoCheck()
+end)
+GeneratorsStatusValue.Changed:Connect(function()
+	DoCheck()
+end)
+TNERStatusValue.Changed:Connect(function()
+	DoCheck()
+end)
+CentralReactorCoreStatusValue.Changed:Connect(function()
+	DoCheck()
+end)
 
 BlackControlValue.Changed:Connect(function()
 	if BlackControlValue.Value == "IN" then
