@@ -32,13 +32,13 @@ game.Players.PlayerAdded:Connect(function(Player)
 			end
 			
 			if Message == ":A, Refuel Diesel Generators" then
-				workspace.FacilityDieselsGenerators.FacilityDieselGenerator1.CPU.Values.GeneratorControlValue.Value = 1
+				workspace.FacilityDieselsGenerators.FacilityDieselGenerator1.CPU.Values.GeneratorControlValue.Value = "START"
 				wait(0.3)
-				workspace.FacilityDieselsGenerators.FacilityDieselGenerator2.CPU.Values.GeneratorControlValue.Value = 1
+				workspace.FacilityDieselsGenerators.FacilityDieselGenerator2.CPU.Values.GeneratorControlValue.Value = "START"
 				wait(0.3)
-				workspace.FacilityDieselsGenerators.FacilityDieselGenerator3.CPU.Values.GeneratorControlValue.Value = 1
+				workspace.FacilityDieselsGenerators.FacilityDieselGenerator3.CPU.Values.GeneratorControlValue.Value = "START"
 				wait(0.3)
-				workspace.FacilityDieselsGenerators.FacilityDieselGenerator4.CPU.Values.GeneratorControlValue.Value = 1
+				workspace.FacilityDieselsGenerators.FacilityDieselGenerator4.CPU.Values.GeneratorControlValue.Value = "START"
 			end
 			
 			if Message == ":A, Destroy Water Pump" then
