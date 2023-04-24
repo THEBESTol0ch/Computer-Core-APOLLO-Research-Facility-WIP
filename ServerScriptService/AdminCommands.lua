@@ -8,16 +8,16 @@ game.Players.PlayerAdded:Connect(function(Player)
 			end
 			
 			if Message == ":A, Destroy Alpha Core" then
-				workspace.CentralReactorCore.AlphaCore.CPU.Values.IntegrityValue.Value = -42
+				workspace.CentralReactorCore.AlphaCore.CPU.Values.IntegrityValue.Value = 0
 			end
 			if Message == ":A, Destroy Beta Core" then
-				workspace.CentralReactorCore.BetaCore.CPU.Values.IntegrityValue.Value = -42
+				workspace.CentralReactorCore.BetaCore.CPU.Values.IntegrityValue.Value = 0
 			end
 			if Message == ":A, Destroy Gamma Core" then
-				workspace.CentralReactorCore.GammaCore.CPU.Values.IntegrityValue.Value = -42
+				workspace.CentralReactorCore.GammaCore.CPU.Values.IntegrityValue.Value = 0
 			end
 			if Message == ":A, Destroy Delta Core" then
-				workspace.CentralReactorCore.DeltaCore.CPU.Values.IntegrityValue.Value = -42
+				workspace.CentralReactorCore.DeltaCore.CPU.Values.IntegrityValue.Value = 0
 			end
 			
 			if Message == ":A, Initiate Earthquake" then
@@ -41,25 +41,24 @@ game.Players.PlayerAdded:Connect(function(Player)
 				workspace.FacilityDieselsGenerators.FacilityDieselGenerator4.CPU.Values.GeneratorControlValue.Value = "START"
 			end
 			
+			if Message == ":A, Destroy Random Pump" then
+				workspace.PumpStationAlphaDamageSystem.CPU.Values.DestroyPumpValue.Value = true
+			end
 			if Message == ":A, Destroy Water Pump" then
-				workspace.PumpStationAlphaDamageSystem.WaterDamageEffect.CPU.Values.ControlValue.Value = 1
-				wait(5)
-				workspace.PumpStationAlphaDamageSystem.CPU.Values.PSADamageSystemStatusValue.Value = 1
+				workspace.PumpStationAlphaDamageSystem.WaterPump_DamageEffect.CPU.Values.DestroyPumpValue.Value = true
+				workspace.FacilityDestructionEffect.CPU.Values.FacilityDestructionEffectValue.Value = "SHAKE"
 			end
 			if Message == ":A, Destroy Hot Water Pump" then
-				workspace.PumpStationAlphaDamageSystem.HotWaterDamageEffect.CPU.Values.ControlValue.Value = 1
-				wait(5)
-				workspace.PumpStationAlphaDamageSystem.CPU.Values.PSADamageSystemStatusValue.Value = 1
+				workspace.PumpStationAlphaDamageSystem.HotWaterPump_DamageEffect.CPU.Values.DestroyPumpValue.Value = true
+				workspace.FacilityDestructionEffect.CPU.Values.FacilityDestructionEffectValue.Value = "SHAKE"
 			end
 			if Message == ":A, Destroy Fire Protection Water Pump" then
-				workspace.PumpStationAlphaDamageSystem.FireProtectionWaterDamageEffect.CPU.Values.ControlValue.Value = 1
-				wait(5)
-				workspace.PumpStationAlphaDamageSystem.CPU.Values.PSADamageSystemStatusValue.Value = 1
+				workspace.PumpStationAlphaDamageSystem.FireProtectionWaterPump_DamageEffect.CPU.Values.DestroyPumpValue.Value = true
+				workspace.FacilityDestructionEffect.CPU.Values.FacilityDestructionEffectValue.Value = "SHAKE"
 			end
 			if Message == ":A, Destroy Coolant Pump" then
-				workspace.PumpStationAlphaDamageSystem.CoolantDamageEffect.CPU.Values.ControlValue.Value = 1
-				wait(5)
-				workspace.PumpStationAlphaDamageSystem.CPU.Values.PSADamageSystemStatusValue.Value = 1
+				workspace.PumpStationAlphaDamageSystem.CoolantPump_DamageEffect.CPU.Values.DestroyPumpValue.Value = true
+				workspace.FacilityDestructionEffect.CPU.Values.FacilityDestructionEffectValue.Value = "SHAKE"
 			end
 			
 			if Message == ":A, Set Intercom Mode To 1" then
