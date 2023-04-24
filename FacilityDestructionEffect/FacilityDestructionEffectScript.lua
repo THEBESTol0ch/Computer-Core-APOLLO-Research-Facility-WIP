@@ -1,5 +1,6 @@
 -- Values
 local FacilityDestructionEffectValue = script.Parent.Parent.Values.FacilityDestructionEffectValue
+local DestroyPumpValue = workspace.PumpStationAlphaDamageSystem.CPU.Values.DestroyPumpValue
 --
 
 -- Items
@@ -77,6 +78,12 @@ FacilityDestructionEffectValue.Changed:Connect(function()
 	if FacilityDestructionEffectValue.Value == "SHAKING" then
 		wait(3.2)
 		TiggerCar()
+	end
+end)
+
+DestroyPumpValue.Changed:Connect(function()
+	if DestroyPumpValue.Value == true then
+		FacilityDestructionEffectValue.Value = "SHAKE"
 	end
 end)
 
