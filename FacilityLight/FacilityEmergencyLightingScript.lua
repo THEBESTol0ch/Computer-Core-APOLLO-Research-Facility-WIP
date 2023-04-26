@@ -2,6 +2,11 @@
 local EmergencyLightingControlValue = script.Parent.Parent.Values.EmergencyLightingControlValue
 local SecurityPanelStatusValue = workspace.TNERSecurityPanel.CPU.Values.SecurityPanelStatusValue
 local FacilitySystemsHackDevicesStatusValue = workspace.FacilitySystemsHackDevicesSystem.Values.FacilitySystemsHackDevicesStatusValue
+
+local KeyTurnedValue1 = workspace.CRCConsole.KeyLock1.CPU.Values.KeyTurnedValue
+local KeyTurnedValue2 = workspace.CRCConsole.KeyLock2.CPU.Values.KeyTurnedValue
+
+local CRCIntegrityValue = workspace.CentralReactorCore.CentralCore.CPU.Values.IntegrityValue
 --
 
 -- Items
@@ -26,7 +31,22 @@ function DoLights(Class, Mode)
 		end
 	end
 end
+
+function DoCheck()
+	if KeyTurnedValue1.Value == true and KeyTurnedValue2.Value == true then
+		EmergencyLightingControlValue.Value = "ON"
+	else
+		EmergencyLightingControlValue.Value = "OFF"
+	end
+end
 --
+
+KeyTurnedValue1.Changed:Connect(function()
+	DoCheck()
+end)
+KeyTurnedValue2.Changed:Connect(function()
+	DoCheck()
+end)
 
 EmergencyLightingControlValue.Changed:Connect(function()
 	if EmergencyLightingControlValue.Value == "ON" then
@@ -59,5 +79,15 @@ FacilitySystemsHackDevicesStatusValue.Changed:Connect(function()
 	elseif FacilitySystemsHackDevicesStatusValue.Value == "CLEAR" then
 		wait(2)
 		EmergencyLightingControlValue.Value = "OFF"
+	end
+end)
+
+CRCIntegrityValue.Changed:Connect(function()
+	if CRCIntegrityValue.Value == 20 then
+		wait(20)
+		EmergencyLightingControlValue.Value = "ON"
+	elseif CRCIntegrityValue.Value == 0 then
+		wait(20)
+		EmergencyLightingControlValue.Value = "ON"
 	end
 end)
