@@ -7,6 +7,9 @@ game.Players.PlayerAdded:Connect(function(Player)
 				workspace.CentralReactorCore.CentralCore.CPU.Values.IntegrityValue.Value = Number
 			end
 			
+			if Message == ":A, Damage CRC" then
+				workspace.CentralReactorCore.CPU.Values.DamageReactorValue.Value = true
+			end
 			if Message == ":A, Destroy Alpha Core" then
 				workspace.CentralReactorCore.AlphaCore.CPU.Values.IntegrityValue.Value = 0
 			end
