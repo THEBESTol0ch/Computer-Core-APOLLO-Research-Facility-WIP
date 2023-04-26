@@ -16,6 +16,7 @@ local TemperatureValue = Values.TemperatureValue
 local IntegrityValue = Values.IntegrityValue
 local EnergyDischargeCoef = Values.EnergyDischargeCoef
 local DischargeValue = Values.DischargeValue
+local ShakeCameraValue = Values.ShakeCameraValue
 
 local CoolingCoef = workspace.CoolantPump.CPU.Values.CoolingCoef
 
@@ -148,6 +149,7 @@ DischargeValue.Changed:Connect(function()
 	if DischargeValue.Value == true and EnergyCapacityValue.Value > EnergyDischargeCoef.Value and not (CoreStatusValue.Value == "ERROR") then
 		DischargeValue.Value = false
 		DeathTrigger.Enabled = true
+		ShakeCameraValue.Value = true
 		if CoreStatusValue.Value == "ONLINE" then EnergyCapacityValue.Value = EnergyCapacityValue.Value - EnergyDischargeCoef.Value end
 		if EnergyDischargeCoef.Value == 12000 then
 			TemperatureValue.Value = TemperatureValue.Value + 10
@@ -176,6 +178,7 @@ DischargeValue.Changed:Connect(function()
 		Lightning.Transparency = 1
 		Lightning.PointLight.Enabled = false
 		Lightning.CanTouch = false
+		ShakeCameraValue.Value = false
 		wait(0.1)
 		DeathTrigger.Enabled = false
 	end
