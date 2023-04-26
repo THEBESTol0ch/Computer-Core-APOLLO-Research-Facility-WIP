@@ -133,13 +133,13 @@ EnergyCapacityValue.Changed:Connect(function()
 end)
 
 IncreaseButton.ClickDetector.MouseClick:Connect(function()
-	if EnergyDischargeCoef.Value < 16000 and CoreStatusValue.Value == "ONLINE" and not (CentralReactorCoreStatusValue.Value == "PRIME") then
+	if EnergyDischargeCoef.Value < 16000 and CoreStatusValue.Value == "ONLINE" and not (CentralReactorCoreStatusValue.Value == "PRIME") and not (CentralReactorCoreStatusValue.Value == "PRIMED") then
 		EnergyDischargeCoef.Value = EnergyDischargeCoef.Value + 1000
 	end
 end)
 
 DecreaseButton.ClickDetector.MouseClick:Connect(function()
-	if EnergyDischargeCoef.Value > 1000 and CoreStatusValue.Value == "ONLINE" and not (CentralReactorCoreStatusValue.Value == "PRIME") then
+	if EnergyDischargeCoef.Value > 1000 and CoreStatusValue.Value == "ONLINE" and not (CentralReactorCoreStatusValue.Value == "PRIME") and not (CentralReactorCoreStatusValue.Value == "PRIMED") then
 		EnergyDischargeCoef.Value = EnergyDischargeCoef.Value - 1000
 	end
 end)
