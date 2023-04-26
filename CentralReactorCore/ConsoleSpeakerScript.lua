@@ -13,6 +13,11 @@ local BetaCoreStatusValue = workspace.CentralReactorCore.BetaCore.CPU.Values.Cor
 local GammaCoreStatusValue = workspace.CentralReactorCore.GammaCore.CPU.Values.CoreStatusValue
 local DeltaCoreStatusValue = workspace.CentralReactorCore.DeltaCore.CPU.Values.CoreStatusValue
 
+local AlphaCoreEnergyDischargeCoef = workspace.CentralReactorCore.AlphaCore.CPU.Values.EnergyDischargeCoef
+local BetaCoreEnergyDischargeCoef = workspace.CentralReactorCore.BetaCore.CPU.Values.EnergyDischargeCoef
+local GammaCoreEnergyDischargeCoef = workspace.CentralReactorCore.GammaCore.CPU.Values.EnergyDischargeCoef
+local DeltaCoreEnergyDischargeCoef = workspace.CentralReactorCore.DeltaCore.CPU.Values.EnergyDischargeCoef
+
 local CentralReactorCoreStatusValue = workspace.CentralReactorCore.CentralCore.CPU.Values.CentralReactorCoreStatusValue
 local TemperatureValue = workspace.CentralReactorCore.CentralCore.CPU.Values.TemperatureValue
 local IntegrityValue = workspace.CentralReactorCore.CentralCore.CPU.Values.IntegrityValue
@@ -131,6 +136,46 @@ end)
 
 DeltaCoreStatusValue.Changed:Connect(function()
 	if DeltaCoreStatusValue.Value == "PRIMED" then
+		SoundEmitter.DeltaCoreMasterCautionAlarm:Play()
+		script.Parent.Parent.DeltaCoreMasterCautionAlarm.Button.Material = ("Neon")
+	end
+end)
+
+AlphaCoreEnergyDischargeCoef.Changed:Connect(function()
+	if AlphaCoreEnergyDischargeCoef.Value == 12000 then
+		SoundEmitter.AlphaCoreMasterCautionAlarm:Play()
+		script.Parent.Parent.AlphaCoreMasterCautionAlarm.Button.Material = ("Neon")
+	elseif AlphaCoreEnergyDischargeCoef.Value == 4000 then
+		SoundEmitter.AlphaCoreMasterCautionAlarm:Play()
+		script.Parent.Parent.AlphaCoreMasterCautionAlarm.Button.Material = ("Neon")
+	end
+end)
+
+BetaCoreEnergyDischargeCoef.Changed:Connect(function()
+	if BetaCoreEnergyDischargeCoef.Value == 12000 then
+		SoundEmitter.BetaCoreMasterCautionAlarm:Play()
+		script.Parent.Parent.BetaCoreMasterCautionAlarm.Button.Material = ("Neon")
+	elseif BetaCoreEnergyDischargeCoef.Value == 4000 then
+		SoundEmitter.BetaCoreMasterCautionAlarm:Play()
+		script.Parent.Parent.BetaCoreMasterCautionAlarm.Button.Material = ("Neon")
+	end
+end)
+
+GammaCoreEnergyDischargeCoef.Changed:Connect(function()
+	if GammaCoreEnergyDischargeCoef.Value == 12000 then
+		SoundEmitter.GammaCoreMasterCautionAlarm:Play()
+		script.Parent.Parent.GammaCoreMasterCautionAlarm.Button.Material = ("Neon")
+	elseif GammaCoreEnergyDischargeCoef.Value == 4000 then
+		SoundEmitter.GammaCoreMasterCautionAlarm:Play()
+		script.Parent.Parent.GammaCoreMasterCautionAlarm.Button.Material = ("Neon")
+	end
+end)
+
+DeltaCoreEnergyDischargeCoef.Changed:Connect(function()
+	if DeltaCoreEnergyDischargeCoef.Value == 12000 then
+		SoundEmitter.DeltaCoreMasterCautionAlarm:Play()
+		script.Parent.Parent.DeltaCoreMasterCautionAlarm.Button.Material = ("Neon")
+	elseif DeltaCoreEnergyDischargeCoef.Value == 4000 then
 		SoundEmitter.DeltaCoreMasterCautionAlarm:Play()
 		script.Parent.Parent.DeltaCoreMasterCautionAlarm.Button.Material = ("Neon")
 	end
