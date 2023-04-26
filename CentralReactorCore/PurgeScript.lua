@@ -5,6 +5,7 @@ local Trigger = workspace.CRCPurgeAdvancedButton.Button.Trigger
 
 -- Values
 local ElectricalDischargesValue = script.Parent.Parent.Values.ElectricalDischargesValue
+local ShakeCameraValue = script.Parent.Parent.Values.ShakeCameraValue
 --
 
 -- Items
@@ -149,7 +150,9 @@ function DoLightningDown(Mode)
 		DoLights("ON")
 		DeathTrigger.Enabled = true
 		LightningDown1:Play()
+		ShakeCameraValue.Value = true
 		wait(1.5)
+		ShakeCameraValue.Value = false
 		ElectricalDischarges = false
 		DoLights("OFF")
 		DeathTrigger.Enabled = false
@@ -160,7 +163,9 @@ function DoLightningDown(Mode)
 		DoLights("ON")
 		DeathTrigger.Enabled = true
 		LightningDown2:Play()
+		ShakeCameraValue.Value = true
 		wait(1.1)
+		ShakeCameraValue.Value = false
 		ElectricalDischarges = false
 		DoLights("OFF")
 		DeathTrigger.Enabled = false
@@ -171,7 +176,9 @@ function DoLightningDown(Mode)
 		DoLights("ON")
 		DeathTrigger.Enabled = true
 		LightningDown3:Play()
+		ShakeCameraValue.Value = true
 		wait(0.9)
+		ShakeCameraValue.Value = false
 		Plasma.Transparency = 0
 		ElectricalDischarges = false
 		DoLights("OFF")
@@ -183,7 +190,9 @@ function DoLightningDown(Mode)
 		DoLights("ON")
 		DeathTrigger.Enabled = true
 		LightningDown4:Play()
+		ShakeCameraValue.Value = true
 		wait(0.4)
+		ShakeCameraValue.Value = false
 		ElectricalDischarges = false
 		DoLights("OFF")
 		DeathTrigger.Enabled = false
@@ -194,7 +203,9 @@ function DoLightningDown(Mode)
 		DoLights("ON")
 		DeathTrigger.Enabled = true
 		LightningDown4:Play()
+		ShakeCameraValue.Value = true
 		wait(0.2)
+		ShakeCameraValue.Value = false
 		PlasmaStart:Play()
 		wait(0.2)
 		ElectricalDischarges = false
