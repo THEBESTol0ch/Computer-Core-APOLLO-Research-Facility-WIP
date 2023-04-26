@@ -1,6 +1,14 @@
 -- Values
 local FacilityDestructionEffectValue = script.Parent.Parent.Values.FacilityDestructionEffectValue
+
 local DestroyPumpValue = workspace.PumpStationAlphaDamageSystem.CPU.Values.DestroyPumpValue
+local DamageReactorValue = workspace.CentralReactorCore.CPU.Values.DamageReactorValue
+local AlphaCoreStatusValue = workspace.CentralReactorCore.AlphaCore.CPU.Values.CoreStatusValue
+local BetaCoreStatusValue = workspace.CentralReactorCore.BetaCore.CPU.Values.CoreStatusValue
+local GammaCoreStatusValue = workspace.CentralReactorCore.GammaCore.CPU.Values.CoreStatusValue
+local DeltaCoreStatusValue = workspace.CentralReactorCore.DeltaCore.CPU.Values.CoreStatusValue
+
+local CRCIntegrityValue = workspace.CentralReactorCore.CentralCore.CPU.Values.IntegrityValue
 --
 
 -- Items
@@ -84,6 +92,42 @@ end)
 DestroyPumpValue.Changed:Connect(function()
 	if DestroyPumpValue.Value == true then
 		FacilityDestructionEffectValue.Value = "SHAKE"
+	end
+end)
+
+DamageReactorValue.Changed:Connect(function()
+	if DamageReactorValue.Value == true then
+		FacilityDestructionEffectValue.Value = "SHAKE"
+	end
+end)
+
+AlphaCoreStatusValue.Changed:Connect(function()
+	if AlphaCoreStatusValue.Value == "ERROR" then
+		FacilityDestructionEffectValue.Value = "SHAKE"
+	end
+end)
+BetaCoreStatusValue.Changed:Connect(function()
+	if BetaCoreStatusValue.Value == "ERROR" then
+		FacilityDestructionEffectValue.Value = "SHAKE"
+	end
+end)
+GammaCoreStatusValue.Changed:Connect(function()
+	if GammaCoreStatusValue.Value == "ERROR" then
+		FacilityDestructionEffectValue.Value = "SHAKE"
+	end
+end)
+DeltaCoreStatusValue.Changed:Connect(function()
+	if DeltaCoreStatusValue.Value == "ERROR" then
+		FacilityDestructionEffectValue.Value = "SHAKE"
+	end
+end)
+
+CRCIntegrityValue.Changed:Connect(function()
+	if CRCIntegrityValue.Value == 0 then
+		repeat
+			wait(48)
+			FacilityDestructionEffectValue.Value = "SHAKE"
+		until CRCIntegrityValue.Value > 0
 	end
 end)
 
