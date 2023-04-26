@@ -8,6 +8,7 @@ local Players = game:GetService("Players")
 local EndGameControlValue = game.ReplicatedStorage.GameValues.EndGameControlValue
 
 local TNERStatusValue = workspace.TNER.CPU.Values.TNERStatusValue
+local CentralReactorCoreStatusValue = workspace.CentralReactorCore.CentralCore.CPU.Values.CentralReactorCoreStatusValue
 --
 
 -- Sounds
@@ -47,6 +48,12 @@ end
 
 TNERStatusValue.Changed:Connect(function()
 	if TNERStatusValue.Value == "EXPLODE" then
+		EndGame()
+	end
+end)
+
+CentralReactorCoreStatusValue.Changed:Connect(function()
+	if CentralReactorCoreStatusValue.Value == "EXPLODE" then
 		EndGame()
 	end
 end)
