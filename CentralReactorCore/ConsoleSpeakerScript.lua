@@ -22,6 +22,8 @@ local CentralReactorCoreStatusValue = workspace.CentralReactorCore.CentralCore.C
 local TemperatureValue = workspace.CentralReactorCore.CentralCore.CPU.Values.TemperatureValue
 local IntegrityValue = workspace.CentralReactorCore.CentralCore.CPU.Values.IntegrityValue
 local EnergyCapacityValue = workspace.CentralReactorCore.CentralCore.CPU.Values.EnergyCapacityValue
+
+local ButtonStatusValue = workspace.CRCPurgeAdvancedButton.CPU.Values.ButtonStatusValue
 --
 
 -- Items
@@ -222,5 +224,12 @@ EnergyCapacityValue.Changed:Connect(function()
 		script.Parent.Parent.EnergyCapacityMasterCautionAlarm.Button.Material = ("Neon")
 	elseif EnergyCapacityValue.Value < 100000 then
 		CanEvent2 = true
+	end
+end)
+
+ButtonStatusValue.Changed:Connect(function()
+	if ButtonStatusValue.Value == "OPENED" then
+		SoundEmitter.PurgeMasterCautionAlarm:Play()
+		script.Parent.Parent.PurgeMasterCautionAlarm.Button.Material = ("Neon")
 	end
 end)
