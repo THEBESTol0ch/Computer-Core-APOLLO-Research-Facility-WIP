@@ -61,7 +61,7 @@ function DoValuesMonitoring()
 		end
 		if TemperatureValue.Value > 3000 then
 			TemperatureLabel.TextColor3 = Color3.new(1, 0, 0)
-		elseif TemperatureValue.Value < 1000 then
+		elseif TemperatureValue.Value < 3000 then
 			TemperatureLabel.TextColor3 = Color3.new(1, 0.666667, 0)
 		end
 		if EnergyCapacityValue.Value > 110000 then
