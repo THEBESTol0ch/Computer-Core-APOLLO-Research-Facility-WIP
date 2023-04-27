@@ -1,12 +1,35 @@
+-- Control
+local MarketplaceService = game:GetService("MarketplaceService")
+--
+
+-- Values
+local SendCommands1Value = game.ReplicatedStorage.GameValues.SendCommands1Value
+local SendCommands2Value = game.ReplicatedStorage.GameValues.SendCommands2Value
+--
+
 game.Players.PlayerAdded:Connect(function(Player)
-	if Player:GetRankInGroup(11755642) >= 250 then
+	if Player:GetRankInGroup(11755642) >= 250 or (Player.UserId == game.PrivateServerOwnerId and MarketplaceService:UserOwnsGamePassAsync(Player.UserId, 169061921)) then
 		Player.Chatted:Connect(function(Message)
+			if Message == ":A, Show Commands Part 1" then
+				if SendCommands1Value.Value == false then
+					SendCommands1Value.Value = true
+				elseif SendCommands1Value.Value == true then
+					SendCommands1Value.Value = false
+				end
+			end
+			if Message == ":A, Show Commands Part 2" then
+				if SendCommands2Value.Value == false then
+					SendCommands2Value.Value = true
+				elseif SendCommands2Value.Value == true then
+					SendCommands2Value.Value = false
+				end
+			end
+
 			local Split = Message:split(" ")
 			if Split[2] == "Set_CRC_Integrity_To" then
 				local Number = Split[3]
 				workspace.CentralReactorCore.CentralCore.CPU.Values.IntegrityValue.Value = Number
 			end
-			
 			if Message == ":A, Damage CRC" then
 				workspace.CentralReactorCore.CPU.Values.DamageReactorValue.Value = true
 			end
@@ -22,18 +45,18 @@ game.Players.PlayerAdded:Connect(function(Player)
 			if Message == ":A, Destroy Delta Core" then
 				workspace.CentralReactorCore.DeltaCore.CPU.Values.IntegrityValue.Value = 0
 			end
-			
+
 			if Message == ":A, Initiate Earthquake" then
 				workspace.FacilityDestructionEffect.CPU.Values.FacilityDestructionEffectValue.Value = "SHAKE"
 			end
-			
+
 			if Message == ":A, Initiate Blackout" then
 				game.ReplicatedStorage.GameValues.BlackControlValue.Value = "OUT"
 			end
 			if Message == ":A, Deactivate Blackout" then
 				game.ReplicatedStorage.GameValues.BlackControlValue.Value = "IN"
 			end
-			
+
 			if Message == ":A, Refuel Diesel Generators" then
 				workspace.FacilityDieselsGenerators.FacilityDieselGenerator1.CPU.Values.GeneratorControlValue.Value = "START"
 				wait(0.3)
@@ -43,7 +66,7 @@ game.Players.PlayerAdded:Connect(function(Player)
 				wait(0.3)
 				workspace.FacilityDieselsGenerators.FacilityDieselGenerator4.CPU.Values.GeneratorControlValue.Value = "START"
 			end
-			
+
 			if Message == ":A, Destroy Random Pump" then
 				workspace.PumpStationAlphaDamageSystem.CPU.Values.DestroyPumpValue.Value = true
 			end
@@ -63,7 +86,7 @@ game.Players.PlayerAdded:Connect(function(Player)
 				workspace.PumpStationAlphaDamageSystem.CoolantPump_DamageEffect.CPU.Values.DestroyPumpValue.Value = true
 				workspace.FacilityDestructionEffect.CPU.Values.FacilityDestructionEffectValue.Value = "SHAKE"
 			end
-			
+
 			if Message == ":A, Set Intercom Mode To 1" then
 				workspace.FacilityIntercomSystem.CPU.Values.FacilityIntercomSystemModeValue.Value = 1
 			end
@@ -73,7 +96,7 @@ game.Players.PlayerAdded:Connect(function(Player)
 			if Message == ":A, Set Intercom Mode To 3" then
 				workspace.FacilityIntercomSystem.CPU.Values.FacilityIntercomSystemModeValue.Value = 3
 			end
-			
+
 			if Message == ":A, Turn On Surface Alarm" then
 				game.SoundService.Ambients.BMAirRaidAmbientSound:Play()
 			end
@@ -104,14 +127,14 @@ game.Players.PlayerAdded:Connect(function(Player)
 			if Message == ":A, Turn Off Facility Emergency Lamps" then
 				workspace.FacilityLight.CPU.Values.EmergencyLightingControlValue.Value = "FORCE OFF"
 			end
-			
+
 			if Message == ":A, Close Facility Blast Doors" then
 				game.ReplicatedStorage.GameValues.BlastDoorsControlValue.Value = "CLOSE"
 			end
 			if Message == ":A, Open Facility Blast Doors" then
 				game.ReplicatedStorage.GameValues.BlastDoorsControlValue.Value = "OPEN"
 			end
-			
+
 			if Message == ":A, Initiate Full Facility Containment Lockdown" then
 				game.ReplicatedStorage.GameValues.BlackControlValue.Value = "OUT"
 				game.ReplicatedStorage.GameValues.BlastDoorsControlValue.Value = "CLOSE"
@@ -127,7 +150,7 @@ game.Players.PlayerAdded:Connect(function(Player)
 				game.SoundService.Ambients.FacilityAlarmAmbientSound3:Stop()
 				workspace.FacilityLight.CPU.Values.EmergencyLightingControlValue.Value = "OFF"
 			end
-			
+
 			if Message == ":A, Disable Facility Transit System" then
 				workspace.FacilityTransitSystem.CPU.Values.FacilityTransitSystemControlValue.Value = "DISABLE"
 			end
@@ -140,7 +163,7 @@ game.Players.PlayerAdded:Connect(function(Player)
 			if Message == ":A, Set Transit Lighting Mode To RGB" then
 				workspace.FacilityTransitSystem.CPU.Values.TransitLightingModeValue.Value = "RGB"
 			end
-			
+
 			if Message == ":A, Call Military Forces" then
 				game.ReplicatedStorage.GameValues.MilitaryForceControlValue.Value = "CALL"
 			end
@@ -150,7 +173,7 @@ game.Players.PlayerAdded:Connect(function(Player)
 			if Message == ":A, Call Off Military Forces" then
 				game.ReplicatedStorage.GameValues.MilitaryForceControlValue.Value = "CALL OFF"
 			end
-			
+
 			if Message == ":A, Give Me Ammo" then
 				if Player.Backpack:FindFirstChild("SPAS12") then
 					Player.Backpack:FindFirstChild("SPAS12").CPU.Values.PocketAmmoValue.Value = 30
@@ -180,7 +203,7 @@ game.Players.PlayerAdded:Connect(function(Player)
 				local SPAS12Clone = SPAS12:Clone()
 				SPAS12Clone.Parent = Backpack
 			end
-			
+
 			if Message == ":A, Give Me A. Keycard" then
 				local AKeycard = game.ReplicatedStorage.A_KeyCard
 				local Backpack = Player.Backpack
@@ -199,21 +222,21 @@ game.Players.PlayerAdded:Connect(function(Player)
 				local SOKeycardClone = SOKeycard:Clone()
 				SOKeycardClone.Parent = Backpack
 			end
-			
+
 			if Message == ":A, Give Me Military Laptop" then
 				local MilitaryLaptop = game.ReplicatedStorage.MilitaryLaptop
 				local Backpack = Player.Backpack
 				local MilitaryLaptopClone = MilitaryLaptop:Clone()
 				MilitaryLaptopClone.Parent = Backpack
 			end
-			
+
 			if Message == ":A, Give Me Blast Door Hack Tool" then
 				local BlastDoorHackTool = game.ReplicatedStorage.BlastDoorHackTool
 				local Backpack = Player.Backpack
 				local BlastDoorHackToolClone = BlastDoorHackTool:Clone()
 				BlastDoorHackToolClone.Parent = Backpack
 			end
-			
+
 			if Message == ":A, Give Me Fuel Cell" then
 				local FuelCell = game.ReplicatedStorage.FuelCell
 				local Backpack = Player.Backpack
