@@ -1,5 +1,6 @@
-:A, Set_CRC_Integrity_To NUMBER
+:A, Show Commands
 
+:A, Set_CRC_Integrity_To NUMBER
 :A, Damage CRC
 :A, Destroy Alpha Core
 :A, Destroy Beta Core
@@ -41,16 +42,16 @@
 :A, Close Facility Blast Doors
 :A, Open Facility Blast Doors
 
-:A, Disable Transit System
-:A, Enable Transit System
+:A, Disable Facility Transit System
+:A, Enable Facility Transit System
+:A, Set Transit Lighting Mode To STANDARD
+:A, Set Transit Lighting Mode To RGB
 
 :A, Initiate Full Facility Containment Lockdown
 :A, Deactivate Full Facility Containment Lockdown
 
 :A, Disable Facility Transit System
 :A, Enable Facility Transit System
-:A, Set Transit Lighting Mode To STANDARD
-:A, Set Transit Lighting Mode To RGB
 
 :A, Call Military Forces
 :A, Open Military Trucks
@@ -77,4 +78,4 @@
 
 :A, Give Me Flashlight
 
-:A, Make USERNAME Chainsaw Man // [F] - Starter [E] - Shutdown [K] - Increase stats [L] - Hide All [LMB] - Standard attack [Q] - Ultimate
+:A, Make USERNAME Chainsaw Man
