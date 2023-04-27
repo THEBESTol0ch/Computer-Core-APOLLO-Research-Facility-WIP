@@ -1,4 +1,5 @@
-:A, Show Commands
+:A, Show Commands Part 1
+:A, Show Commands Part 2
 
 :A, Set_CRC_Integrity_To NUMBER
 :A, Damage CRC
@@ -78,4 +79,4 @@
 
 :A, Give Me Flashlight
 
-:A, Make USERNAME Chainsaw Man
+:A, Make USERNAME Chainsaw Man // [F] - Starter [E] - Shutdown [K] - Increase stats [L] - Hide All [LMB] - Standard attack [Q] - Ultimate
