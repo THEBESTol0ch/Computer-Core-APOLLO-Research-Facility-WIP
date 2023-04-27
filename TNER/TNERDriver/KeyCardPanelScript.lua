@@ -20,7 +20,7 @@ local RejectionSound = script.Parent.Parent.Parent.SoundEmitter.RejectionSound
 --
 
 -- Logic
-local AllowedKeyCard = {["A"] = true, ["E"] = false, ["SO"] = true}
+local AllowedKeyCard = {["A"] = true, ["E"] = true, ["SO"] = true}
 --
 
 local KeyCardAnimationSettings = TweenInfo.new(
