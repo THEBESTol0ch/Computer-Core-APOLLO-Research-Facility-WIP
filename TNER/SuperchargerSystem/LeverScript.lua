@@ -46,7 +46,9 @@ function PullIn()
 	wait(1)
 	LeverValue.Value = "FULL"
 	wait(10)
-	Trigger.ClickDetector.MaxActivationDistance = 10
+	if TNERStatusValue.Value == "ONLINE" then
+		Trigger.ClickDetector.MaxActivationDistance = 10
+	end
 end
 function PullOut()
 	Trigger.ClickDetector.MaxActivationDistance = 0
