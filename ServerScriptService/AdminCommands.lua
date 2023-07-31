@@ -176,13 +176,13 @@ game.Players.PlayerAdded:Connect(function(Player)
 
 			if Message == ":A, Give Me Ammo" then
 				if Player.Backpack:FindFirstChild("SPAS12") then
-					Player.Backpack:FindFirstChild("SPAS12").CPU.Values.PocketAmmoValue.Value = 30
+					Player.Backpack:FindFirstChild("SPAS12").CPU.Values.InventoryAmmoValue.Value = Player.Backpack:FindFirstChild("SPAS12").CPU.Values.InventoryMaxAmmoValue.Value
 				end
 				if Player.Backpack:FindFirstChild("M4A1") then
-					Player.Backpack:FindFirstChild("M4A1").CPU.Values.PocketAmmoValue.Value = 150
+					Player.Backpack:FindFirstChild("M4A1").CPU.Values.InventoryAmmoValue.Value = Player.Backpack:FindFirstChild("M4A1").CPU.Values.InventoryMaxAmmoValue.Value
 				end
 				if Player.Backpack:FindFirstChild("HKUSPMatch") then
-					Player.Backpack:FindFirstChild("HKUSPMatch").CPU.Values.PocketAmmoValue.Value = 150
+					Player.Backpack:FindFirstChild("HKUSPMatch").CPU.Values.InventoryAmmoValue.Value = Player.Backpack:FindFirstChild("HKUSPMatch").CPU.Values.InventoryMaxAmmoValue.Value
 				end
 			end
 			if Message == ":A, Give Me M4A1" then
