@@ -61,8 +61,8 @@ function DoLamps(Mode)
 		end
 	elseif Mode == "OFF" then
 		for _, EmergencyLamp in pairs(EmergencyLamps:GetChildren()) do
-			EmergencyLamp.Lamp.SpotLight.Enabled = true
-			EmergencyLamp.Lamp.HingeConstraint.AngularVelocity = 5
+			EmergencyLamp.Lamp.SpotLight.Enabled = false
+			EmergencyLamp.Lamp.HingeConstraint.AngularVelocity = 0
 		end
 	end
 end
