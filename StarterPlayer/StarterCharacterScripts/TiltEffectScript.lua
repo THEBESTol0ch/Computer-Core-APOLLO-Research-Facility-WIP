@@ -2,14 +2,14 @@ local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 
 local Player = Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local Humanoid = Character:WaitForChild("Humanoid")
 local Camera = workspace.CurrentCamera
 
 local rad = math.rad
 local Rot = CFrame.new()
 
 local function GetRollAngle()
-	local Character = Player.Character
-
 	if not Character then
 		return
 	end
@@ -23,5 +23,5 @@ RunService:BindToRenderStep("RotateCameraInDirectionPlayerIsGoing", Enum.RenderP
 	local Roll = GetRollAngle() * 4
 	Rot = Rot:Lerp(CFrame.Angles(0, 0, rad(Roll)),0.075)
 
-	Camera.CFrame *= Rot
+	if Humanoid.Sit == false then Camera.CFrame *= Rot end
 end)
