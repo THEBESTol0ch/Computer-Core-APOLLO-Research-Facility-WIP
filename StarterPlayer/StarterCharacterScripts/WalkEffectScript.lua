@@ -4,7 +4,7 @@ local Hum = Char:WaitForChild("Humanoid")
 local RS = game:GetService("RunService")
 RS.RenderStepped:Connect(function()
 	local CT = tick()
-	if Hum.MoveDirection.Magnitude > 0 then
+	if Hum.MoveDirection.Magnitude > 0 and Hum.Sit == false then
 		local BobbleX = math.cos(CT*10)*0.25
 		local BobbleY = math.abs(math.sin(CT*10))*0.25
 		local Bobble = Vector3.new(BobbleX,BobbleY,0)
