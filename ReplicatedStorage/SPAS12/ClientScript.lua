@@ -337,7 +337,7 @@ end)
 RunService.RenderStepped:connect(function()
 	Speed = Character.PrimaryPart.Velocity.Magnitude
 	if ToolEquippedValue.Value == true and IdleSafeValue.Value == false then
-		if Humanoid.Sit == false then HumanoidRootPart.CFrame = CFrame.new(HumanoidRootPart.Position, Vector3.new(Mouse.Hit.p.x, HumanoidRootPart.Position.Y, Mouse.Hit.p.z)) end
+		if Humanoid.Sit == false and not HumanoidRootPart:FindFirstChild("WeldConstraint") then HumanoidRootPart.CFrame = CFrame.new(HumanoidRootPart.Position, Vector3.new(Mouse.Hit.p.x, HumanoidRootPart.Position.Y, Mouse.Hit.p.z)) end
 		Neck.C0 = NeckC0 * CFrame.Angles(math.asin(Mouse.Origin.lookVector.Y), 0, 0)
 		LeftShoulder.C0 = LeftShoulderC0 * CFrame.Angles(math.asin(Mouse.Origin.lookVector.Y), 0, 0)
 		RightShoulder.C0 = RightShoulderC0 * CFrame.Angles(math.asin(Mouse.Origin.lookVector.Y), 0, 0)
