@@ -12,7 +12,7 @@ WeldTrigger.Touched:Connect(function(Hit)
 		local Weld = Instance.new("WeldConstraint")
 		Weld.Part0 = HumanoidRootPart
 		Weld.Part1 = WeldTrigger
-		Weld.Parent = script.Parent
+		Weld.Parent = HumanoidRootPart
 		repeat
 			wait(0.1)
 		until ElevatorStatusValue.Value == "ARRIVED"
