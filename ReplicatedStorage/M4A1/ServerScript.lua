@@ -152,7 +152,7 @@ function CreateMag()
 	DepletedMag.CFrame = Tool.Mag.CFrame
 end
 
-function CastRay(Hit, Count)
+function CastRay(Hit, Count, Player)
 	local Origin = Emitter.Position
 	local Stop = (Hit.Position - Origin).Unit * RangeValue.Value
 	if Count > 1 then
@@ -163,7 +163,7 @@ function CastRay(Hit, Count)
 	if Result then
 		local Target = Result.Instance
 		local Humanoid = Target.Parent:FindFirstChild("Humanoid")
-		if Humanoid then
+		if Humanoid and Humanoid.Parent.Name ~= Player.Name then
 			if Target.Name == "LeftFoot" or Target.Name == "LeftLowerLeg" or Target.Name == "LeftUpperLeg" or Target.Name == "RightFoot" or Target.Name == "RightLowerLeg" or Target.Name == "RightUpperLeg" or Target.Name == "LeftHand" or Target.Name == "LeftLowerArm" or Target.Name == "LeftUpperArm" or Target.Name == "RightHand" or Target.Name == "RightLowerArm" or Target.Name == "RightUpperArm" then
 				Damage = LimbDamageValue.Value
 			elseif Target.Name == "LowerTorso" or Target.Name == "UpperTorso" then
@@ -197,7 +197,7 @@ function Shoot(Player, Target, Hit)
 		ClonedShotSound.Parent = Emitter
 		ClonedShotSound:Destroy()
 		for Count = 1, BulletPerShotValue.Value, 1 do
-			CastRay(Hit, Count)
+			CastRay(Hit, Count, Player)
 		end
 		Emitter.ParticleEmitter1.Enabled = true
 		Emitter.ParticleEmitter2.Enabled = true
