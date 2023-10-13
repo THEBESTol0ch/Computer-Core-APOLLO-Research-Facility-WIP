@@ -48,8 +48,8 @@
 :A, Set Transit Lighting Mode To STANDARD
 :A, Set Transit Lighting Mode To RGB
 
-:A, Disable Facility Transit System
-:A, Enable Facility Transit System
+:A, Initiate Full Facility Containment Lockdown
+:A, Deactivate Full Facility Containment Lockdown
 
 :A, Call Military Forces
 :A, Open Military Trucks
