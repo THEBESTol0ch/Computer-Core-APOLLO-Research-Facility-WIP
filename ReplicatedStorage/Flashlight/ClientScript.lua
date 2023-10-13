@@ -52,7 +52,7 @@ end)
 
 UserInputService.InputBegan:Connect(function(Input)
 	local InputType = Input.UserInputType
-	if InputType == Enum.UserInputType.MouseButton1 then
+	if InputType == Enum.UserInputType.MouseButton1 or InputType == Enum.UserInputType.Touch then
 		if ToolEquippedValue.Value == true then
 			FireEvent:FireServer()
 		end
