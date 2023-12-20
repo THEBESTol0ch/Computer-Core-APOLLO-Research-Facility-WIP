@@ -55,6 +55,8 @@
 :A, Open Military Trucks
 :A, Call Off Military Forces
 
+:A, Fire Firework
+
 :A, Give Me Ammo
 :A, Give Me M4A1
 :A, Give Me HK USP Match
