@@ -1,26 +1,31 @@
 -- Control
 local TweenService = game:GetService("TweenService")
-local Trigger = script.Parent.Parent.Parent.Trigger
+local KeyCardPanel = script.Parent.Parent.Parent
+local Trigger = KeyCardPanel.Trigger
 --
 
 -- Values
-local AccessGrantedValue = script.Parent.Parent.Values.AccessGrantedValue
+local Values = script.Parent.Parent.Values
+local AccessGrantedValue = Values.AccessGrantedValue
 --
 
 -- Items
-local KeyCardTemplate = script.Parent.Parent.Parent.KeyCardTemplate
-local KeyCardPos = script.Parent.Parent.Parent.KeyCardPos
+local KeyCardTemplate = KeyCardPanel.KeyCardTemplate
+local KeyCardInPos = KeyCardPanel.KeyCardInPos
+local KeyCardOutPos = KeyCardPanel.KeyCardOutPos
+
+local Lamps = KeyCardPanel.Frame.Lamps
 --
 
 -- Sounds
-local KeyCardSound = script.Parent.Parent.Parent.SoundEmitter.KeyCardSound
-local ConfirmingSound = script.Parent.Parent.Parent.SoundEmitter.ConfirmingSound
-local RejectionSound = script.Parent.Parent.Parent.SoundEmitter.RejectionSound
+local SoundEmitter = KeyCardPanel.SoundEmitter
+local KeyCardSound = SoundEmitter.KeyCardSound
+local ConfirmingSound = SoundEmitter.ConfirmingSound
+local RejectionSound = SoundEmitter.RejectionSound
 --
 
 -- Logic
 local AllowedKeyCard = {["A"] = false, ["E"] = false, ["SO"] = false}
---
 
 local KeyCardAnimationSettings = TweenInfo.new(
 	0.5,
@@ -30,16 +35,10 @@ local KeyCardAnimationSettings = TweenInfo.new(
 	false,
 	0
 )
+--
 
-local KeyCardIn = {
-	CFrame = KeyCardPos.CFrame:ToWorldSpace(CFrame.new(0, 0, 0))
-}
-local KeyCardOut = {
-	CFrame = KeyCardTemplate.CFrame:ToWorldSpace(CFrame.new(0, 0, 0))
-}
-
-local KeyCardIn = TweenService:Create(KeyCardTemplate, KeyCardAnimationSettings, KeyCardIn)
-local KeyCardOut = TweenService:Create(KeyCardTemplate, KeyCardAnimationSettings, KeyCardOut)
+local KeyCardInAnim = TweenService:Create(KeyCardTemplate, KeyCardAnimationSettings, { CFrame = KeyCardInPos.CFrame })
+local KeyCardOutAnim = TweenService:Create(KeyCardTemplate, KeyCardAnimationSettings, { CFrame = KeyCardOutPos.CFrame })
 
 -- Functions
 function DoKeyCard(KeyCardType)
@@ -47,21 +46,24 @@ function DoKeyCard(KeyCardType)
 	KeyCardTemplate.Transparency = 0
 	KeyCardTemplate[KeyCardType.."_FrontDecal"].Transparency = 0
 	KeyCardTemplate[KeyCardType.."_BackDecal"].Transparency = 0
-	KeyCardIn:Play()
+	KeyCardInAnim:Play()
 	KeyCardSound:Play()
 	wait(0.5)
 	if AllowedKeyCard[KeyCardType] then
 		ConfirmingSound:Play()
+		Lamps.BrickColor = BrickColor.new("Lime green")
 		AccessGrantedValue.Value = true
 	else
+		Lamps.BrickColor = BrickColor.new("Really red")
 		RejectionSound:Play()
 	end
 	wait(0.5)
-	KeyCardOut:Play()
+	KeyCardOutAnim:Play()
 	wait(0.8)
 	KeyCardTemplate.Transparency = 1
 	KeyCardTemplate[KeyCardType.."_FrontDecal"].Transparency = 1
 	KeyCardTemplate[KeyCardType.."_BackDecal"].Transparency = 1
+	Lamps.BrickColor = BrickColor.new("Deep blue")
 	AccessGrantedValue.Value = false
 	Trigger.CanTouch = true
 end
