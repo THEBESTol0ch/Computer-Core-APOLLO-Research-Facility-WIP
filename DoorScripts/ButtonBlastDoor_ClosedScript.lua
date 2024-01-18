@@ -44,25 +44,23 @@ function DoLamps(Mode, Speed)
 end
 function DoDoor()
 	if CanEvent then
+		CanEvent = false
 		if DoorClosed then
-			CanEvent = false
 			OpenSound:Play()
 			BlastDoorOpenAnim:Play()
 			DoLamps(true, 5)
 			wait(5.9)
 			DoLamps(false, 0)
 			DoorClosed = false
-			CanEvent = true
 		elseif DoorClosed == false then
-			CanEvent = false
 			CloseSound:Play()
 			BlastDoorCloseAnim:Play()
 			DoLamps(true, 5)
 			wait(5.9)
 			DoLamps(false, 0)
 			DoorClosed = true
-			CanEvent = true
 		end
+		CanEvent = true
 	end
 end
 --
