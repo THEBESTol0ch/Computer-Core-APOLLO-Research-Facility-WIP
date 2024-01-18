@@ -4,16 +4,16 @@ local Trigger = script.Parent.Trigger
 --
 
 -- Items
-local Door = script.Parent
-local SoundEmitter = Door.SoundEmitter
+local SlideDoor = script.Parent
+local SoundEmitter = SlideDoor.SoundEmitter
 
-local LeftDoor = Door.LeftDoor.Door
-local LeftDoorClosePos = Door.LeftDoorClosePos
-local LeftDoorOpenPos = Door.LeftDoorOpenPos
+local LeftDoor = SlideDoor.LeftDoor.Door
+local LeftDoorClosePos = SlideDoor.LeftDoorClosePos
+local LeftDoorOpenPos = SlideDoor.LeftDoorOpenPos
 
-local RightDoor = Door.RightDoor.Door
-local RightDoorClosePos = Door.RightDoorClosePos
-local RightDoorOpenPos = Door.RightDoorOpenPos
+local RightDoor = SlideDoor.RightDoor.Door
+local RightDoorClosePos = SlideDoor.RightDoorClosePos
+local RightDoorOpenPos = SlideDoor.RightDoorOpenPos
 --
 
 -- Sounds
