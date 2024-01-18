@@ -6,13 +6,9 @@ local TweenService = game:GetService("TweenService")
 local SlideDoor = script.Parent
 local SoundEmitter = SlideDoor.SoundEmitter
 
-local LeftDoor = SlideDoor.LeftDoor.Door
-local LeftDoorClosePos = SlideDoor.LeftDoorClosePos
-local LeftDoorOpenPos = SlideDoor.LeftDoorOpenPos
-
-local RightDoor = SlideDoor.RightDoor.Door
-local RightDoorClosePos = SlideDoor.RightDoorClosePos
-local RightDoorOpenPos = SlideDoor.RightDoorOpenPos
+local Door = SlideDoor.Door.Door
+local DoorClosePos = SlideDoor.DoorClosePos
+local DoorOpenPos = SlideDoor.DoorOpenPos
 --
 
 -- Values
@@ -37,23 +33,18 @@ local DoorAnimationSettings = TweenInfo.new(
 	0
 )
 
-local LeftDoorOpenAnim = TweenService:Create(LeftDoor, DoorAnimationSettings, { CFrame = LeftDoorOpenPos.CFrame })
-local LeftDoorCloseAnim = TweenService:Create(LeftDoor, DoorAnimationSettings, { CFrame = LeftDoorClosePos.CFrame })
-
-local RightDoorOpenAnim = TweenService:Create(RightDoor, DoorAnimationSettings, { CFrame = RightDoorOpenPos.CFrame })
-local RightDoorCloseAnim = TweenService:Create(RightDoor, DoorAnimationSettings, { CFrame = RightDoorClosePos.CFrame })
+local DoorOpenAnim = TweenService:Create(Door, DoorAnimationSettings, { CFrame = DoorOpenPos.CFrame })
+local DoorCloseAnim = TweenService:Create(Door, DoorAnimationSettings, { CFrame = DoorClosePos.CFrame })
 --
 
 -- Functions
 function DoDoor()
 	if CanEvent then
 		CanEvent = false
-		LeftDoorOpenAnim:Play()
-		RightDoorOpenAnim:Play()
+		DoorOpenAnim:Play()
 		OpenSound:Play()
 		wait(3)
-		LeftDoorCloseAnim:Play()
-		RightDoorCloseAnim:Play()
+		DoorCloseAnim:Play()
 		CloseSound:Play()
 		wait(1)
 		CanEvent = true
