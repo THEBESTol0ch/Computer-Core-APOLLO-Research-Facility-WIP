@@ -30,13 +30,13 @@ local DoorAnimationSettings = TweenInfo.new(
 	false,
 	0
 )
---
 
 local LeftDoorOpenAnim = TweenService:Create(LeftDoor, DoorAnimationSettings, { CFrame = LeftDoorOpenPos.CFrame })
 local LeftDoorCloseAnim = TweenService:Create(LeftDoor, DoorAnimationSettings, { CFrame = LeftDoorClosePos.CFrame })
 
 local RightDoorOpenAnim = TweenService:Create(RightDoor, DoorAnimationSettings, { CFrame = RightDoorOpenPos.CFrame })
 local RightDoorCloseAnim = TweenService:Create(RightDoor, DoorAnimationSettings, { CFrame = RightDoorClosePos.CFrame })
+--
 
 Trigger.Touched:Connect(function()
 	Trigger.CanTouch = false
