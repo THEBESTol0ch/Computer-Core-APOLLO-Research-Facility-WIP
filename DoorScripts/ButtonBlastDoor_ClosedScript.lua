@@ -30,10 +30,10 @@ local DoorAnimationSettings = TweenInfo.new(
 	false,
 	0
 )
---
 
 local BlastDoorOpenAnim = TweenService:Create(Door, DoorAnimationSettings, { CFrame = DoorOpenPos.CFrame })
 local BlastDoorCloseAnim = TweenService:Create(Door, DoorAnimationSettings, { CFrame = DoorClosePos.CFrame })
+--
 
 -- Functions
 function DoLamps(Mode, Speed)
