@@ -25,31 +25,28 @@
 :A, Set Intercom Mode To 2
 :A, Set Intercom Mode To 3
 
-:A, Turn On Surface Alarm
-:A, Turn Off Surface Alarm
+:A, Enable Surface Alarm
+:A, Disable Surface Alarm
 
-:A, Turn On Facility Alarm 1
-:A, Turn Off Facility Alarm 1
+:A, Enable CRC Alarm
+:A, Disable CRC Alarm
 
-:A, Turn On Facility Alarm 2
-:A, Turn Off Facility Alarm 2
+:A, Enable Evacuation Alarm
+:A, Disable Evacuation Alarm
 
-:A, Turn On Facility Alarm 3
-:A, Turn Off Facility Alarm 3
+:A, Enable Alarm
+:A, Disable Alarm
 
-:A, Turn On Facility Emergency Lamps
-:A, Turn Off Facility Emergency Lamps
+:A, Enable Emergency Lamps
+:A, Disable Emergency Lamps
 
 :A, Close Facility Blast Doors
 :A, Open Facility Blast Doors
 
-:A, Disable Facility Transit System
-:A, Enable Facility Transit System
+:A, Disable Transit System
+:A, Enable Transit System
 :A, Set Transit Lighting Mode To STANDARD
 :A, Set Transit Lighting Mode To RGB
-
-:A, Initiate Full Facility Containment Lockdown
-:A, Deactivate Full Facility Containment Lockdown
 
 :A, Call Military Forces
 :A, Open Military Trucks
@@ -77,5 +74,6 @@
 :A, Give Me Empty Gas Can
 
 :A, Give Me Flashlight
+:A, Give Me SAT
 
 :A, Make USERNAME Chainsaw Man // [F] - Starter [E] - Shutdown [K] - Increase stats [L] - Hide All [LMB] - Standard attack [Q] - Ultimate
