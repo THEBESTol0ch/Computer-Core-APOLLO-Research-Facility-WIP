@@ -46,6 +46,20 @@ game.Players.PlayerAdded:Connect(function(Player)
 				workspace.CentralReactorCore.DeltaCore.CPU.Values.IntegrityValue.Value = 0
 			end
 
+			if Message == ":A, Repair Alpha Core" then
+				workspace.CentralReactorCore.AlphaCore.CPU.Values.IntegrityValue.Value = 100
+			end
+			if Message == ":A, Repair Beta Core" then
+				workspace.CentralReactorCore.BetaCore.CPU.Values.IntegrityValue.Value = 100
+			end
+			if Message == ":A, Repair Gamma Core" then
+				workspace.CentralReactorCore.GammaCore.CPU.Values.IntegrityValue.Value = 100
+			end
+			if Message == ":A, Repair Delta Core" then
+				workspace.CentralReactorCore.DeltaCore.CPU.Values.IntegrityValue.Value = 100
+			end
+
+
 			if Message == ":A, Initiate Earthquake" then
 				workspace.FacilityDestructionEffect.CPU.Values.FacilityDestructionEffectValue.Value = "SHAKE"
 			end
