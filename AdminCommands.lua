@@ -40,8 +40,8 @@
 :A, Enable Emergency Lamps
 :A, Disable Emergency Lamps
 
-:A, Close Facility Blast Doors
-:A, Open Facility Blast Doors
+:A, Close Blast Doors
+:A, Open Blast Doors
 
 :A, Disable Transit System
 :A, Enable Transit System
