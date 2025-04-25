@@ -7,6 +7,10 @@
 :A, Destroy Beta Core
 :A, Destroy Gamma Core
 :A, Destroy Delta Core
+:A, Repair Alpha Core
+:A, Repair Beta Core
+:A, Repair Gamma Core
+:A, Repair Delta Core
 
 :A, Initiate Earthquake
 
